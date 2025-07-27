@@ -1,0 +1,17 @@
+.gallery-pic{
+    height: 250px;
+    width: 500px;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.gallery-pic-vertical{
+    height: 500px;
+    width: 500px;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.gallery-pic, .gallery-pic-vertical{
+    border-color: #700b20;
+}
