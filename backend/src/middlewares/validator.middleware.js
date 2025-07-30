@@ -5,6 +5,7 @@ export const validateSchema = (schema) => (req, res, next) => {
         
         return next();
     } catch (error) {
+        
         console.log("Validando errores");
         
         return res

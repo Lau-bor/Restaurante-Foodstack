@@ -1,35 +1,35 @@
 import mongoose from "mongoose";
 
-const OrderSchema = new mongoose.Schema({
+const MenuSchema = new mongoose.Schema({
     title: {
         type: String,
-        require: true,
+        required: true,
         trim: true,
     },
     description: {
         type: String,
         trim: true,
     },
-    dueDate: {
+    deliveryTime: {
         type: Date,
         default: Date.now,
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        require: true,
+        required: true,
     },
     files: [
         {
             name: String,
             path: String,
             size: Number,
-            MimeType: String
+            mimetype: String 
         }
     ]
-},{
+}, {
     timestamps: true,
     versionKey: false
-})
+});
 
-export default mongoose.model("Order", OrderSchema);
+export default mongoose.model("Menu", MenuSchema);
