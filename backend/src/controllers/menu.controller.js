@@ -53,16 +53,27 @@ export const createMenu = async (req, res) => {
     }
 };
 
-import Menu from "../models/menu.model.js";
-
 export const getMenus = async (req, res) => {
   try {
-    const menus = await Menu.find()
-      .sort({ createdAt: -1 }) 
-      .populate("user", "username email") 
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
 
-   
-      const menusWithUrls = menus.map(menu => {
+    const filter = {};
+
+
+    if (req.query.title) {
+      filter.title = { $regex: req.query.title, $options: 'i' }; 
+    }
+
+    const totalMenus = await Menu.countDocuments(filter);
+    const menus = await Menu.find(filter)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .populate("user", "username email");
+
+    const menusWithUrls = menus.map(menu => {
       const filesWithUrl = menu.files.map(file => ({
         ...file._doc,
         url: `/uploads/${file.path.replace('public/uploads/', '')}`
@@ -74,8 +85,12 @@ export const getMenus = async (req, res) => {
       };
     });
 
-    return res.status(200).json(menusWithUrls);
-
+    return res.status(200).json({
+      total: totalMenus,
+      page,
+      totalPages: Math.ceil(totalMenus / limit),
+      data: menusWithUrls
+    });
   } catch (error) {
     console.error("Error al obtener menús:", error);
     return res.status(500).json({ error: "Error interno del servidor" });
@@ -103,12 +118,10 @@ export const getMenu = async (req, res) => {
 };
 
 export const updateMenu = async (req, res) => {
-   
     if (req.user.role !== 'admin') {
         return res.status(403).json({ message: "Acceso denegado: solo administradores" });
     }
 
-    
     if (req.fileValidationError) {
         return res.status(400).json({ message: req.fileValidationError });
     }
@@ -116,32 +129,44 @@ export const updateMenu = async (req, res) => {
     try {
         const existingMenu = await Menu.findById(req.params.id);
         if (!existingMenu) {
-            return res.status(404).json({ message: "Menu not found" });
+            return res.status(404).json({ message: "Menú no encontrado" });
         }
 
-        let savedFiles = [];
+        
+        const shouldReplaceImages = req.body.replaceImages === 'true';
+
+        
+        let newFiles = [];
         if (req.files && req.files.length > 0) {
-            savedFiles = req.files.map(file => ({
+            newFiles = req.files.map(file => ({
                 name: file.originalname,
                 path: `/uploads/menu/${file.filename}`,
                 size: file.size,
                 mimetype: file.mimetype
             }));
+
+            
+            if (shouldReplaceImages && existingMenu.files?.length > 0) {
+                existingMenu.files.forEach(file => {
+                    const filePath = path.join('public', file.path);
+                    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+                });
+            }
         }
 
         const updateData = {
             ...req.body,
-            files: [...(existingMenu.files || []), ...savedFiles]
+            files: shouldReplaceImages ? newFiles : [...(existingMenu.files || []), ...newFiles]
         };
 
         const updatedMenu = await Menu.findByIdAndUpdate(req.params.id, updateData, { new: true });
-
         return res.status(200).json(updatedMenu);
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: error.message });
     }
 };
+
 
 export const deleteMenu = async (req, res) => {
     
