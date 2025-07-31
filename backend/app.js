@@ -35,7 +35,7 @@ app.use(
 
 app.use(morgan("dev"));
 app.use(cookieParser());
-
+app.use('/uploads', express.static('public/uploads'));
 
 app.use(express.static(path.join(__dirname, "public")));
 

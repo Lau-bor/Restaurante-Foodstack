@@ -53,24 +53,35 @@ export const createMenu = async (req, res) => {
     }
 };
 
+import Menu from "../models/menu.model.js";
+
 export const getMenus = async (req, res) => {
-    if (req.user.role !== 'admin') {
-        return res.status(403).json({ message: "Acceso denegado: solo administradores" });
-    }
+  try {
+    const menus = await Menu.find()
+      .sort({ createdAt: -1 }) 
+      .populate("user", "username email") 
 
-    try {
-        const menus = await Menu.find().populate("user").sort({ createdAt: -1 });
+   
+      const menusWithUrls = menus.map(menu => {
+      const filesWithUrl = menu.files.map(file => ({
+        ...file._doc,
+        url: `/uploads/${file.path.replace('public/uploads/', '')}`
+      }));
 
-        if (!menus || menus.length === 0) {
-            return res.status(404).json({ message: "No hay menús registrados" });
-        }
+      return {
+        ...menu._doc,
+        files: filesWithUrl
+      };
+    });
 
-        return res.status(200).json(menus);
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: error.message });
-    }
+    return res.status(200).json(menusWithUrls);
+
+  } catch (error) {
+    console.error("Error al obtener menús:", error);
+    return res.status(500).json({ error: "Error interno del servidor" });
+  }
 };
+
 
 export const getMenu = async (req, res) => {
     if (req.user.role !== 'admin') {
