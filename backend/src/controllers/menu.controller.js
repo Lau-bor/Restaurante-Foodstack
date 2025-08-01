@@ -14,7 +14,7 @@ export const createMenu = async (req, res) => {
     }
 
     try {
-        const { title, description, deliveryTime } = req.body;
+        const { title, description, deliveryTime, price } = req.body;
 
         let savedFiles = [];
 
@@ -30,6 +30,7 @@ export const createMenu = async (req, res) => {
         const newMenu = new Menu({
         title,
         description,
+        price,
         deliveryTime: deliveryTime || new Date(),
         user: req.user.id,
         files: savedFiles
@@ -61,9 +62,24 @@ export const getMenus = async (req, res) => {
 
     const filter = {};
 
-
+    
     if (req.query.title) {
-      filter.title = { $regex: req.query.title, $options: 'i' }; 
+      filter.title = { $regex: req.query.title, $options: 'i' };
+    }
+
+    
+    if (req.query.category) {
+      filter.category = req.query.category;
+    }
+
+    
+    if (req.query.minPrice) {
+      filter.price = { ...filter.price, $gte: Number(req.query.minPrice) };
+    }
+
+    
+    if (req.query.maxPrice) {
+      filter.price = { ...filter.price, $lte: Number(req.query.maxPrice) };
     }
 
     const totalMenus = await Menu.countDocuments(filter);
@@ -115,6 +131,18 @@ export const getMenu = async (req, res) => {
         console.log(error);
         return res.status(500).json({ message: error.message });
     }
+};
+
+export const getMenuById = async (req, res) => {
+  try {
+    const menu = await Menu.findById(req.params.id);
+    if (!menu) {
+      return res.status(404).json({ message: 'Menú no encontrado' });
+    }
+    res.json(menu);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al buscar el menú', error });
+  }
 };
 
 export const updateMenu = async (req, res) => {
