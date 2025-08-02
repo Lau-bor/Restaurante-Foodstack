@@ -2,7 +2,7 @@
     display: flex;
     position: relative;
     width: 100%;
-    background:radial-gradient(51.39% 511.66% at 47.68% -217.91%, rgb(78, 72, 243), rgb(74, 165, 208), rgb(19, 9, 72)) ;
+    background:radial-gradient(51.39% 511.66% at 47.68% -217.91%, #948116, rgb(238, 236, 97), rgb(72, 57, 9)) ;
     justify-content: center;
     align-items: center;
     flex-direction: column;
