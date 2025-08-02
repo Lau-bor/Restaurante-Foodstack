@@ -1,4 +1,4 @@
-import { AboutSectionPage, ImageGallery, Reviews } from '../../components';
+import { AboutSectionPage, ContactForm, ImageGallery, Reviews } from '../../components';
 import './About.css';
 
 const clients = [
@@ -40,8 +40,8 @@ function About() {
 
       <AboutSectionPage />
 
-      <div className='bg-dark text-light'>
-        <ImageGallery className='bg-dark text-light' />
+      <div className='container h-100'>
+        <ContactForm/>
       </div>
 
       <div className='my-5'>
