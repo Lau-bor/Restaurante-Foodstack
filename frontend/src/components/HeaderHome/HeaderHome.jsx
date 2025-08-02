@@ -7,8 +7,8 @@ function HeaderHome() {
         <div className='container'>
             <div className='row'>
             <div className='col-sm-6 d-flex d-sm-block flex-column align-items-center'>
-                <h2 className='mb-0 text-black fw-bold'>Bienvenido a</h2>
-                <h1 className='mb-5 fw-bold text-center text-sm-start'>Tomatito's</h1>
+                <h2 className='mb-0 text-black fw-bold'>Bienvenidos sean todos a</h2>
+                <h1 className='mb-5 fw-bold text-center text-sm-start'>FoodStack</h1>
                 <BtnMenu/>
             </div>
             </div>

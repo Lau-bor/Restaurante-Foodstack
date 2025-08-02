@@ -1,5 +1,6 @@
 .home-page header{
-    background-image: url('/public/pexels-mali-64208.jpg');
+    background-image: url(/frontend/public/burger.jpg);
+
     background-size: cover;
 }
 header{
