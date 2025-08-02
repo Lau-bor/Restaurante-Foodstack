@@ -1,7 +1,9 @@
-.home-page header{
-    background-image: url(/frontend/public/pexels-onbab-30937826.jpg) ;
+.home-page {
 
+    background-image: url(/frontend/public/pexels-mali-64208.jpg);
     background-size: cover;
+
+    
 }
 header{
     background-size: cover;
