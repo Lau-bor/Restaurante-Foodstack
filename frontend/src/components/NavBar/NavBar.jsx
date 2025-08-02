@@ -5,7 +5,7 @@ import "./NavBar.css";
 
 const NavBar = () => {
   return (
-    <Navbar expand="md" className="fixed-top shadow" >
+    <Navbar expand="md" className="fixed-top shadow" style={{ backgroundColor:"#f8e3a5ff"}}>
       <Container>
         <Navbar.Brand as={Link} to="/" className="text-danger fw-bold">
           Restaurante Foodstack
