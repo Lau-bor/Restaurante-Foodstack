@@ -1,9 +1,11 @@
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import "./NavBar.css";
+
 
 const NavBar = () => {
   return (
-    <Navbar expand="md" className="fixed-top shadow" style={{ backgroundColor: '#f0e269ff' }}>
+    <Navbar expand="md" className="fixed-top shadow" >
       <Container>
         <Navbar.Brand as={Link} to="/" className="text-danger fw-bold">
           Restaurante Foodstack
