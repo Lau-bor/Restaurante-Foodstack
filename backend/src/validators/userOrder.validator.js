@@ -1,12 +1,9 @@
-import {z} from 'zod';
+import { z } from 'zod';
 
-export const createuserOrderSchema = z.object({
-    title: z.string({
-        required_error: 'Title is required!!!'
-    }),
-    description: z.string({
-        required_error: 'Description is required!!!'
-    })
-    .optional(),
-    date: z.string().datetime().optional()
-}) 
+export const createUserOrderSchema = z.object({
+  items: z.array(z.object({
+    menuItemId: z.string().min(1),
+    quantity: z.number().min(1)
+  })),
+  totalAmount: z.number().min(1)
+});
