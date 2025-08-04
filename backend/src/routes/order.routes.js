@@ -12,7 +12,15 @@ import {
 } from '../controllers/order.controller.js';
 import { cleanUpOrderFiles } from '../middlewares/cleanUpOrderFiles.js';
 
+import { verifyToken } from "../middlewares/authMiddleware.js";
+import { verifyAdmin } from "../middlewares/adminMiddleware.js";
+
 const router = Router();
+
+router.get("/admin/orders", verifyToken, verifyAdmin, (req, res) => {
+  res.json({ message: "Solo los administradores pueden ver esto ✅" });
+});
+
 
 router.post(
   '/orders',

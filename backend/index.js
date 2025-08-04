@@ -1,10 +1,22 @@
 import app from "./app.js";
 import connectToMongoDB from "./db.js";
+import express from "express";
+import authRoutes from "./src/routes/auth.routes.js";
+import orderRoutes from "./src/routes/order.routes.js";
+app.use("/api/orders", orderRoutes);
 
 
 const PORT = process.env.PORT || 4000;
 
 connectToMongoDB()
+
+app.use(express.json());
+
+// Usar las rutas de auth
+app.use("/api/auth", authRoutes);
+app.use("/api/orders", orderRoutes);
+
+export default app;
 
 
 const server = async () => {

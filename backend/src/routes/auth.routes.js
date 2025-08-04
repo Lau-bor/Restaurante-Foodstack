@@ -6,6 +6,7 @@ import { authRequired } from '../middlewares/validateToken.js';
 import uploadIconProfileImage from '../helpers/multer.config.iconProfile.js';
 import { getProfileImage, uploadProfileImage } from '../controllers/profile.controller.js';
 import { requestPasswordReset, resetPassword } from '../controllers/passwordReset.controller.js';
+import { checkRole } from "../middlewares/role.middleware.js";
 
 const router = express.Router(); 
 
@@ -16,13 +17,14 @@ router.get('/profile', authRequired, profile)
 router.get('/verify-token', verifyToken);
 router.get('/verify-email', verifyEmail);
 
+// Ruta solo para admin
+router.get("/admin-only", authRequired, checkRole("admin"), (req, res) => {
+  res.status(200).json({ message: "Sos admin, tenés acceso 😎" });
+});
 
 router.post('/request-password-reset', requestPasswordReset)
 
-
-
 router.post('/reset-password/:token', resetPassword)
-
 
 
 router.post('/upload-profile-image',

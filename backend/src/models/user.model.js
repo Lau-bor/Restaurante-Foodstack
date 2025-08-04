@@ -3,27 +3,23 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
-        require: true,
+        required: true,
         unique: true,
         trim: true,
     },
     email: {
         type: String,
-        require: true,
+        required: true,
         unique: true,
         trim: true
     },
     password: {
         type: String,
-        require: true,
+        required: true,
     },
     profileImage: {
         type: String,
         default:"https://img.freepik.com/vector-premium/arte-vectorial-icono-interfaz-perfil_1015832-3774.jpg?semt=ais_hybrid&w=740",
-    },
-    isVerified: {
-        type: Boolean,
-        default: false,
     },
     verificationToken: {
         type: String,
@@ -37,6 +33,11 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: null,
     },
+    role: {
+    type: String,
+    enum: ['user', 'admin'],
+    default: 'user',
+}
 }, {
     timestamps: true,
     versionKey: false,

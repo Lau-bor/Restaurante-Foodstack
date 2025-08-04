@@ -19,7 +19,6 @@ export const register = async (req, res) => {
     const passwordHash = await bcrypt.hash(password, 12); 
 
    
-
     const verificationToken = crypto.randomBytes(20).toString("hex");
 
     const newUser = new User({
@@ -31,11 +30,12 @@ export const register = async (req, res) => {
 
     const savedUser = await newUser.save();
 
-    
-
     const verificationLink = `${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}`;
+    
+    console.log("JWT_SECRET:", process.env.JWT_SECRET);
 
-    await transport.sendMail({
+
+  /*   await transport.sendMail({
       from: process.env.MAIL_FROM,
       to: savedUser.email,
       subject: "Verifica tu email - ROLLING TODO-APP",
@@ -44,14 +44,14 @@ export const register = async (req, res) => {
         username: savedUser.username,
         verificationLink,
       },
-    });
-
-   
+    }); */
+console.log("Correo de verificación simulado:", verificationLink);
 
     const token = await createAccessToken({
       id: savedUser._id,
       username: savedUser.username,
       email: savedUser.email,
+      role: savedUser.role,
     });
 
     
@@ -62,7 +62,6 @@ export const register = async (req, res) => {
     });
 
   
-
     res.status(201).json({
       id: savedUser._id,
       username: savedUser.username,
@@ -95,6 +94,7 @@ export const login = async (req, res) => {
       id: userFound._id,
       username: userFound.username,
       email: userFound.email,
+      role: userFound.role
     });
 
     
@@ -165,8 +165,9 @@ export const verifyToken = async (req, res) => {
       return res.status(401).json({message: "No token provided"})
     }
 
-    const decoded = jwt.verify(token, process.env.SECRET_KEY);
-    const userFound = await User.findById(decoded.id);
+  
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+   const userFound = await User.findById(decoded.id);
 
     if (!userFound) return res.status(401);
 
