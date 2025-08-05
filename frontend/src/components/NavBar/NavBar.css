@@ -1,3 +1,82 @@
-.basic-navbar-nav{
-    background-color:aqua;
+*{
+ padding:0;
+ margin:0;
+ box-sizing: border-box;
+
+}
+
+body {
+  background:url(/frontend/public/burger.jpg.jpg);
+  min-height: 100vh;
+  position:relative;
+  font-family:"josefin sans";
+
+}
+
+body::before {
+  position: absolute;
+  content:"" ;
+  width: 100% 1px;
+  height: 100%;
+  background: rgba(0,0,0,.5);
+  z-index: -1;
+}
+
+a{
+  text-decoration: none;
+}
+
+header {
+  background:#fff;
+  box-shadow:0 0 5px rgba(0,0,0,.5);
+  padding: 2rem 0;
+
+}
+
+.container {
+  max-width: 1440px;
+  width:100%;
+  margin:0 auto;
+  padding:0 1rem;
+
+}
+.container nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+.container nav .logo {
+  color: rgb(253, 58, 58);
+  font-size: 1.2rem;
+  cursor: pointer;
+
+}
+
+.container .nav-link {
+  display: flex;
+}
+
+.container .nav-link li{
+  list-style:none;
+  margin:0 0.5rem;
+
+}
+
+.container ul li a{
+  color:red;
+  font-size:  1.3rem;
+  padding:0.7rem 1rem;
+
+  display:block;
+  border-radius: 10px;
+  border-radius:4px;
+
+}
+
+.container ul li a:hover,
+.container ul li a .active {
+  background-color: rgb(145, 145, 145);
+
 }

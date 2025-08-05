@@ -1,38 +1,26 @@
-import { Container, Nav, Navbar } from "react-bootstrap";
-import { Link } from "react-router-dom";
+
 import "./NavBar.css";
 
 
-const NavBar = () => {
-  return (
-    <Navbar expand="md" className="fixed-top shadow" style={{ backgroundColor:"#f8e3a5ff"}}>
-      <Container>
-        <Navbar.Brand as={Link} to="/" className="text-danger fw-bold">
-          Restaurante Foodstack
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto justify-content-end w-100">
-            <Nav.Link as={Link} to="/" className="active">
-              Inicio
-            </Nav.Link>
-            <Nav.Link as={Link} to="/menu" className="active">
-              Menú
-            </Nav.Link>
-            <Nav.Link as={Link} to="/about" className="active">
-              Nosotros
-            </Nav.Link>
-            <Nav.Link as={Link} to="/contact" className="active">
-              Contacto
-            </Nav.Link>
-            <Nav.Link as={Link} to="/orders" className="active">
-              Pedidos
-            </Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
-  );
-};
+function NavBar (){ 
+ return<div className="container">
+  <nav>
+    <div className="logo">
+      <h2>FoodStack</h2>
+    </div>
+    <ul className="nav-link">
+
+      <li><a href="/Inicio">Inicio</a></li>
+      <li><a href="/Menu">Menu</a></li>
+      <li><a href="/Nosotros">Nosotros</a></li>
+      <li><a href="/Contacto">Contacto</a></li>
+      <li><a href="/Pedido">Pedido</a></li>
+    </ul>
+  </nav>
+ </div>
+
+
+}
+
 
 export default NavBar;
