@@ -6,6 +6,8 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import path from "path";
 import { fileURLToPath } from "url";
+ 
+
 
 
 
@@ -43,6 +45,7 @@ app.use(express.static(path.join(__dirname, "public")));
 const routeFiles = fs.readdirSync("./src/routes");
 
 routeFiles.forEach((file) => {
+  console.log("Cargando archivo de ruta:", file)
  
   import(`./src/routes/${file}`)
     .then((route) => {
@@ -53,5 +56,7 @@ routeFiles.forEach((file) => {
       console.error(`Error al cargar la ruta ${file}:`, err);
     });
 });
+
+
 
 export default app;
