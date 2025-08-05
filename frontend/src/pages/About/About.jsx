@@ -1,4 +1,5 @@
 import { AboutSectionPage, ContactForm, ImageGallery, Reviews } from '../../components';
+import TeamSection from '../../components/TeamSection/TeamSection';
 import './About.css';
 
 const clients = [
@@ -38,7 +39,7 @@ function About() {
         </div>
       </header>
 
-      <AboutSectionPage />
+      <TeamSection/>
 
       <div className='container h-100'>
         <ContactForm/>
