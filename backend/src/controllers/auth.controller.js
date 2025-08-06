@@ -49,10 +49,11 @@ export const register = async (req, res) => {
    
 
     const token = await createAccessToken({
-      id: savedUser._id,
-      username: savedUser.username,
-      email: savedUser.email,
-    });
+    id: savedUser._id,
+    username: savedUser.username,
+    email: savedUser.email,
+    role: savedUser.role
+  });
 
     
     res.cookie("token", token, {
@@ -92,10 +93,11 @@ export const login = async (req, res) => {
 
     
     const token = await createAccessToken({
-      id: userFound._id,
-      username: userFound.username,
-      email: userFound.email,
-    });
+    id: userFound._id,
+    username: userFound.username,
+    email: userFound.email,
+    role: userFound.role
+  });
 
     
 

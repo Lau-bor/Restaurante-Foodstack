@@ -17,6 +17,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         require: true,
     },
+    role: {
+    type: String,
+    enum: ['user', 'admin'],
+    default: 'user',
+    },
+    isActive: {
+    type: Boolean,
+    default: true,
+    },
     profileImage: {
         type: String,
         default:"https://img.freepik.com/vector-premium/arte-vectorial-icono-interfaz-perfil_1015832-3774.jpg?semt=ais_hybrid&w=740",

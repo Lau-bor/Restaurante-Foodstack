@@ -15,6 +15,6 @@ export function createAccessToken(payload){
                 if(err) reject(err);
                 resolve(token)
             }
-        )
-    })
-}
+        );
+    });
+};
