@@ -3,9 +3,7 @@
  margin:0;
  box-sizing: border-box;
 
-}
-
-
+};
 
 header {
   background:url();
@@ -20,15 +18,9 @@ body::before {
   content:"" ;
   width: 100% 1px;
   height: 100%;
-  background: rgba(0,0,0,.5);
+  background: rgba(226, 18, 18, 0.5);
   z-index: -1;
-}
-
-a{
-  text-decoration: none;
-}
-
-
+};
 
 .container {
   max-width: 1440px;
@@ -45,8 +37,8 @@ a{
 }
 
 .container nav .logo {
-  background: url("/frontend/public/logo.png");
-  
+  background: #fcfcfc;
+  font-size: 1.2rem;
   
 
 }
@@ -74,6 +66,6 @@ a{
 
 .container ul li a:hover,
 .container ul li a .active {
-  background-color: rgb(145, 145, 145);
+  background-color: rgb(243, 179, 41);
 
 }

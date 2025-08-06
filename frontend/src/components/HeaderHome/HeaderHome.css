@@ -1,13 +1,18 @@
 .home-page header{
-    background-image: url('/FoodStack-495051.jpg');
-    background-size: cover;
+    background-image: url('/public/FoodStack-495051.jpg');
+    
+    
+    
 }
 
     
 
 header{
-    background-size: cover;
+    
     background-position: center;
+    background-size: contain;
+   
+
 }
 header h1{
     font-size: 5rem;

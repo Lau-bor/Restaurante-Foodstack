@@ -6,7 +6,7 @@ function NavBar (){
  return<div className="container">
   <nav>
     <div className="logo">
-     <h2>FoodStack</h2>
+     <img src="frontend/public/logo" alt="" />
     </div>
     <ul className="nav-link">
 
