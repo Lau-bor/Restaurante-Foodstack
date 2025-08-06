@@ -5,11 +5,13 @@
 
 }
 
+
+
 header {
-  background:url(`/frontend/public/FoodStack-495051.jpg`);
+  background:url();
   min-height: 100vh;
   position:relative;
-  font-family:"josefin sans";
+  font-family:"";
 
 }
 
@@ -43,9 +45,9 @@ a{
 }
 
 .container nav .logo {
-  color: rgb(58, 230, 253);
-  font-size: 1.2rem;
-  cursor: pointer;
+  background: url("/frontend/public/logo.png");
+  
+  
 
 }
 

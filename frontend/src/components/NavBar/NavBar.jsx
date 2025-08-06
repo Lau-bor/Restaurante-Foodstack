@@ -6,15 +6,15 @@ function NavBar (){
  return<div className="container">
   <nav>
     <div className="logo">
-      <h2>FoodStack</h2>
+     <h2>FoodStack</h2>
     </div>
     <ul className="nav-link">
 
-      <li><a href="/Inicio">Inicio</a></li>
+      <li><a href="/">Home</a></li>
       <li><a href="/Menu">Menu</a></li>
-      <li><a href="/Nosotros">Nosotros</a></li>
-      <li><a href="/Contacto">Contacto</a></li>
-      <li><a href="/Pedido">Pedido</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="contact">Contact</a></li>
+      <li><a href="/orders">Orders</a></li>
     </ul>
   </nav>
  </div>
