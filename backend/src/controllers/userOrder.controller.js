@@ -1,63 +1,76 @@
 import userOrder from '../models/userOrder.model.js';
-import { generatePayment } from './payment.controller.js'; // Importar la función de generación de pago
+import { generatePayment } from './payment.controller.js';
+//import Menu from '../models/menu.model.js'; 
 
 export const createUserOrder = async (req, res) => {
-  const { items, totalAmount } = req.body; // Los datos ya validados por el esquema
+  const { items } = req.body;
 
   try {
-    // ⚠️ Nota: En un entorno de producción real, el totalAmount debería ser
-    // calculado y verificado en el backend basándose en los precios de los
-    // items de tu base de datos (Menu) para evitar manipulaciones del cliente.
-    // Por simplicidad, aquí se usa el totalAmount enviado por el frontend.
+    let totalAmount = 0;
+    const orderItems = [];
 
-    // 1. Crear la orden en la base de datos con un estado inicial 'pending'
+   
+    for (const item of items) {
+      const menuItem = await Menu.findById(item.menuItemId); 
+
+      if (!menuItem) {
+        return res.status(404).json({ message: `Plato con ID ${item.menuItemId} no encontrado.` });
+      }
+
+      
+      orderItems.push({
+        menuItemId: menuItem._id,
+        name: menuItem.name,   
+        price: menuItem.price, 
+        quantity: item.quantity
+      });
+
+      totalAmount += menuItem.price * item.quantity;
+    }
+
+    
     const newUserOrder = new userOrder({
-      user: req.user.id, // ID del usuario autenticado (asume que viene de un middleware)
-      items, // Los ítems ya incluyen name, price, quantity gracias al validador
-      totalAmount,
-      status: 'pending', // Estado inicial de la orden
+      user: req.user.id,
+      items: orderItems, 
+      totalAmount,       
+      status: 'pending',
     });
 
-    const savedUserOrder = await newUserOrder.save(); // Guarda la orden en MongoDB
+    const savedUserOrder = await newUserOrder.save();
 
-    // 2. Preparar los ítems para la API de Mercado Pago
-    // Los nombres de las propiedades (title, unit_price) son específicos de Mercado Pago
-    const mpItems = items.map(item => ({
-      title: item.name, // Usar el nombre del item de la orden
+    
+    const mpItems = orderItems.map(item => ({
+      title: item.name,
       quantity: item.quantity,
-      unit_price: Number(item.price), // Usar el precio unitario del item de la orden
-      currency_id: 'ARS', // Moneda (Asegúrate de que sea la correcta para tu país)
+      unit_price: Number(item.price),
+      currency_id: 'ARS',
     }));
 
-    // 3. Generar la preferencia de pago en Mercado Pago
-    // Se llama a la función generatePayment del controlador de pagos
+    
     const paymentResult = await generatePayment({
       body: {
         items: mpItems,
         userId: req.user.id,
-        orderId: savedUserOrder._id.toString(), // Convertir ObjectId a string para Mercado Pago
+        orderId: savedUserOrder._id.toString(),
       }
-    }, res); // Se pasa 'res' para que generatePayment pueda manejar su propia respuesta si es necesario
+    }, res);
 
-    // Si la generación de la preferencia fue exitosa
+    
     if (paymentResult && paymentResult.id) {
-      // Opcional: Guardar el ID de la preferencia de Mercado Pago en tu orden
       savedUserOrder.paymentId = paymentResult.id;
-      await savedUserOrder.save(); // Vuelve a guardar la orden con el paymentId
+      await savedUserOrder.save();
 
-      // Enviar la respuesta al frontend con los datos de la orden y las URLs de pago
       res.status(201).json({
         message: 'Orden creada y pago iniciado',
         order: savedUserOrder,
         payment: {
           id: paymentResult.id,
-          init_point: paymentResult.init_point, // URL para producción
-          sandbox_init_point: paymentResult.sandbox_init_point, // URL para desarrollo
+          init_point: paymentResult.init_point,
+          sandbox_init_point: paymentResult.sandbox_init_point,
         }
       });
     } else {
-      // Si generatePayment falló y no envió una respuesta HTTP
-      savedUserOrder.status = 'failed'; // Marcar la orden como fallida en la DB
+      savedUserOrder.status = 'failed';
       await savedUserOrder.save();
       res.status(500).json({ message: 'Error al iniciar el pago con Mercado Pago.' });
     }
@@ -68,9 +81,11 @@ export const createUserOrder = async (req, res) => {
   }
 };
 
+
+
 export const getUserOrders = async (req, res) => {
   try {
-    // Buscar órdenes del usuario actual y popular los detalles de los ítems del menú
+    
     const usersOrders = await userOrder.find({ user: req.user.id }).populate('items.menuItemId');
     res.json(usersOrders);
   } catch (err) {
