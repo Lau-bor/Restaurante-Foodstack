@@ -6,7 +6,7 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import path from "path";
 import { fileURLToPath } from "url";
-
+import adminRoutes from "./src/routes/admin.routes.js";
 
 
 dotenv.config(); 
@@ -39,6 +39,7 @@ app.use('/uploads', express.static('public/uploads'));
 
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use("/api/v1", adminRoutes);
 
 const routeFiles = fs.readdirSync("./src/routes");
 
