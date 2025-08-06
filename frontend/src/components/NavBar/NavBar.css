@@ -5,8 +5,8 @@
 
 }
 
-body {
-  background:url(/frontend/public/burger.jpg.jpg);
+header {
+  background:url(`/frontend/public/FoodStack-495051.jpg`);
   min-height: 100vh;
   position:relative;
   font-family:"josefin sans";
@@ -26,12 +26,7 @@ a{
   text-decoration: none;
 }
 
-header {
-  background:#fff;
-  box-shadow:0 0 5px rgba(0,0,0,.5);
-  padding: 2rem 0;
 
-}
 
 .container {
   max-width: 1440px;
@@ -48,7 +43,7 @@ header {
 }
 
 .container nav .logo {
-  color: rgb(253, 58, 58);
+  color: rgb(58, 230, 253);
   font-size: 1.2rem;
   cursor: pointer;
 

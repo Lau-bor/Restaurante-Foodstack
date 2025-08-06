@@ -1,10 +1,10 @@
-.img {
-
-    background-image:url(./frontend/FoodStack-495051.jpg);
-    
-
-    
+.home-page header{
+    background-image: url('/public/FoodStack-495051.jpg');
+    background-size: cover;
 }
+
+    
+
 header{
     background-size: cover;
     background-position: center;

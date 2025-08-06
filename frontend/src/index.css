@@ -5,6 +5,8 @@ body{
 }
 
 img{
+  background:url(/frontend/public/FoodStack-495051.jpg);
   border-style: solid;
   border-width: 3px;
 }
+
