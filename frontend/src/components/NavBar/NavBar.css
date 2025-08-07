@@ -62,7 +62,9 @@ a{
 }
 
 .container ul li a{
-  color:red;
+  
+
+  color:rgb(206, 67, 25);
   font-size:  1.3rem;
   padding:0.7rem 1rem;
 
