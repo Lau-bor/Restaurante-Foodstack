@@ -40,7 +40,7 @@ a{
    background:radial-gradient(51.39% 511.66% at 47.68% -217.91%, #948116, rgb(238, 236, 97), rgb(72, 57, 9)) ;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: left;
 
 }
 
@@ -69,11 +69,12 @@ a{
   display:block;
   border-radius: 10px;
   border-radius:4px;
-
+  
 }
 
 .container ul li a:hover,
 .container ul li a .active {
-  background-color: rgb(248, 234, 29);
-
+  
+  transform:rotateY(360deg);
+  transition: 2s;
 }

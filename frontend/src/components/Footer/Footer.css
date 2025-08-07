@@ -30,5 +30,6 @@
 
 }
 .icon :hover{
-    transform: translateY(-10px);
+    transform:rotateY(360deg);
+    transition: 2s;
 }
