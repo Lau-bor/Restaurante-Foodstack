@@ -6,7 +6,7 @@ function NavBar (){
  return<div className="container">
   <nav>
     <div className="logo">
-     <img src="frontend/public/logo" alt="" />
+     <img src="" alt=""  />
     </div>
     <ul className="nav-link">
 

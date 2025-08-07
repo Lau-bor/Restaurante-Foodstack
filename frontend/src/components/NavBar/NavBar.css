@@ -6,10 +6,10 @@
 };
 
 header {
-  background:url();
+ 
   min-height: 100vh;
   position:relative;
-  font-family:"";
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 
 }
 
@@ -18,10 +18,18 @@ body::before {
   content:"" ;
   width: 100% 1px;
   height: 100%;
-  background: rgba(226, 18, 18, 0.5);
+  background: rgba(56, 14, 14, 0.5);
   z-index: -1;
 };
 
+a {
+  text-decoration: none;
+
+}
+
+.logo {
+ 
+}
 .container {
   max-width: 1440px;
   width:100%;
@@ -66,6 +74,6 @@ body::before {
 
 .container ul li a:hover,
 .container ul li a .active {
-  background-color: rgb(243, 179, 41);
+  background-color: rgb(248, 234, 29);
 
 }
