@@ -22,15 +22,14 @@ body::before {
   z-index: -1;
 };
 
-a {
-  text-decoration: none;
+a{
+  text-decoration:none;
 
 }
 
-.logo {
- 
-}
+
 .container {
+ 
   max-width: 1440px;
   width:100%;
   margin:0 auto;
@@ -38,6 +37,7 @@ a {
 
 }
 .container nav {
+   background:radial-gradient(51.39% 511.66% at 47.68% -217.91%, #948116, rgb(238, 236, 97), rgb(72, 57, 9)) ;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -45,7 +45,7 @@ a {
 }
 
 .container nav .logo {
-  background: #fcfcfc;
+  
   font-size: 1.2rem;
   
 
