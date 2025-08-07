@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import {useNavigate, Link} from "react-router-dom";
 import {toast} from "react-hot-toast";
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Login() {
@@ -78,11 +78,11 @@ function Login() {
                   Regístrate
                 </Link>
               </p>
-              <p className="mb-0">
+              {/* <p className="mb-0">
                 <Link to="/forgot-password" className="text-primary text-decoration-none">
                   ¿Olvidaste tu contraseña?
                 </Link>
-              </p>
+              </p> */}
             </div>
           </form>
         </div>
