@@ -66,7 +66,7 @@ function Login() {
             </div>
 
             <div className="d-grid mb-4">
-              <button type="submit" className="btn btn-primary fw-bold">
+              <button type="submit" className="btn btn-warning fw-bold">
                 Entrar
               </button>
             </div>
@@ -74,7 +74,7 @@ function Login() {
             <div className="text-center">
               <p className="mb-2">
                 ¿No tienes una cuenta?{" "}
-                <Link to="/register" className="text-primary text-decoration-none">
+                <Link to="/register" className="text-danger text-decoration-none">
                   Regístrate
                 </Link>
               </p>
