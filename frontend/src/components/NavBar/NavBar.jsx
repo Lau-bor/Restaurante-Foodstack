@@ -3,10 +3,13 @@ import "./NavBar.css";
 
 
 function NavBar (){ 
- return<div className="container">
+ return (
+  
+    <div className="container">
   <nav>
+    <img src="" alt="FoodStack"  />
     <div className="logo">
-     <img src="" alt=""  />
+     
     </div>
     <ul className="nav-link">
 
@@ -18,9 +21,11 @@ function NavBar (){
     </ul>
   </nav>
  </div>
-
+  
+ );
 
 }
 
 
+ 
 export default NavBar;
