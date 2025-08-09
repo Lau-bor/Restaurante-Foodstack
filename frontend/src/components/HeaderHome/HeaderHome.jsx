@@ -1,4 +1,4 @@
-import BtnMenu from '../BtnMenu/BtnMenu'
+
 import './HeaderHome.css';
 
 function HeaderHome() {
@@ -11,7 +11,7 @@ function HeaderHome() {
             <div className='col-sm-6 d-flex d-sm-block flex-column align-items-center'>
                 <h2 className='mb-0 text-black fw-bold'></h2>
                 <h1 className='mb-5 fw-bold text-center text-sm-start'></h1>
-                <BtnMenu/>
+                
             </div>
             </div>
         </div>
