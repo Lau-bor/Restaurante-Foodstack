@@ -1,4 +1,4 @@
-import BtnMenu from "../BtnMenu/BtnMenu"
+
 import './MenuSection.css'
 
 function MenuSection() {

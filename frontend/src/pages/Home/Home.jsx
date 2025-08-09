@@ -9,9 +9,7 @@ function Home() {
 
       <MenuSection/>
 
-      <ImageGallery/>
-
-      <ContactInfo/>
+      
     </div>
   )
 }

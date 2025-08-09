@@ -44,7 +44,12 @@ a{
 
 }
 
+.container nav .logo {
+  
+  font-size: 1.2rem;
+  
 
+}
 
 .container .nav-link {
   display: flex;

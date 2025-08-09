@@ -18,6 +18,8 @@ function NavBar (){
       <li><a href="/about">About</a></li>
       
       <li><a href="/orders">Orders</a></li>
+
+      <li><a href="/admin">Admin</a></li>
     </ul>
   </nav>
  </div>
