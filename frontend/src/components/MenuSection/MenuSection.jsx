@@ -42,7 +42,7 @@ function MenuSection() {
                   </ul>
             </div>
         </div>
-        <BtnMenu/>
+        
      </div>
   </div>
   )
