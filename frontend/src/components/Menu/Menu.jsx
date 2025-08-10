@@ -4,13 +4,13 @@ import './Menu.css'
 const desayuno = [
   {
     id: 1,
-    name: 'Ejecutivo',
+    name: 'Wake Up',
     description: 'Infusion, Pan, Jamon y Queso',
     price: '$5000',
   },
   {
     id: 2,
-    name: 'Avocado Toast',
+    name: 'Grand Toast',
     description: 'Infusion, Pan en rodajas con palta, tomate, huevo y queso',
     price: '$7000',
   },
@@ -25,49 +25,49 @@ const desayuno = [
 const Hamburguesas = [
   {
     id: 1,
-    name: 'Napolitana con papas',
-    description: 'Milanesa de carne con salsa de tomate, jamon y queso, papas fritas',
+    name: 'Mc Coders',
+    description: 'Hamburguesa, jamon, queso, tocino, papas fritas',
     price: '$12000',
   },
   {
     id: 2,
-    name: 'Matambre al verdeo',
-    description: 'Matambre de vaca o cerdo, cebolla de verdeo, papas al horno',
+    name: 'Jaw Breaker',
+    description: 'Hamburguesa, cebollas, queso cheddar, papas fritas',
     price: '$13500',
   },
   {
     id: 3,
-    name: 'Sorrentinos',
-    description: 'Sorrentinos con salsa blanca o roja, queso rallado',
-    price: '$11000',
+    name: 'Big Node.JS',
+    description: ' 2 Hamburguesas, cebolla, lechuga, tomates, huevo, queso cheddar, papas fritas',
+    price: '$20000',
   }
 ]
 
 const Sandwiches = [
   {
     id: 1,
-    name: 'Pizza 4 Quesos',
-    description: 'Pizza con queso azul, queso parmesano, queso mozzarella y queso cheddar',
-    price: '$8500',
+    name: 'Git-Chicken',
+    description: 'Sandwich de pollo, jamon, queso parmesano, huevo y salsa',
+    price: '$9500',
   },
   {
     id: 2,
-    name: 'Sandwich de Milanesa',
-    description: 'Sandwich de milanesa de carne, lechuga, tomate, mayonesa, mostaza',
+    name: 'Sandwich de Milanesa Commit',
+    description: 'Sandwich de milanesa de carne, lechuga, tomate, mayonesa, jamon y queso, mostaza',
     price: '$10500',
   },
   {
     id: 3,
-    name: 'Mexicano',
-    description: 'Pan de miga, jamon, queso, tomate, lechuga, huevo, mayonesa, ternera',
-    price: '$9500',
+    name: 'Sandwich de Lomito Java',
+    description: 'Lomito, jamon, queso, tomate, lechuga, huevo, mayonesa',
+    price: '$10.000',
   }
 ]
 
 const postre = [
   {
     id: 1,
-    name: 'Helado',
+    name: 'Rolling Ice',
     description: 'Helado de crema americana, dulce de leche, frutilla o chocolate',
     price: '$4500',
   },
@@ -87,13 +87,13 @@ const postre = [
 const bebidas = [
   {
     id: 1,
-    name: 'Coca Cola',
+    name: 'Rolling Cola',
     description: 'Gaseosa Cola',
     price: '$2000',
   },
   {
     id: 2,
-    name: 'Pepsi',
+    name: 'Popsi',
     description: 'Gaseosa Cola',
     price: '$1500',
   },
