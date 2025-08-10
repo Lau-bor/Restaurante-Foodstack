@@ -5,7 +5,7 @@ function AboutSection() {
     <div className='container my-5'>
     <div className='row'>
       <div className='col-lg-6 d-flex justify-content-center d-none d-lg-flex'>
-          <img src="https://images.pexels.com/photos/30338817/pexels-photo-30338817/free-photo-of-chefs-disfrutando-del-trabajo-en-equipo-en-una-cocina-rustica.jpeg" alt="about img" className='img-fluid w-75 object-fit-cover' />
+          <img src="KDLC-AW-Pic-1013x675" alt="about img" className='img-fluid w-75 object-fit-cover' />
       </div>
       <div className='col-lg-6 d-flex flex-column align-items-center justify-content-center'>
           <h2 className='fs-1 mb-5 text-uppercase'>Sobre Nosotros</h2>

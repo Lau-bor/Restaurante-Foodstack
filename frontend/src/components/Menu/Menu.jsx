@@ -22,7 +22,7 @@ const desayuno = [
   }
 ]
 
-const almuerzo = [
+const Hamburguesas = [
   {
     id: 1,
     name: 'Napolitana con papas',
@@ -43,7 +43,7 @@ const almuerzo = [
   }
 ]
 
-const cena = [
+const Sandwiches = [
   {
     id: 1,
     name: 'Pizza 4 Quesos',
@@ -116,21 +116,21 @@ function Menu() {
 
       <MenuCard
       menu={desayuno}
-      img='https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg?auto=compress&cs=tinysrgb&w=600'
+      img=''
       title='Desayuno'
       bg='bg-white'
       text=''
       />
       <MenuCard 
-      menu={almuerzo}
-      img='https://images.pexels.com/photos/1860204/pexels-photo-1860204.jpeg?auto=compress&cs=tinysrgb&w=600'
+      menu={Hamburguesas}
+      img=''
       title='Almuerzo'
       bg='bg-dark'
       text='text-white'
       />
       <MenuCard
-      menu={cena}
-      img='https://images.pexels.com/photos/1647163/pexels-photo-1647163.jpeg?auto=compress&cs=tinysrgb&w=600'
+      menu={Sandwiches}
+      img=''
       title='Cena'
       bg='bg-white'
       text=''
