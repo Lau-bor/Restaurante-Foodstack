@@ -30,7 +30,7 @@ export const createMenu = async (req, res) => {
         const newMenu = new Menu({
         title,
         description,
-        price,
+        price:Number(price),
         deliveryTime: deliveryTime || new Date(),
         user: req.user.id,
         files: savedFiles

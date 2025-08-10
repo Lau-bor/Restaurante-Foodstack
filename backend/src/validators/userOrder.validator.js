@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const createUserOrderSchema = z.object({
   items: z.array(z.object({
-    menuItemId: z.string().min(1, "El ID del item del menú es requerido."),
-    quantity: z.number().min(1, "La cantidad debe ser al menos 1.")
-  }), "La orden debe contener al menos un item.")
+    menuId: z.string().min(1, "Menu item ID is required."),
+    quantity: z.number().min(1, "Quantity must be at least 1.")
+  }), "Order must contain at least one item.")
 });

@@ -1,41 +1,20 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const MenuSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  description: {
-    type: String,
-    trim: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-    min: 0,
-  },
-  dueDate: {
-    type: Date,
-    default: Date.now,
-  },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-  },
+const menuSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  description: String,
+  price: { type: Number, required: true },
+  category: String,
   files: [
     {
       name: String,
       path: String,
       size: Number,
-      mimetype: String,
-    },
+      mimetype: String
+    }
   ],
-}, {
-  timestamps: true,
-  versionKey: false,
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  createdAt: { type: Date, default: Date.now }
 });
 
-
-export default mongoose.model("Menu", MenuSchema);
+export default mongoose.model('Menu', menuSchema);
