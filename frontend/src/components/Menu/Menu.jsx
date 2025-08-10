@@ -137,14 +137,14 @@ function Menu() {
       />
       <MenuCard
       menu={postre}
-      img='https://images.pexels.com/photos/3026804/pexels-photo-3026804.jpeg?auto=compress&cs=tinysrgb&w=600'
+      img='postres'
       title='Postre'
       bg='bg-dark'
       text='text-white'
       />
       <MenuCard
       menu={bebidas}
-      img='fizzydrinks'
+      img= "fizzydrinks"
       title='Bebidas'
       bg='bg-white'
       text=''
