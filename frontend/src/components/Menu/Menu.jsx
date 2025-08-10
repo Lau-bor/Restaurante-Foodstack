@@ -87,21 +87,21 @@ const postre = [
 const bebidas = [
   {
     id: 1,
-    name: 'Fernet',
-    description: 'Fernet con coca cola',
-    price: '$8000',
+    name: 'Coca Cola',
+    description: 'Gaseosa Cola',
+    price: '$2000',
   },
   {
     id: 2,
-    name: 'Gin Tonic',
-    description: 'Gin con agua tonica, frutos rojos o menta y jenjibre',
-    price: '$4500',
+    name: 'Pepsi',
+    description: 'Gaseosa Cola',
+    price: '$1500',
   },
   {
     id: 3,
-    name: 'Sex on the beach',
+    name: 'Sprite',
     description: 'Vodka, licor de durazno, jugo de naranja y granadina',
-    price: '$7700',
+    price: '$1500',
   }
 ]
 
@@ -144,7 +144,7 @@ function Menu() {
       />
       <MenuCard
       menu={bebidas}
-      img='public/pexels-isabella-mendes-107313-338713.jpg'
+      img='fizzydrinks'
       title='Bebidas'
       bg='bg-white'
       text=''
