@@ -78,11 +78,6 @@ function Login() {
                   Regístrate
                 </Link>
               </p>
-              {/* <p className="mb-0">
-                <Link to="/forgot-password" className="text-primary text-decoration-none">
-                  ¿Olvidaste tu contraseña?
-                </Link>
-              </p> */}
             </div>
           </form>
         </div>
