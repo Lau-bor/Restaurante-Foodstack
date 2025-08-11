@@ -1,6 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import {
   Login,
+  Register,
   About,
   Contact,
   Home,
@@ -17,7 +18,7 @@ function App() {
   const location = useLocation();
 
   // Definimos las rutas donde NO queremos mostrar el NavBar
-  const noNavbarPaths = ["/login"];
+  const noNavbarPaths = ["/login", "/register"];
 
   // Lógica para determinar si el NavBar debe ser visible
   const showNavBar = !noNavbarPaths.includes(location.pathname);
@@ -38,6 +39,7 @@ function App() {
       <Routes>
         <Route path='/' element={user ? <Home /> : <Navigate to="/login"/>}/>
         <Route path="/login" element={<Login />} />
+        <Route path='/register' element={<Register/>}/>
         <Route path="/menu" element={<Menu />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
