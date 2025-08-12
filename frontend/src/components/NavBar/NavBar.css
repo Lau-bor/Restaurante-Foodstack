@@ -14,17 +14,13 @@ header {
 }
 
 body::before {
-  position: absolute;
+  display: flex;
+  position: cover;
   content:"" ;
   width: 100% 1px;
   height: 100%;
-  background: rgba(56, 14, 14, 0.5);
-  z-index: -1;
-};
-
-a{
-  text-decoration:none;
-
+  background: rgba(57, 233, 209, 0.5);
+  z-index: 1;
 }
 
 
@@ -37,6 +33,7 @@ a{
 
 }
 .container nav {
+  
    background:radial-gradient(51.39% 511.66% at 47.68% -217.91%, #948116, rgb(238, 236, 97), rgb(72, 57, 9)) ;
   display: flex;
   justify-content: space-between;
@@ -62,9 +59,9 @@ a{
 }
 
 .container ul li a{
-  
-
-  color:rgb(206, 67, 25);
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  text-decoration: none;
+  color:rgb(228, 56, 13);
   font-size:  1.3rem;
   padding:0.7rem 1rem;
 
