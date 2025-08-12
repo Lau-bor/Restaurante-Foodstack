@@ -30,7 +30,10 @@ function Register() {
   };
 
   return (
-    <div className="d-flex align-items-center justify-content-center vh-100 bg-light">
+    <div className="d-flex align-items-center justify-content-center vh-100 bg-light"
+    style={{
+        backgroundImage: 'url("/fast-food-seamless-background-illustration-simple-restaurant-menu-background-vector.jpg")'
+      }}>
       <div
         className="card shadow-sm p-4"
         style={{ maxWidth: "400px", width: "100%" }}
