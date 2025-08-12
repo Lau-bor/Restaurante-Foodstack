@@ -39,7 +39,7 @@ function Login() {
         backgroundImage: 'url("/fast-food-seamless-background-illustration-simple-restaurant-menu-background-vector.jpg")'
       }}
     >
-      <div className="card shadow-sm p-4" style={{maxWidth: '400px', width: '100%'}}>
+      <div className="card shadow-sm p-4 bg-dark-subtle" style={{maxWidth: '400px', width: '100%'}}>
         <div className="card-body">
           <h2 className="h4 fw-bold mb-4 text-center">Iniciar sesión</h2>
           
