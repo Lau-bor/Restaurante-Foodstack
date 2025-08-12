@@ -1,5 +1,6 @@
 import express, { urlencoded } from "express";
 import dotenv from "dotenv"; 
+dotenv.config(); 
 import fs from "node:fs"; 
 import cors from "cors"; 
 import morgan from "morgan";
@@ -8,14 +9,10 @@ import path from "path";
 import { fileURLToPath } from "url";
 import adminRoutes from "./src/routes/admin.routes.js";
 
-
-dotenv.config(); 
-
 const app = express(); 
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 
 const corsOptions = {
   origin: process.env.FRONTEND_URL || "http://localhost:5173", 
@@ -44,6 +41,7 @@ app.use("/api/v1", adminRoutes);
 const routeFiles = fs.readdirSync("./src/routes");
 
 routeFiles.forEach((file) => {
+  console.log("Cargando archivo de ruta:", file)
  
   import(`./src/routes/${file}`)
     .then((route) => {
@@ -54,5 +52,7 @@ routeFiles.forEach((file) => {
       console.error(`Error al cargar la ruta ${file}:`, err);
     });
 });
+
+
 
 export default app;
