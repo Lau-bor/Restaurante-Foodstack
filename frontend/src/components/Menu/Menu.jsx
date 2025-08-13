@@ -6,19 +6,19 @@ const desayuno = [
     id: 1,
     name: 'Wake up',
     description: 'Infusion, Pan, Jamon y Queso',
-    price: '$4500',
+    price: '$4.500',
   },
   {
     id: 2,
     name: 'Node Toast',
     description: 'Infusion, Pan en rodajas con palta, tomate, huevo y queso',
-    price: '$6000',
+    price: '$6.000',
   },
   {
     id: 3,
     name: 'Milkshake',
     description: 'Batido de frutas con leche, azucar y hielo, medialunas',
-    price: '$7800',
+    price: '$7.800',
   }
 ]
 
@@ -39,22 +39,22 @@ const  hamburguesas = [
     id: 3,
     name: 'Git Jumbo',
     description: 'Triple hamburguesa,  queso cheddar, cebollas, lechuga, tomate, tocino, salsa golf con papas fritas grandes',
-    price: '$18000',
+    price: '$18.000',
   }
 ]
 
 const especiales = [
   {
     id: 1,
-    name: 'Pizza 4 Quesos',
-    description: 'Pizza con queso azul, queso parmesano, queso mozzarella y queso cheddar',
-    price: '$8500',
+    name: 'Node Sandwich',
+    description: 'Lomito , cebolla, tomate, queso azul, tocino, papas fritas grandes',
+    price: '$10.500',
   },
   {
     id: 2,
-    name: 'Sandwich de Milanesa',
-    description: 'Sandwich de milanesa de carne, lechuga, tomate, mayonesa, mostaza',
-    price: '$10500',
+    name: ' Java Sandwich',
+    description: 'Sandwich de milanesa de carne doble, jamon, queso, lechuga, tomate, huevo con papas fritas grandes',
+    price: '$12.500',
   },
   {
     id: 3,
