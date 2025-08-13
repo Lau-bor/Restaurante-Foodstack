@@ -1,9 +1,12 @@
-.reviews-section img{
-    width: 20%;
-    height: 200px;
+/* Reviews.css */
+.review-client-img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%; 
     object-fit: cover;
-    border-width: 2px;
-    border-radius: 50%;
-    border-color: #501515;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    border: 2px solid #e9a72d; 
+}
+
+.footer-card {
+    height: 150px;
 }

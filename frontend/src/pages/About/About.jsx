@@ -1,29 +1,30 @@
-import { AboutSectionPage,  Reviews } from '../../components';
+import { ContactForm, Reviews } from '../../components';
+import TeamSection from '../../components/TeamSection/TeamSection';
 import './About.css';
 
 const clients = [
   {
     id: 1,
     name: 'Leo Messi - Jugador de futbol profesional y campeón del mundo.',
-    review: '"Me encanta la comida de este lugar, la milanesa napolitana es como la de mi mamá."',
+    review: '"Los sanguches de milanesa de este lugar son tremendos."',
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNisSA9NK1W_Bf7Kshi-d6iYyv56l1QxUwtw&s'
   },
   {
     id: 2,
     name: 'Franco Colapinto - Piloto de carreras de F1.',
-    review: '"Siempre que vengo a la ciudad paso por este lugar, la comida es increible."',
+    review: '"Me encanta venir a este lugar después de una carrera, nada mejor que un par de frituras para recuperar energías."',
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQKZvMHJUCPu5oXWwkRNmRIGB6YXGFOEAidg&s'
   },
   {
     id: 3,
     name: 'Dwayne Johnson (La Roca) - Actor y luchador profesional.',
-    review: '"Los Fideos Strogonoff son mi plato favorito."',
+    review: '"Aunque soy un tipo fitness, de vez en cuando me gusta darme un gusto y comerme una buena hamburguesa."',
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3-Ijm9B-DTrAWys98SYRsV-6pHLllEJe2lA&s'
   },
   {
     id: 4,
     name: 'Neymar Jr - Jugador de futbol profesional.',
-    review: '"Este lugar me lembra de casa, é por isso que sempre que estou por perto venho comer aqui."',
+    review: 'Vim com Leo Messi pela primeira vez e sempre que estou na Argentina venho comer um sanduíche."',
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdqLtnaAFj1NRnyP21ouPPGL2XujNQlWWayw&s'
   },
 
@@ -38,10 +39,10 @@ function About() {
         </div>
       </header>
 
-      <AboutSectionPage />
+      <TeamSection/>
 
-      <div className='bg-dark text-light'>
-        <ImageGallery className='bg-dark text-light' />
+      <div className='container h-100'>
+        <ContactForm/>
       </div>
 
       <div className='my-5'>
