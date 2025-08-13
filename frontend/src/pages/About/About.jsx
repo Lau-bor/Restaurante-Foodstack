@@ -1,4 +1,4 @@
-import { AboutSectionPage, ImageGallery, Reviews } from '../../components';
+import { AboutSectionPage,  Reviews } from '../../components';
 import './About.css';
 
 const clients = [

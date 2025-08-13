@@ -4,57 +4,57 @@ import './Menu.css'
 const desayuno = [
   {
     id: 1,
-    name: 'Ejecutivo',
+    name: 'Wake up',
     description: 'Infusion, Pan, Jamon y Queso',
-    price: '$5000',
+    price: '$4.500',
   },
   {
     id: 2,
-    name: 'Avocado Toast',
+    name: 'Node Toast',
     description: 'Infusion, Pan en rodajas con palta, tomate, huevo y queso',
-    price: '$7000',
+    price: '$6.000',
   },
   {
     id: 3,
-    name: 'Milshake',
+    name: 'Milkshake',
     description: 'Batido de frutas con leche, azucar y hielo, medialunas',
-    price: '$7800',
+    price: '$7.800',
   }
 ]
 
-const almuerzo = [
+const  hamburguesas = [
   {
     id: 1,
-    name: 'Napolitana con papas',
-    description: 'Milanesa de carne con salsa de tomate, jamon y queso, papas fritas',
-    price: '$12000',
+    name: 'Hardrive',
+    description: 'Hamburguesa de carne con salsa de tomate, jamon y queso, papas fritas',
+    price: '$10.000',
   },
   {
     id: 2,
-    name: 'Matambre al verdeo',
-    description: 'Matambre de vaca o cerdo, cebolla de verdeo, papas al horno',
-    price: '$13500',
+    name: 'Grand Commit',
+    description: 'Hamburguesas dobles, queso cheddar, cebolla, lechuga, tomates, tocino con papas fritas',
+    price: '$13.500',
   },
   {
     id: 3,
-    name: 'Sorrentinos',
-    description: 'Sorrentinos con salsa blanca o roja, queso rallado',
-    price: '$11000',
+    name: 'Git Jumbo',
+    description: 'Triple hamburguesa,  queso cheddar, cebollas, lechuga, tomate, tocino, salsa golf con papas fritas grandes',
+    price: '$18.000',
   }
 ]
 
-const cena = [
+const especiales = [
   {
     id: 1,
-    name: 'Pizza 4 Quesos',
-    description: 'Pizza con queso azul, queso parmesano, queso mozzarella y queso cheddar',
-    price: '$8500',
+    name: 'Node Sandwich',
+    description: 'Lomito , cebolla, tomate, queso azul, tocino, papas fritas grandes',
+    price: '$10.500',
   },
   {
     id: 2,
-    name: 'Sandwich de Milanesa',
-    description: 'Sandwich de milanesa de carne, lechuga, tomate, mayonesa, mostaza',
-    price: '$10500',
+    name: ' Java Sandwich',
+    description: 'Sandwich de milanesa de carne doble, jamon, queso, lechuga, tomate, huevo con papas fritas grandes',
+    price: '$12.500',
   },
   {
     id: 3,
@@ -93,15 +93,15 @@ const bebidas = [
   },
   {
     id: 2,
-    name: 'Gin Tonic',
-    description: 'Gin con agua tonica, frutos rojos o menta y jenjibre',
+    name: 'Git Tonic',
+    description: ' Agua tonica, frutos rojos o menta y jenjibre',
     price: '$4500',
   },
   {
     id: 3,
-    name: 'Sex on the beach',
-    description: 'Vodka, licor de durazno, jugo de naranja y granadina',
-    price: '$7700',
+    name: 'Juicy Frame',
+    description: ' Jugo de naranja y granadina',
+    price: '$4700',
   }
 ]
 
@@ -116,35 +116,35 @@ function Menu() {
 
       <MenuCard
       menu={desayuno}
-      img='https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg?auto=compress&cs=tinysrgb&w=600'
+      img='https://img.freepik.com/premium-photo/croissant-coffee-table-sunny-morning-street-view-background-generative-ai_697880-802.jpg'
       title='Desayuno'
       bg='bg-white'
       text=''
       />
       <MenuCard 
-      menu={almuerzo}
-      img='https://images.pexels.com/photos/1860204/pexels-photo-1860204.jpeg?auto=compress&cs=tinysrgb&w=600'
-      title='Almuerzo'
+      menu={hamburguesas}
+      img='https://files.lafm.com.co/assets/public/styles/seoimg_1200x675_/public/2023-09/hamburguesa.jpg?VersionId=daQCdWXXGimjqh1MJ142xeERovVsB4jh&h=99a541cf&itok=BF6JIci4'
+      title='Hamburguesas'
       bg='bg-dark'
       text='text-white'
       />
       <MenuCard
-      menu={cena}
+      menu={especiales}
       img='https://images.pexels.com/photos/1647163/pexels-photo-1647163.jpeg?auto=compress&cs=tinysrgb&w=600'
-      title='Cena'
+      title='Especiales'
       bg='bg-white'
       text=''
       />
       <MenuCard
       menu={postre}
-      img='https://images.pexels.com/photos/3026804/pexels-photo-3026804.jpeg?auto=compress&cs=tinysrgb&w=600'
+      img='https://wallpapers.com/images/high/1920x1080-desserts-background-j9t89utopy77n007.webp'
       title='Postre'
       bg='bg-dark'
       text='text-white'
       />
       <MenuCard
       menu={bebidas}
-      img='public/pexels-isabella-mendes-107313-338713.jpg'
+      img='https://thumbs.dreamstime.com/b/soda-bottles-bursting-fizzy-bubbles-bright-neon-colors-symbolizing-beverage-addiction-sugary-drink-problem-345634862.jpg'
       title='Bebidas'
       bg='bg-white'
       text=''
@@ -152,5 +152,6 @@ function Menu() {
     </div>
   )
 }
+
 
 export default Menu

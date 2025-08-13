@@ -1,0 +1,35 @@
+.footer {
+    display: flex;
+    position: relative;
+    width: 100%;
+    background:radial-gradient(51.39% 511.66% at 47.68% -217.91%, #948116, rgb(238, 236, 97), rgb(72, 57, 9)) ;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}    
+.social-icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin: 10px 5px;
+    flex-wrap: wrap;
+
+}
+.icon-elem {
+    list-style: none;
+
+}
+.icon{
+    color:#f5f5f5;
+    font-size: 32px;
+    display: inline-block;
+    margin: 0 10px;
+    transition: 2.s;
+
+}
+.icon :hover{
+    transform:rotateY(360deg);
+    transition: 2s;
+}

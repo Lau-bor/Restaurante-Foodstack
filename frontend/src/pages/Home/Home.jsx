@@ -1,4 +1,4 @@
-import { AboutSection, HeaderHome, MenuSection, ImageGallery, ContactInfo } from '../../components'
+import { AboutSection, HeaderHome, MenuSection, Menu } from '../../components'
 
 function Home() {
   return (
@@ -9,9 +9,9 @@ function Home() {
 
       <MenuSection/>
 
-      <ImageGallery/>
+      <Menu/>
 
-      <ContactInfo/>
+      
     </div>
   )
 }
