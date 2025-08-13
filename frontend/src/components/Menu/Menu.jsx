@@ -4,13 +4,13 @@ import './Menu.css'
 const desayuno = [
   {
     id: 1,
-    name: 'Wake Up',
+    name: 'Ejecutivo',
     description: 'Infusion, Pan, Jamon y Queso',
     price: '$5000',
   },
   {
     id: 2,
-    name: 'Grand Toast',
+    name: 'Avocado Toast',
     description: 'Infusion, Pan en rodajas con palta, tomate, huevo y queso',
     price: '$7000',
   },
@@ -22,52 +22,52 @@ const desayuno = [
   }
 ]
 
-const Hamburguesas = [
+const almuerzo = [
   {
     id: 1,
-    name: 'Mc Coders',
-    description: 'Hamburguesa, jamon, queso, tocino, papas fritas',
+    name: 'Napolitana con papas',
+    description: 'Milanesa de carne con salsa de tomate, jamon y queso, papas fritas',
     price: '$12000',
   },
   {
     id: 2,
-    name: 'Jaw Breaker',
-    description: 'Hamburguesa, cebollas, queso cheddar, papas fritas',
+    name: 'Matambre al verdeo',
+    description: 'Matambre de vaca o cerdo, cebolla de verdeo, papas al horno',
     price: '$13500',
   },
   {
     id: 3,
-    name: 'Big Node.JS',
-    description: ' 2 Hamburguesas, cebolla, lechuga, tomates, huevo, queso cheddar, papas fritas',
-    price: '$20000',
+    name: 'Sorrentinos',
+    description: 'Sorrentinos con salsa blanca o roja, queso rallado',
+    price: '$11000',
   }
 ]
 
-const Sandwiches = [
+const cena = [
   {
     id: 1,
-    name: 'Git-Chicken',
-    description: 'Sandwich de pollo, jamon, queso parmesano, huevo y salsa',
-    price: '$9500',
+    name: 'Pizza 4 Quesos',
+    description: 'Pizza con queso azul, queso parmesano, queso mozzarella y queso cheddar',
+    price: '$8500',
   },
   {
     id: 2,
-    name: 'Sandwich de Milanesa Commit',
-    description: 'Sandwich de milanesa de carne, lechuga, tomate, mayonesa, jamon y queso, mostaza',
+    name: 'Sandwich de Milanesa',
+    description: 'Sandwich de milanesa de carne, lechuga, tomate, mayonesa, mostaza',
     price: '$10500',
   },
   {
     id: 3,
-    name: 'Sandwich de Lomito Java',
-    description: 'Lomito, jamon, queso, tomate, lechuga, huevo, mayonesa',
-    price: '$10.000',
+    name: 'Mexicano',
+    description: 'Pan de miga, jamon, queso, tomate, lechuga, huevo, mayonesa, ternera',
+    price: '$9500',
   }
 ]
 
 const postre = [
   {
     id: 1,
-    name: 'Rolling Ice',
+    name: 'Helado',
     description: 'Helado de crema americana, dulce de leche, frutilla o chocolate',
     price: '$4500',
   },
@@ -87,21 +87,21 @@ const postre = [
 const bebidas = [
   {
     id: 1,
-    name: 'Rolling Cola',
-    description: 'Gaseosa Cola',
-    price: '$2000',
+    name: 'Fernet',
+    description: 'Fernet con coca cola',
+    price: '$8000',
   },
   {
     id: 2,
-    name: 'Popsi',
-    description: 'Gaseosa Cola',
-    price: '$1500',
+    name: 'Gin Tonic',
+    description: 'Gin con agua tonica, frutos rojos o menta y jenjibre',
+    price: '$4500',
   },
   {
     id: 3,
-    name: 'Sprite',
+    name: 'Sex on the beach',
     description: 'Vodka, licor de durazno, jugo de naranja y granadina',
-    price: '$1500',
+    price: '$7700',
   }
 ]
 
@@ -116,35 +116,35 @@ function Menu() {
 
       <MenuCard
       menu={desayuno}
-      img=''
+      img='https://img.freepik.com/premium-photo/croissant-coffee-table-sunny-morning-street-view-background-generative-ai_697880-802.jpg'
       title='Desayuno'
       bg='bg-white'
       text=''
       />
       <MenuCard 
-      menu={Hamburguesas}
-      img=''
+      menu={almuerzo}
+      img='https://files.lafm.com.co/assets/public/styles/seoimg_1200x675_/public/2023-09/hamburguesa.jpg?VersionId=daQCdWXXGimjqh1MJ142xeERovVsB4jh&h=99a541cf&itok=BF6JIci4'
       title='Almuerzo'
       bg='bg-dark'
       text='text-white'
       />
       <MenuCard
-      menu={Sandwiches}
-      img=''
+      menu={cena}
+      img='https://images.pexels.com/photos/1647163/pexels-photo-1647163.jpeg?auto=compress&cs=tinysrgb&w=600'
       title='Cena'
       bg='bg-white'
       text=''
       />
       <MenuCard
       menu={postre}
-      img='postres'
+      img='https://wallpapers.com/images/high/1920x1080-desserts-background-j9t89utopy77n007.webp'
       title='Postre'
       bg='bg-dark'
       text='text-white'
       />
       <MenuCard
       menu={bebidas}
-      img= "fizzydrinks"
+      img='public/pexels-isabella-mendes-107313-338713.jpg'
       title='Bebidas'
       bg='bg-white'
       text=''
@@ -152,5 +152,6 @@ function Menu() {
     </div>
   )
 }
+
 
 export default Menu
