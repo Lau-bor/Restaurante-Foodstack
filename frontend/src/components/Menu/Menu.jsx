@@ -93,15 +93,15 @@ const bebidas = [
   },
   {
     id: 2,
-    name: 'Gin Tonic',
-    description: 'Gin con agua tonica, frutos rojos o menta y jenjibre',
+    name: 'Git Tonic',
+    description: ' Agua tonica, frutos rojos o menta y jenjibre',
     price: '$4500',
   },
   {
     id: 3,
-    name: 'Sex on the beach',
-    description: 'Vodka, licor de durazno, jugo de naranja y granadina',
-    price: '$7700',
+    name: 'Juicy Frame',
+    description: ' Jugo de naranja y granadina',
+    price: '$4700',
   }
 ]
 
@@ -124,14 +124,14 @@ function Menu() {
       <MenuCard 
       menu={hamburguesas}
       img='https://files.lafm.com.co/assets/public/styles/seoimg_1200x675_/public/2023-09/hamburguesa.jpg?VersionId=daQCdWXXGimjqh1MJ142xeERovVsB4jh&h=99a541cf&itok=BF6JIci4'
-      title='Almuerzo'
+      title='Hamburguesas'
       bg='bg-dark'
       text='text-white'
       />
       <MenuCard
       menu={especiales}
       img='https://images.pexels.com/photos/1647163/pexels-photo-1647163.jpeg?auto=compress&cs=tinysrgb&w=600'
-      title='Cena'
+      title='Especiales'
       bg='bg-white'
       text=''
       />
