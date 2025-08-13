@@ -4,46 +4,46 @@ import './Menu.css'
 const desayuno = [
   {
     id: 1,
-    name: 'Ejecutivo',
+    name: 'Wake up',
     description: 'Infusion, Pan, Jamon y Queso',
-    price: '$5000',
+    price: '$4500',
   },
   {
     id: 2,
-    name: 'Avocado Toast',
+    name: 'Node Toast',
     description: 'Infusion, Pan en rodajas con palta, tomate, huevo y queso',
-    price: '$7000',
+    price: '$6000',
   },
   {
     id: 3,
-    name: 'Milshake',
+    name: 'Milkshake',
     description: 'Batido de frutas con leche, azucar y hielo, medialunas',
     price: '$7800',
   }
 ]
 
-const almuerzo = [
+const  hamburguesas = [
   {
     id: 1,
-    name: 'Napolitana con papas',
-    description: 'Milanesa de carne con salsa de tomate, jamon y queso, papas fritas',
-    price: '$12000',
+    name: 'Hardrive',
+    description: 'Hamburguesa de carne con salsa de tomate, jamon y queso, papas fritas',
+    price: '$10.000',
   },
   {
     id: 2,
-    name: 'Matambre al verdeo',
-    description: 'Matambre de vaca o cerdo, cebolla de verdeo, papas al horno',
-    price: '$13500',
+    name: 'Grand Commit',
+    description: 'Hamburguesas dobles, queso cheddar, cebolla, lechuga, tomates, tocino con papas fritas',
+    price: '$13.500',
   },
   {
     id: 3,
-    name: 'Sorrentinos',
-    description: 'Sorrentinos con salsa blanca o roja, queso rallado',
-    price: '$11000',
+    name: 'Git Jumbo',
+    description: 'Triple hamburguesa,  queso cheddar, cebollas, lechuga, tomate, tocino, salsa golf con papas fritas grandes',
+    price: '$18000',
   }
 ]
 
-const cena = [
+const especiales = [
   {
     id: 1,
     name: 'Pizza 4 Quesos',
@@ -122,14 +122,14 @@ function Menu() {
       text=''
       />
       <MenuCard 
-      menu={almuerzo}
+      menu={hamburguesas}
       img='https://files.lafm.com.co/assets/public/styles/seoimg_1200x675_/public/2023-09/hamburguesa.jpg?VersionId=daQCdWXXGimjqh1MJ142xeERovVsB4jh&h=99a541cf&itok=BF6JIci4'
       title='Almuerzo'
       bg='bg-dark'
       text='text-white'
       />
       <MenuCard
-      menu={cena}
+      menu={especiales}
       img='https://images.pexels.com/photos/1647163/pexels-photo-1647163.jpeg?auto=compress&cs=tinysrgb&w=600'
       title='Cena'
       bg='bg-white'
@@ -144,7 +144,7 @@ function Menu() {
       />
       <MenuCard
       menu={bebidas}
-      img='public/pexels-isabella-mendes-107313-338713.jpg'
+      img='https://thumbs.dreamstime.com/b/soda-bottles-bursting-fizzy-bubbles-bright-neon-colors-symbolizing-beverage-addiction-sugary-drink-problem-345634862.jpg'
       title='Bebidas'
       bg='bg-white'
       text=''
