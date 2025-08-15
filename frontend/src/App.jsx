@@ -1,8 +1,15 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { About,  Home,  NotFoundPage, Orders } from "./pages";
-import { Routes, Route, useLocation } from "react-router-dom";
+import {
+  Login,
+  Register,
+  About,
+  Home,
+  NotFoundPage,
+  Orders,
+} from "./pages";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Footer, NavBar } from "./components";
-import { useAuth,} from './context/AuthContext';
+import { useAuth } from './context/AuthContext';
 
 function App() {
   const { user, loading } = useAuth();
@@ -28,8 +35,10 @@ function App() {
       {showNavBar && <NavBar />}
 
       <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/about" element={<About/>}/>
+        <Route path='/' element={user ? <Home /> : <Navigate to="/login"/>}/>
+        <Route path="/login" element={<Login />} />
+        <Route path='/register' element={<Register/>}/>
+        <Route path="/about" element={<About />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
