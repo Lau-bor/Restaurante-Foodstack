@@ -80,8 +80,26 @@ body::before {
   transition: 2s;
 }
 
-@media (max-width: 768px){
-  .container {
-    
-  }
+@media (max-width: 768px) {
+    .container nav {
+        flex-direction: column; /* Apilamos los elementos verticalmente */
+        align-items: flex-start; /* Alineamos a la izquierda en vista móvil */
+    }
+
+    .container .nav-link {
+        flex-direction: column; /* Los enlaces también se apilan */
+        width: 100%; /* Ocupan todo el ancho */
+        margin-top: 1rem; /* Espacio entre el logo y el menú */
+        gap: 0; /* Eliminamos el espacio entre los enlaces */
+    }
+
+    .container .nav-link li {
+        width: 100%;
+        text-align: center; /* Centramos el texto de cada enlace */
+    }
+
+    .container ul li a {
+        padding: 1rem 0; /* Aumentamos el padding para un área de clic más grande */
+        font-size: 1.2rem;
+    }
 }
