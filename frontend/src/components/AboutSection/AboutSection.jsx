@@ -9,14 +9,12 @@ function AboutSection() {
       </div>
       <div className='col-lg-6 d-flex flex-column align-items-center justify-content-center'>
           <h2 className='fs-1 mb-5 text-uppercase'>Sobre Nosotros</h2>
-          <p>¡Bienvenidos a nuestro rincón culinario, donde la tradición se fusiona con la innovación!
-            En cada plato, celebramos los sabores auténticos y los ingredientes frescos de nuestra tierra.
-            Nuestra cocina es un viaje a través de recetas familiares y creaciones contemporáneas que deleitarán tu paladar.</p>
-          <p className='mb-5'>Desde el primer bocado hasta el último, te invitamos a disfrutar de una experiencia gastronómica inolvidable.
+          <p>¡¡¡Bienvenidos todos a la mejor experiencia de Fast Food que van a tener en su vida!!!.</p>
+          <p className='mb-5'>Desde el primer bocado hasta el último, te invitamos a vos y a tu familia a disfrutar de una experiencia gastronómica inolvidable.
             Nuestro ambiente cálido y acogedor es el escenario perfecto para compartir momentos especiales con tus seres queridos.
-            Te esperamos para celebrar la vida a través de la buena comida y la mejor compañía.</p>
+            ¡¡Te esperamos para celebrar la vida a través de la buena comida y la mejor compañía, desde 1984!!</p>
           <Link to="/about">
-        <button className='btn btn-outline-danger btn-lg'>Más sobre nosotros</button>
+        <button className='btn btn-outline-danger btn-lg'>Conocenos mejor</button>
           </Link>
       </div>
     </div>

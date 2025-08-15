@@ -1,5 +1,5 @@
 .menu-page header{
-    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://static.vecteezy.com/system/resources/previews/026/905/809/large_2x/ai-generated-ai-generative-fast-food-hamburger-burger-cheeseburger-sandwich-fresh-fastfood-menu-restaurant-decoration-background-graphic-art-photo.jpg');
-    height: 50vh;
-    
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://media.istockphoto.com/id/1410779670/photo/foods-enhancing-the-risk-of-cancer-junk-food.jpg?s=1024x1024&w=is&k=20&c=UM9HAgw8bkaM8fzsoC9yW00D1bfrUN2D1Z5z3w-Avs4=');
+    height: 300px;
+    background-repeat: repeat;
 }

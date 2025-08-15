@@ -34,12 +34,14 @@ body::before {
 }
 .container nav {
   
-   background:radial-gradient(51.39% 511.66% at 47.68% -217.91%, #948116, rgb(238, 236, 97), rgb(72, 57, 9)) ;
+   background:radial-gradient(51.39% 511.66% at 47.68% -217.91%, #852817, rgb(241, 84, 84), rgb(114, 16, 9)) ;
   display: flex;
   justify-content: space-between;
   align-items: left;
 
 }
+
+
 
 .container nav .logo {
   
@@ -61,7 +63,7 @@ body::before {
 .container ul li a{
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   text-decoration: none;
-  color:rgb(228, 56, 13);
+  color:rgb(243, 201, 63);
   font-size:  1.3rem;
   padding:0.7rem 1rem;
 
@@ -76,4 +78,10 @@ body::before {
   
   transform:rotateY(360deg);
   transition: 2s;
+}
+
+@media (max-width: 768px){
+  .container {
+    
+  }
 }
