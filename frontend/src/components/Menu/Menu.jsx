@@ -108,7 +108,7 @@ const bebidas = [
 function Menu() {
   return (
     <div className='menu-page'>
-      <header className='mt-5'>
+      <header className=''>
           <div className='container h-100 d-flex justify-content-center align-items-center'>
               <h1 className='text-light'>Menu</h1>
           </div>
