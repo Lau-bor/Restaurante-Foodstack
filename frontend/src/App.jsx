@@ -40,7 +40,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/about" element={<About />} />
         <Route path="/orders" element={<Orders />} />
-        <Route path="/admin" element={user && user.isAdmin ? <Admin /> : <Navigate to="/"/>} />
+        <Route path="/admin" element={user && user.role === 'admin' ? <Admin /> : <Navigate to="/" />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
 
