@@ -38,7 +38,7 @@ export const register = async (req, res) => {
     await transport.sendMail({
       from: process.env.MAIL_FROM,
       to: savedUser.email,
-      subject: "Verifica tu email - ROLLING TODO-APP",
+      subject: "Verifica tu email - Foodstack",
       template: "verifyEmail",
       context: {
         username: savedUser.username,

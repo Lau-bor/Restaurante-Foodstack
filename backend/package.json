@@ -1,5 +1,5 @@
 {
-  "name": "todo_app_backend15",
+  "name": "foodstack",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
@@ -13,7 +13,7 @@
     "node",
     "js"
   ],
-  "author": "comision Backend2",
+  "author": "FoodStack Team",
   "license": "ISC",
   "description": "",
   "dependencies": {
