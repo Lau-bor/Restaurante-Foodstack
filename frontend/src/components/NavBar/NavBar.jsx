@@ -1,15 +1,24 @@
-import { useState } from 'react'; // Importa useState
+import { useState } from "react";
+import { useAuth } from "../../context/AuthContext"; // Importa useAuth
+import { useNavigate } from "react-router-dom"; // Importa useNavigate
 import "./NavBar.css";
 
 function NavBar() {
-  const [isOpen, setIsOpen] = useState(false); // Estado para el menú
+  const [isOpen, setIsOpen] = useState(false);
+  const { logout } = useAuth(); // Obtén logout del contexto
+  const navigate = useNavigate(); // Obtén navigate
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
+  };
+
   return (
-    <header className='nav-header'>
+    <header className="nav-header">
       <div className="container">
         <nav>
           <div className="logo-container">
@@ -24,11 +33,27 @@ function NavBar() {
             <div className="bar"></div>
           </div>
 
-          <ul className={`nav-link ${isOpen ? 'open' : ''}`}>
-            <li><a href="/">Home</a></li>
-            <li><a href="/about">About</a></li>
-            <li><a href="/orders">Orders</a></li>
-            <li><a href="/admin">Admin</a></li>
+          <ul className={`nav-link ${isOpen ? "open" : ""}`}>
+            <li>
+              <a href="/">Home</a>
+            </li>
+            <li>
+              <a href="/about">About</a>
+            </li>
+            <li>
+              <a href="/orders">Orders</a>
+            </li>
+            <li>
+              <a href="/admin">Admin</a>
+            </li>
+            <li>
+              <button
+                onClick={handleLogout}
+                className="btn btn-warning "
+              >
+                Cerrar sesión
+              </button>
+            </li>
           </ul>
         </nav>
       </div>
