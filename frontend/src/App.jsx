@@ -6,6 +6,7 @@ import {
   Home,
   NotFoundPage,
   Orders,
+  Admin
 } from "./pages";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Footer, NavBar } from "./components";
@@ -15,11 +16,11 @@ function App() {
   const { user, loading } = useAuth();
   const location = useLocation();
 
-  // Definimos las rutas donde NO queremos mostrar el NavBar
-  const noNavbarPaths = ["/login", "/register"];
+  // Array de rutas donde el Navbar y Footer SÍ deben ser visibles
+  const visiblePaths = ["/", "/menu", "/about", "/contact", "/orders"];
 
-  // Lógica para determinar si el NavBar debe ser visible
-  const showNavBar = !noNavbarPaths.includes(location.pathname);
+  // Lógica para determinar si el Navbar/Footer deben mostrarse
+  const showHeaderFooter = visiblePaths.includes(location.pathname);
 
   if (loading) {
     return (
@@ -31,21 +32,21 @@ function App() {
 
   return (
     <>
-      {/* Condicional para mostrar el NavBar solo si no estamos en una de las rutas prohibidas */}
-      {showNavBar && <NavBar />}
+      {showHeaderFooter && <NavBar />}
 
       <Routes>
         <Route path='/' element={user ? <Home /> : <Navigate to="/login"/>}/>
         <Route path="/login" element={<Login />} />
-        <Route path='/register' element={<Register/>}/>
+        <Route path="/register" element={<Register />} />
         <Route path="/about" element={<About />} />
         <Route path="/orders" element={<Orders />} />
+        <Route path="/admin" element={user && user.isAdmin ? <Admin /> : <Navigate to="/"/>} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
 
-      {/* Condicional para mostrar el Footer*/}
-      {showNavBar && <Footer />}
+      {showHeaderFooter && <Footer />}
     </>
   );
 }
+
 export default App;
