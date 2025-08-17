@@ -33,7 +33,7 @@ const clients = [
 function About() {
   return (
     <div className='about-page'>
-      <header className='mt-5'>
+      <header className=''>
         <div className='container h-100 d-flex align-items-center justify-content-center'>
           <h1 className='text-light'>Nosotros</h1>
         </div>

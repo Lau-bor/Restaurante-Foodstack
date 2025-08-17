@@ -4,7 +4,7 @@ import './MenuSection.css'
 function MenuSection() {
   return (
     <div className='menu-section py-5 text-light shadow'>
-    <div className='container d-flex flex-column align-items-center'>
+    <div className='container d-flex flex-column align-items-center mb-0'>
         <h2 className='fs-1 mb-5 text-uppercase fw-bold'>Especiales del Mes</h2>
         <div className='row mb-5 w-100'>
             <div className='col-lg-6 d-flex flex-column align-items-center mb-5 mb-lg-0'>

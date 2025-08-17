@@ -56,7 +56,7 @@ function ContactForm() {
     }
   return (
     
-    <div className="my-5 p-2">
+    <div className="container pb-5 pe-5 p-4 bg-dark text-light">
       <h2 className='text-center mb-5 text-uppercase fw-bold fs-1'>Reseñas</h2>
       <div className="row">
         <div className="col-lg-6 d-flex align-items-center justify-content-center">

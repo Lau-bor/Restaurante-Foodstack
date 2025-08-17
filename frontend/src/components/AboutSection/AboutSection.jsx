@@ -2,10 +2,10 @@ import { Link } from 'react-router-dom'
 
 function AboutSection() {
   return (
-    <div className='container my-5'>
+    <div className='container my-5 pb-5 pt-5 mb-0 bg-dark text-light'>
     <div className='row'>
       <div className='col-lg-6 d-flex justify-content-center d-none d-lg-flex'>
-          <img src="https://imgcdn.stablediffusionweb.com/2024/3/12/95d05e00-0954-45c7-b4e0-6274391cca09.jpg" alt="about img" className='img-fluid w-75 object-fit-cover' />
+          <img src="https://imgcdn.stablediffusionweb.com/2024/3/12/95d05e00-0954-45c7-b4e0-6274391cca09.jpg" alt="about img" className='img-fluid w-75 object-fit-cover border-0' />
       </div>
       <div className='col-lg-6 d-flex flex-column align-items-center justify-content-center'>
           <h2 className='fs-1 mb-5 text-uppercase'>Sobre Nosotros</h2>

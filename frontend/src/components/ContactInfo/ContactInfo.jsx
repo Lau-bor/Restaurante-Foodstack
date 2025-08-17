@@ -1,7 +1,7 @@
 
 function ContactInfo() {
     return (
-        <div className='bg-dark text-light py-5 shadow'
+        <div className='py-5 shadow  '
         style={{
         backgroundImage: 'url(../../../public/pexels-eva-bronzini-7598077.jpg)',
         backgroundSize: 'cover',
