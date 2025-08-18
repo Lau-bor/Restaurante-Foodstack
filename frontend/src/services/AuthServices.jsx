@@ -1,5 +1,5 @@
 const API = "http://localhost:4000/api/v1";
-const getToken = () => localStorage.getItem("token");
+export const getToken = () => localStorage.getItem("token");
 import axios from "axios";
 
 export const register = async (userData) => {
@@ -18,7 +18,7 @@ export const login = async (data) => {
 
     const json = await res.json();
 
-    //aca vamos a devolver el token y el usuario
+   
     return {
         token: json.token,
         user:{

@@ -23,11 +23,13 @@ function Login() {
       await login(form);
       navigate("/");
     } catch (err) {
-      const messages = err.response?.data?.err;
-      if(Array.isArray(messages)){
-        messages.forEach((msg) => toast.error(msg));
+      const message = err.response?.data?.message;
+      if(message === "Usuario inactivo. Contacta al administrador."){
+        setError(message);
+        toast.error(message);
       } else {
-        toast.error(messages || "Error al iniciar sesión");
+        setError(message || "Error al iniciar sesión");
+        toast.error(message || "Error al iniciar sesión");
       }
     }
   };
