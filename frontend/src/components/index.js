@@ -7,3 +7,5 @@ export {default as MenuCard} from "./MenuCard/MenuCard";
 export {default as Reviews} from "./Reviews/Reviews";
 export {default as ContactForm} from "./ContactForm/ContactForm";
 export {default as ProtectedRoute} from "./ProtectedRoute/ProtectedRoute";
+export {default as MenuAdmin} from "../pages/Admin/MenuAdmin";
+export {default as UserAdmin} from "../pages/Admin/UserAdmin"

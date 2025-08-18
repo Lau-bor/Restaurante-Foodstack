@@ -9,6 +9,7 @@ export const getUsers = async (req, res) => {
   }
 };
 
+<<<<<<< HEAD
 export const inactivateUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -18,11 +19,26 @@ export const inactivateUser = async (req, res) => {
       { new: true }
     );
 
+=======
+export const toggleUserStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    
+    const user = await User.findById(id);
+>>>>>>> origin/adminpage
     if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
 
-    res.status(200).json({ message: "Usuario inactivado", user });
+    
+    user.isActive = !user.isActive;
+    await user.save();
+
+    res.status(200).json({
+      message: `Usuario ${user.isActive ? "activado" : "inactivado"}`,
+      user,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Error al inactivar usuario", error: error.message });
+    res.status(500).json({ message: "Error al cambiar estado de usuario", error: error.message });
   }
 };
 

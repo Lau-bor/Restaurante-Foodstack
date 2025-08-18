@@ -1,5 +1,5 @@
 const API = "http://localhost:4000/api/v1";
-const getToken = () => localStorage.getItem("token");
+export const getToken = () => localStorage.getItem("token");
 import axios from "axios";
 
 export const register = async (userData) => {
@@ -20,8 +20,16 @@ export const login = async (data) => {
 
     const json = await res.json();
 
-    // ✅ Devuelve el objeto JSON completo sin procesarlo
-    return json;
+   
+    return {
+        token: json.token,
+        user:{
+            id: json.id,
+            username: json.username,
+            email: json.email,
+            profileImage: json.profileImage,
+        },
+    };
 };
 
 export const verifyToken = async () => {

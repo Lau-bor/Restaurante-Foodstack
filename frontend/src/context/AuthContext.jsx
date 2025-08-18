@@ -18,21 +18,9 @@ const register = async (userData) =>{
 
 
 const login = async (credentials) => {
-    try {
-        
-        const { token, user } = await authService.login(credentials);
-
-        console.log("Token recibido del servicio:", token);
-
-        if (token) {
-            localStorage.setItem("token", token);
-            setUser(user);
-            await getProfile(); 
-            window.location.href = '/Orders';
-        }
-    } catch (error) {
-        console.error("Login fallido:", error);
-    }
+  const { token, user } = await authService.login(credentials);
+  localStorage.setItem("token", token);
+  setUser(user);
 };
 
 const logout = async () => {
@@ -55,15 +43,15 @@ const getProfile = async () => {
         return        
     }
 
-    const data = await authService.profile()
+    const data = await authService.profile();
 
-    setUser(data)
+    setUser(data);
 
 
     if(data.profileImage){
         setProfileImage(`http://localhost:4000${data.profileImage}`)
     }
-}
+};
 
 
 useEffect(() => {
