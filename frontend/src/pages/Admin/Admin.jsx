@@ -58,38 +58,40 @@ function Admin() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const data = new FormData();
+  e.preventDefault();
+  const data = new FormData();
 
-    Object.keys(formData).forEach(key => {
-      if(key === "files"){
-        Array.from(formData.files).forEach(file => data.append("files", file));
-      } else {
-        data.append(key, formData[key]);
-      }
-    });
-
-    filesToDelete.forEach(id => data.append("filesToDelete", id));
-    data.append("replaceImages", replaceAllImages ? "true" : "false");
-
-    try {
-      if(editingMenu){
-        await menuService.updateMenu(editingMenu._id, data);
-      } else {
-        await menuService.createMenu(data);
-      }
-
-      setShowModal(false);
-      loadMenus();
-      setEditingMenu(null);
-      setExistingFiles([]);
-      setFilesToDelete([]);
-      setReplaceAllImages(false);
-      setFormData({ title: "", description: "", price: "", files: [] });
-    } catch (error) {
-      console.error("Error al guardar menú:", error);
+  
+  Object.keys(formData).forEach(key => {
+    if(key === "files"){
+      Array.from(formData.files).forEach(file => data.append("files", file));
+    } else {
+      data.append(key, formData[key]);
     }
-  };
+  });
+
+ 
+  filesToDelete.forEach(id => data.append("filesToDelete", id));
+
+  try {
+    if(editingMenu){
+      await menuService.updateMenu(editingMenu._id, data);
+    } else {
+      await menuService.createMenu(data);
+    }
+
+    
+    setShowModal(false);
+    loadMenus();
+    setEditingMenu(null);
+    setExistingFiles([]);
+    setFilesToDelete([]);
+    setFormData({ title: "", description: "", price: "", files: [] });
+  } catch (error) {
+    console.error("Error al guardar menú:", error);
+  }
+};
+
 
   const handleDeleteMenu = async (id) => {
     if(window.confirm("¿Seguro que quieres eliminar este menú?")){
@@ -98,14 +100,6 @@ function Admin() {
     }
   };
 
-  const handleToggleUser = async (user) => {
-    try {
-      await userService.toggleUser(user._id, !user.isActive);
-      loadUsers();
-    } catch (err) {
-      console.error("Error al cambiar estado de usuario:", err);
-    }
-  };
 
   const filteredUsers = users.filter(u => 
   u.username.toLowerCase().includes(searchUser.toLowerCase()) ||
@@ -260,19 +254,6 @@ function Admin() {
                       </div>
                     </div>
                   )}
-
-                  <div className="form-check mb-2">
-                    <input 
-                      type="checkbox" 
-                      className="form-check-input" 
-                      checked={replaceAllImages} 
-                      onChange={e => setReplaceAllImages(e.target.checked)}
-                      id="replaceAllImages"
-                    />
-                    <label htmlFor="replaceAllImages" className="form-check-label">
-                      Reemplazar todas las imágenes
-                    </label>
-                  </div>
 
                   <button type="submit" className="btn btn-success mt-3">Guardar</button>
                 </form>
