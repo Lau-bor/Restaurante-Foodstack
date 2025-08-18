@@ -1,4 +1,4 @@
-const API = "http://localhost:3003/api/v1";
+const API = "http://localhost:4000/api/v1";
 const getToken = () => localStorage.getItem("token");
 import axios from "axios";
 
@@ -7,27 +7,21 @@ export const register = async (userData) => {
     return res.data
 };
 
+// En src/services/AuthServices.js
+
 export const login = async (data) => {
     const res = await fetch(`${API}/login`, {
         method:"POST",
         headers: {"Content-Type" : "application/json"},
         body: JSON.stringify(data),
-    })
+    });
 
     if(!res.ok) throw new Error("Login Fallido :(");
 
     const json = await res.json();
 
-    //aca vamos a devolver el token y el usuario
-    return {
-        token: json.token,
-        user:{
-            id: json.id,
-            username: json.username,
-            email: json.email,
-            profileImage: json.profileImage,
-        },
-    };
+    // ✅ Devuelve el objeto JSON completo sin procesarlo
+    return json;
 };
 
 export const verifyToken = async () => {

@@ -6,3 +6,4 @@ export {default as MenuSection} from "./MenuSection/MenuSection";
 export {default as MenuCard} from "./MenuCard/MenuCard";
 export {default as Reviews} from "./Reviews/Reviews";
 export {default as ContactForm} from "./ContactForm/ContactForm";
+export {default as ProtectedRoute} from "./ProtectedRoute/ProtectedRoute";

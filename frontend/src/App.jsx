@@ -8,18 +8,17 @@ import {
   Orders,
   Admin
 } from "./pages";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { Footer, NavBar } from "./components";
 import { useAuth } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.jsx';
 
 function App() {
-  const { user, loading } = useAuth();
+  const { loading } = useAuth();
   const location = useLocation();
 
-  // Array de rutas donde el Navbar y Footer SÍ deben ser visibles
-  const visiblePaths = ["/", "/menu", "/about", "/contact", "/orders"];
+  const visiblePaths = ["/", "/menu", "/about", "/contact", "/orders", "/admin"];
 
-  // Lógica para determinar si el Navbar/Footer deben mostrarse
   const showHeaderFooter = visiblePaths.includes(location.pathname);
 
   if (loading) {
@@ -35,13 +34,23 @@ function App() {
       {showHeaderFooter && <NavBar />}
 
       <Routes>
-        <Route path='/' element={user ? <Home /> : <Navigate to="/login"/>}/>
+        {/* rutas publicas */}
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/about" element={<About />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/admin" element={user && user.role === 'admin' ? <Admin /> : <Navigate to="/" />} />
         <Route path="*" element={<NotFoundPage />} />
+
+        {/* rutas para los usuaros comunes */}
+        {/* 'allowedRoles' determina quién puede acceder a estas rutas */}
+        <Route element={<ProtectedRoute allowedRoles={['user', 'admin']} />}>
+          <Route path="/orders" element={<Orders />} />
+        </Route>
+
+        {/* rutas para los admin */}
+        <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+          <Route path="/admin" element={<Admin />} />
+        </Route>
       </Routes>
 
       {showHeaderFooter && <Footer />}

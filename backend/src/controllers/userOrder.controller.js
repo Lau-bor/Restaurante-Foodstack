@@ -1,14 +1,9 @@
 // src/controllers/userOrder.controller.js
 
-// src/controllers/userOrder.controller.js
-
 import UserOrder from '../models/userOrder.model.js';
 import Menu from '../models/menu.model.js';
-// ✅ Importamos el objeto completo del archivo CommonJS
 import paymentController from './payments.controller.cjs';
 const { generatePaymentPreference } = paymentController;
-
-// ... el resto de tu código ...
 
 export const createUserOrder = async (req, res) => {
     const { items } = req.body;
@@ -16,6 +11,7 @@ export const createUserOrder = async (req, res) => {
     try {
         let total = 0;
         const orderItems = [];
+        const paymentItems = []; // Array para los ítems que se enviarán a la pasarela de pago
 
         for (const item of items) {
             const menu = await Menu.findById(item.menuId);
@@ -24,13 +20,21 @@ export const createUserOrder = async (req, res) => {
                 return res.status(404).json({ message: `Menu item with ID ${item.menuId} not found.` });
             }
 
+            // A. Guardamos solo la referencia al menú y la cantidad para la DB
             orderItems.push({
                 menu: menu._id,
-                name: menu.title,
-                price: menu.price,
                 quantity: item.quantity
             });
 
+            // B. Recopilamos los datos completos para la pasarela de pago
+            paymentItems.push({
+                title: menu.title,
+                quantity: item.quantity,
+                unit_price: Number(menu.price),
+                currency_id: 'ARS',
+            });
+
+            // C. Calculamos el total de forma segura
             total += menu.price * item.quantity;
         }
 
@@ -44,12 +48,7 @@ export const createUserOrder = async (req, res) => {
         const savedUserOrder = await newUserOrder.save();
 
         const paymentResult = await generatePaymentPreference({
-            items: orderItems.map(item => ({
-                title: item.name,
-                quantity: item.quantity,
-                unit_price: Number(item.price),
-                currency_id: 'ARS',
-            })),
+            items: paymentItems, // Usamos el array preparado
             userId: req.user.id,
             orderId: savedUserOrder._id.toString(),
         });
@@ -79,7 +78,10 @@ export const createUserOrder = async (req, res) => {
 
 export const getUserOrders = async (req, res) => {
     try {
-        const orders = await UserOrder.find({ user: req.user.id }).populate('items.menu');
+        const orders = await UserOrder.find({ user: req.user.id }).populate({
+            path: 'items.menu',
+            select: 'title price description' // Solo seleccionamos los campos que necesitamos
+        });
         res.status(200).json(orders);
     } catch (err) {
         console.error('Error fetching user orders:', err);
