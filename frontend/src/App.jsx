@@ -16,10 +16,10 @@ function App() {
   const { user, loading } = useAuth();
   const location = useLocation();
 
-  // Array de rutas donde el Navbar y Footer SÍ deben ser visibles
+  
   const visiblePaths = ["/", "/menu", "/about", "/contact", "/orders"];
 
-  // Lógica para determinar si el Navbar/Footer deben mostrarse
+  
   const showHeaderFooter = visiblePaths.includes(location.pathname);
 
   if (loading) {

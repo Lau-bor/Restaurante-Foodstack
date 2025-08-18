@@ -16,12 +16,10 @@ const register = async (userData) =>{
 }
 
 const login = async (credentials) => {
-    const {token, user} = await authService.login(credentials);
-    console.log("Login OK - Token", token);
-    localStorage.setItem("token", token)
-    setUser(user);
-    await getProfile();  
-}
+  const { token, user } = await authService.login(credentials);
+  localStorage.setItem("token", token);
+  setUser(user);
+};
 
 const logout = async () => {
     localStorage.removeItem("token");
@@ -43,15 +41,15 @@ const getProfile = async () => {
         return        
     }
 
-    const data = await authService.profile()
+    const data = await authService.profile();
 
-    setUser(data)
+    setUser(data);
 
 
     if(data.profileImage){
         setProfileImage(`http://localhost:3003${data.profileImage}`)
     }
-}
+};
 
 
 useEffect(() => {
