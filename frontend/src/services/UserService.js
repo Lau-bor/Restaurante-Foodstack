@@ -13,18 +13,18 @@ export const getUsers = async () => {
   return data.data || data;
 };
 
-export const toggleUser = async (id, isActive) => {
-  const res = await fetch(`${API_URL}/${id}/inactivate`, {
+export const toggleUser = async (id) => {
+  const res = await fetch(`${API_URL}/${id}/toggle`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${getToken()}`
     },
-    body: JSON.stringify({ isActive }),
     credentials: "include"
   });
   if (!res.ok) throw new Error("Error al cambiar estado de usuario");
   return await res.json();
 };
+
 
 
