@@ -58,38 +58,40 @@ function Admin() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const data = new FormData();
+  e.preventDefault();
+  const data = new FormData();
 
-    Object.keys(formData).forEach(key => {
-      if(key === "files"){
-        Array.from(formData.files).forEach(file => data.append("files", file));
-      } else {
-        data.append(key, formData[key]);
-      }
-    });
-
-    filesToDelete.forEach(id => data.append("filesToDelete", id));
-    data.append("replaceImages", replaceAllImages ? "true" : "false");
-
-    try {
-      if(editingMenu){
-        await menuService.updateMenu(editingMenu._id, data);
-      } else {
-        await menuService.createMenu(data);
-      }
-
-      setShowModal(false);
-      loadMenus();
-      setEditingMenu(null);
-      setExistingFiles([]);
-      setFilesToDelete([]);
-      setReplaceAllImages(false);
-      setFormData({ title: "", description: "", price: "", files: [] });
-    } catch (error) {
-      console.error("Error al guardar menú:", error);
+  
+  Object.keys(formData).forEach(key => {
+    if(key === "files"){
+      Array.from(formData.files).forEach(file => data.append("files", file));
+    } else {
+      data.append(key, formData[key]);
     }
-  };
+  });
+
+ 
+  filesToDelete.forEach(id => data.append("filesToDelete", id));
+
+  try {
+    if(editingMenu){
+      await menuService.updateMenu(editingMenu._id, data);
+    } else {
+      await menuService.createMenu(data);
+    }
+
+    
+    setShowModal(false);
+    loadMenus();
+    setEditingMenu(null);
+    setExistingFiles([]);
+    setFilesToDelete([]);
+    setFormData({ title: "", description: "", price: "", files: [] });
+  } catch (error) {
+    console.error("Error al guardar menú:", error);
+  }
+};
+
 
   const handleDeleteMenu = async (id) => {
     if(window.confirm("¿Seguro que quieres eliminar este menú?")){
@@ -98,14 +100,6 @@ function Admin() {
     }
   };
 
-  const handleToggleUser = async (user) => {
-    try {
-      await userService.toggleUser(user._id, !user.isActive);
-      loadUsers();
-    } catch (err) {
-      console.error("Error al cambiar estado de usuario:", err);
-    }
-  };
 
   const filteredUsers = users.filter(u => 
   u.username.toLowerCase().includes(searchUser.toLowerCase()) ||
@@ -114,12 +108,11 @@ function Admin() {
 
   return (
     <>
-      <Navbar/>
       <div className="container my-5">
-        <h1 className="text-3xl font-bold mb-4">Panel de Administración</h1>
+        <h1 className="text-center mb-5 text-uppercase fw-bold fs-1">Panel de Administración</h1>
 
         <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-2">Menús</h2>
+          <h2 className="text-center mb-5 fw-semibold fs-2">Menús</h2>
           <button className="btn btn-primary mb-3" onClick={() => openModal()}>Crear Menú</button>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {menus.map(menu => (
@@ -132,7 +125,7 @@ function Admin() {
                     {menu.files.map(file => (
                       <img
                         key={file._id}
-                        src={file.url.startsWith("http") ? file.url : `http://localhost:4000${file.url}`}
+                        src={file.url.startsWith("http") ? file.url : `http://localhost:3003${file.url}`}
                         alt={menu.title}
                         style={{ maxWidth: "100px", maxHeight: "100px", marginRight: "8px", marginBottom: "8px" }}
                       />
@@ -140,7 +133,7 @@ function Admin() {
                   </div>
                 )}
                 <div className="flex gap-2 mt-2">
-                  <button className="btn btn-warning btn-sm" onClick={() => openModal(menu)}>Editar</button>
+                  <button className="btn btn-warning btn-sm me-4" onClick={() => openModal(menu)}>Editar</button>
                   <button className="btn btn-danger btn-sm" onClick={() => handleDeleteMenu(menu._id)}>Eliminar</button>
                 </div>
               </div>
@@ -149,7 +142,7 @@ function Admin() {
         </div>
 
         <div>
-  <h2 className="text-xl font-semibold mb-2">Usuarios</h2>
+  <h2 className="text-center mb-5 fw-semibold fs-2">Usuarios</h2>
   <input 
     type="text"
     placeholder="Buscar usuario..."
@@ -243,7 +236,7 @@ function Admin() {
                         {existingFiles.map(file => (
                           <div key={file._id} className="relative">
                             <img
-                              src={file.url.startsWith("http") ? file.url : `http://localhost:4000${file.url}`}
+                              src={file.url.startsWith("http") ? file.url : `http://localhost:3003${file.url}`}
                               alt="menu"
                               style={{ maxWidth: "100px", maxHeight: "100px" }}
                             />
@@ -261,19 +254,6 @@ function Admin() {
                     </div>
                   )}
 
-                  <div className="form-check mb-2">
-                    <input 
-                      type="checkbox" 
-                      className="form-check-input" 
-                      checked={replaceAllImages} 
-                      onChange={e => setReplaceAllImages(e.target.checked)}
-                      id="replaceAllImages"
-                    />
-                    <label htmlFor="replaceAllImages" className="form-check-label">
-                      Reemplazar todas las imágenes
-                    </label>
-                  </div>
-
                   <button type="submit" className="btn btn-success mt-3">Guardar</button>
                 </form>
               </div>
@@ -282,7 +262,6 @@ function Admin() {
         )}
 
       </div>
-      <Footer />
     </>
   );
 }

@@ -98,7 +98,7 @@ const handleSubmit = async (e) => {
                 {menu.files.map(file => (
                   <img 
                     key={file._id} 
-                    src={file.url.startsWith("http") ? file.url : `http://localhost:4000${file.url}`} 
+                    src={file.url.startsWith("http") ? file.url : `http://localhost:3003${file.url}`} 
                     alt={menu.title} 
                     style={{ maxWidth: "100px", maxHeight: "100px", marginRight: "8px", marginBottom: "8px" }}
                   />
@@ -156,7 +156,7 @@ const handleSubmit = async (e) => {
       {existingFiles.map(file => (
         <div key={file._id} className="relative mr-2 mb-2">
           <img 
-            src={file.url.startsWith("http") ? file.url : `http://localhost:4000${file.url}`} 
+            src={file.url.startsWith("http") ? file.url : `http://localhost:3003${file.url}`} 
             alt="menu" 
             style={{ maxWidth: "300px", maxHeight: "300px" }} 
           />

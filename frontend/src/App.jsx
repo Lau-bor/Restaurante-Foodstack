@@ -8,18 +8,17 @@ import {
   Orders,
   Admin
 } from "./pages";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { Footer, NavBar } from "./components";
 import { useAuth } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.jsx';
 
 function App() {
-  const { user, loading } = useAuth();
+  const { loading } = useAuth();
   const location = useLocation();
 
-  
-  const visiblePaths = ["/", "/menu", "/about", "/contact", "/orders"];
+  const visiblePaths = ["/", "/menu", "/about", "/contact", "/orders", "/admin"];
 
-  
   const showHeaderFooter = visiblePaths.includes(location.pathname);
 
   if (loading) {
@@ -35,13 +34,19 @@ function App() {
       {showHeaderFooter && <NavBar />}
 
       <Routes>
-        <Route path='/' element={user ? <Home /> : <Navigate to="/login"/>}/>
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/about" element={<About />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/admin" element={user && user.role === 'admin' ? <Admin /> : <Navigate to="/" />} />
-        <Route path="*" element={<NotFoundPage />} />
+        <Route path="" element={<NotFoundPage />} />
+
+        <Route element={<ProtectedRoute allowedRoles={['user', 'admin']} />}>
+          <Route path="/orders" element={<Orders />} />
+        </Route>
+
+        <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+          <Route path="/admin" element={<Admin />} />
+        </Route>
       </Routes>
 
       {showHeaderFooter && <Footer />}

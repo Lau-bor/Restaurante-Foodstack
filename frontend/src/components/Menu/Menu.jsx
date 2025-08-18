@@ -1,111 +1,19 @@
+import { useEffect, useState } from "react";
 import { MenuCard } from '../../components'
+import * as menuService from "../../services/MenuService";
 import './Menu.css'
 
-const desayuno = [
-  {
-    id: 1,
-    name: 'Wake up',
-    description: 'Infusion, Pan, Jamon y Queso',
-    price: '$4.500',
-  },
-  {
-    id: 2,
-    name: 'Node Toast',
-    description: 'Infusion, Pan en rodajas con palta, tomate, huevo y queso',
-    price: '$6.000',
-  },
-  {
-    id: 3,
-    name: 'Milkshake',
-    description: 'Batido de frutas con leche, azucar y hielo, medialunas',
-    price: '$7.800',
-  }
-]
-
-const  hamburguesas = [
-  {
-    id: 1,
-    name: 'Hardrive',
-    description: 'Hamburguesa de carne con salsa de tomate, jamon y queso, papas fritas',
-    price: '$10.000',
-  },
-  {
-    id: 2,
-    name: 'Grand Commit',
-    description: 'Hamburguesas dobles, queso cheddar, cebolla, lechuga, tomates, tocino con papas fritas',
-    price: '$13.500',
-  },
-  {
-    id: 3,
-    name: 'Git Jumbo',
-    description: 'Triple hamburguesa,  queso cheddar, cebollas, lechuga, tomate, tocino, salsa golf con papas fritas grandes',
-    price: '$18.000',
-  }
-]
-
-const especiales = [
-  {
-    id: 1,
-    name: 'Node Sandwich',
-    description: 'Lomito , cebolla, tomate, queso azul, tocino, papas fritas grandes',
-    price: '$10.500',
-  },
-  {
-    id: 2,
-    name: ' Java Sandwich',
-    description: 'Sandwich de milanesa de carne doble, jamon, queso, lechuga, tomate, huevo con papas fritas grandes',
-    price: '$12.500',
-  },
-  {
-    id: 3,
-    name: 'Mexicano',
-    description: 'Pan de miga, jamon, queso, tomate, lechuga, huevo, mayonesa, ternera',
-    price: '$9500',
-  }
-]
-
-const postre = [
-  {
-    id: 1,
-    name: 'Helado',
-    description: 'Helado de crema americana, dulce de leche, frutilla o chocolate',
-    price: '$4500',
-  },
-  {
-    id: 2,
-    name: 'Budin de Pan',
-    description: 'Budin de pan, crema chantilly, dulce de leche',
-    price: '$6000',
-  },
-  {
-    id: 3,
-    name: 'Brownie',
-    description: 'Brownie con nueces, helado de crema americana, chocolate',
-    price: '$5000',
-  }
-]
-const bebidas = [
-  {
-    id: 1,
-    name: 'Fernet',
-    description: 'Fernet con coca cola',
-    price: '$8000',
-  },
-  {
-    id: 2,
-    name: 'Git Tonic',
-    description: ' Agua tonica, frutos rojos o menta y jenjibre',
-    price: '$4500',
-  },
-  {
-    id: 3,
-    name: 'Juicy Frame',
-    description: ' Jugo de naranja y granadina',
-    price: '$4700',
-  }
-]
-
 function Menu() {
+  const [menus, setMenus] = useState([]);
+
+  useEffect(() => {
+    const fetchMenus = async () => {
+      const data = await menuService.getMenus();
+      setMenus(data.data || data);
+    };
+    fetchMenus();
+  }, []);
+
   return (
     <div className='menu-page'>
       <header className=''>
@@ -113,42 +21,25 @@ function Menu() {
               <h1 className='text-light'>Menu</h1>
           </div>
       </header>
-
-      <MenuCard
-      menu={desayuno}
-      img='https://img.freepik.com/premium-photo/croissant-coffee-table-sunny-morning-street-view-background-generative-ai_697880-802.jpg'
-      title='Desayuno'
-      bg='bg-white'
-      text=''
-      />
-      <MenuCard 
-      menu={hamburguesas}
-      img='https://files.lafm.com.co/assets/public/styles/seoimg_1200x675_/public/2023-09/hamburguesa.jpg?VersionId=daQCdWXXGimjqh1MJ142xeERovVsB4jh&h=99a541cf&itok=BF6JIci4'
-      title='Hamburguesas'
-      bg='bg-dark'
-      text='text-white'
-      />
-      <MenuCard
-      menu={especiales}
-      img='https://images.pexels.com/photos/1647163/pexels-photo-1647163.jpeg?auto=compress&cs=tinysrgb&w=600'
-      title='Especiales'
-      bg='bg-white'
-      text=''
-      />
-      <MenuCard
-      menu={postre}
-      img='https://wallpapers.com/images/high/1920x1080-desserts-background-j9t89utopy77n007.webp'
-      title='Postre'
-      bg='bg-dark'
-      text='text-white'
-      />
-      <MenuCard
-      menu={bebidas}
-      img='https://thumbs.dreamstime.com/b/soda-bottles-bursting-fizzy-bubbles-bright-neon-colors-symbolizing-beverage-addiction-sugary-drink-problem-345634862.jpg'
-      title='Bebidas'
-      bg='bg-white'
-      text=''
-      />
+      {menus.map(menu => (
+        <div key={menu._id}>
+          <MenuCard
+            menu={[menu]}
+            img={menu.files && menu.files.length > 0 ? `http://localhost:3003${menu.files[0].path}` : ""}
+            title={menu.title}
+          />
+          <hr
+            style={{
+              margin: "60px 0",
+              marginBottom: "0px",
+              border: "0",
+              height: "6px",
+              background: "linear-gradient(90deg, #ff9800 0%, #ff2222ff 100%)",
+              borderRadius: "6px"
+            }}
+          />
+        </div>
+      ))}
     </div>
   )
 }

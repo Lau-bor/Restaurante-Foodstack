@@ -1,4 +1,4 @@
-import { Card, CardBody, CardText, CardTitle } from "react-bootstrap"
+import { Card, CardBody, CardText} from "react-bootstrap"
 
 function MenuCard({menu, img, title, bg, text}) {
   return (
@@ -7,17 +7,25 @@ function MenuCard({menu, img, title, bg, text}) {
               <h2 className='text-center fs-2 mb-4 mb-lg-5 text-uppercase text-danger'>{title}</h2>
           </div>
           <div className='row flex-column-reverse flex-lg-row '>
-              <div className='col-lg-6 d-flex justify-content-center'>
-                  <img className='img-fluid w-75 mt-4 mt-lg-0' src={img} alt="menu-img" />
+              <div className='col-lg-6 d-flex justify-content-center flex-wrap'>
+                  {/* Mostrar todas las imágenes */}
+                  {menu[0].files && menu[0].files.map((file, idx) => (
+                    <img
+                      key={idx}
+                      className='img-fluid responsive-img m-2 rounded'
+                      style={{ width: "45%", maxWidth: "400px", maxHeight: "300px" }}
+                      src={`http://localhost:3003${file.path}`}
+                      alt={`menu-img-${idx}`}
+                    />
+                  ))}
               </div>
               <div className='col-lg-6 d-flex flex-column justify-content-around'>
-                  {menu.map((item) => (
-                    <div key={item.id}>
+                  {Array.isArray(menu) && menu.map((item) => (
+                    <div key={item._id}>
                         <Card className={`border-0 w-100 ${bg} ${text}`}>
                           <CardBody>
-                            <CardTitle className='text-center fs-3'>{item.name}</CardTitle>
-                            <CardText className='text-center fs-5'>{item.description}</CardText>
-                            <CardText className='text-center fs-5 fw-bold text-danger'>Precio: {item.price}</CardText>
+                            <CardText className='text-center fs-3'>{item.description}</CardText>
+                            <CardText className='text-center fs-2 fw-bold text-danger'>Precio: {item.price}</CardText>
                           </CardBody>
                         </Card>
                     </div>
