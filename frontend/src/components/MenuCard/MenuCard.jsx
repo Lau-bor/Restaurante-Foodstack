@@ -1,6 +1,12 @@
 import { Card, CardBody, CardText} from "react-bootstrap"
+import { useCart } from "../../context/cartContext.jsx";
 
 function MenuCard({menu, img, title, bg, text}) {
+  const { addItemToCart } = useCart();
+
+  // Supón que menu es un array con un solo menú
+  const item = menu[0];
+
   return (
     <div className={`breakfast p-5 ${bg}`}>
           <div className='container'>
@@ -26,6 +32,29 @@ function MenuCard({menu, img, title, bg, text}) {
                           <CardBody>
                             <CardText className='text-center fs-3'>{item.description}</CardText>
                             <CardText className='text-center fs-2 fw-bold text-danger'>Precio: {item.price}</CardText>
+                            
+                                    <button
+                                      onClick={() => {
+                                        console.log("Intentando agregar al carrito:", {
+                                          _id: item._id,
+                                          title: item.title,
+                                          price: Number(item.price),
+                                        });
+                                        try {
+                                          addItemToCart({
+                                            _id: item._id,
+                                            title: item.title,
+                                            price: Number(item.price),
+                                          });
+                                          console.log("¡Agregado al carrito!");
+                                        } catch (error) {
+                                          console.error("Error al agregar al carrito:", error);
+                                        }
+                                      }}
+                                      className="btn btn-primary w-100"
+                                    >
+                                      Añadir al Carrito
+                                    </button>
                           </CardBody>
                         </Card>
                     </div>

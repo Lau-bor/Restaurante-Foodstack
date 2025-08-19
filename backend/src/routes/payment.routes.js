@@ -1,10 +1,11 @@
-import express from 'express';
-import { generatePayment, paymentWebhook } from '../controllers/payment.controller.js';
+// ✅ En tu archivo src/routes/payment.routes.js
+import { Router } from 'express';
+import { createPayment, handlePaymentNotification } from '../controllers/payments.controller.js';
 import { authRequired } from '../middlewares/validateToken.js';
 
-const router = express.Router();
+const router = Router();
 
-router.post('/paymentRoutes', authRequired, generatePayment);
-router.post('/webhook', express.json(), paymentWebhook); // sin auth, lo llama MercadoPago
+router.post('/checkout', authRequired, createPayment);
+router.post('/payments/notifications', handlePaymentNotification);
 
 export default router;

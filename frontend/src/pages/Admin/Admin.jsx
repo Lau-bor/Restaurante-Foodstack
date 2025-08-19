@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import * as menuService from "../../services/MenuService";
 import * as userService from "../../services/UserService";
-import Navbar from "../../components/NavBar/NavBar";
-import Footer from "../../components/Footer/Footer";
 
 function Admin() {
   const [menus, setMenus] = useState([]);

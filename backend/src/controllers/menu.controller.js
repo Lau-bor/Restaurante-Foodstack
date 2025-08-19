@@ -2,30 +2,35 @@ import fs from 'fs';
 import path from 'path';
 import Menu from '../models/menu.model.js';
 
-export const createMenu = async (req, res) => {
-    if (req.fileValidationError) {
-        if (req.files?.length > 0) {
-            req.files.forEach(file => {
-                const filePath = path.join('public', 'uploads', 'menu', file.filename);
-                if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-            });
-        }
-        return res.status(400).json({ message: req.fileValidationError });
+// Helper function to safely delete files
+const unlinkFiles = (files) => {
+    if (files && files.length > 0) {
+        files.forEach(file => {
+            const filePath = path.join('public', 'uploads', 'menu', file.filename);
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+            }
+        });
     }
+};
 
+// CREATE
+export const createMenu = async (req, res) => {
     try {
-        const { title, description, deliveryTime, price } = req.body;
-
-        let savedFiles = [];
-
-        if (req.files && req.files.length > 0) {
-            savedFiles = req.files.map(file => ({
-                name: file.originalname,
-                path: `/uploads/menu/${file.filename}`,
-                size: file.size,
-                mimetype: file.mimetype
-            }));
+        if (req.fileValidationError) {
+            unlinkFiles(req.files);
+            return res.status(400).json({ message: req.fileValidationError });
         }
+
+        const { title, description, deliveryTime, price } = req.body;
+        
+        // This handles cases where 'files' might be empty or missing
+        const savedFiles = req.files?.map(file => ({
+            name: file.originalname,
+            path: `/uploads/menu/${file.filename}`,
+            size: file.size,
+            mimetype: file.mimetype
+        })) || [];
 
         const newMenu = new Menu({
             title,
@@ -40,20 +45,11 @@ export const createMenu = async (req, res) => {
         return res.status(201).json(savedMenu);
 
     } catch (error) {
-        if (req.files && req.files.length > 0) {
-            req.files.forEach(file => {
-                const filePath = path.join('public', 'uploads', 'menu', file.filename);
-                if (fs.existsSync(filePath)) {
-                    fs.unlinkSync(filePath);
-                }
-            });
-        }
-
+        unlinkFiles(req.files); // Delete files on any error
         console.log(error);
         return res.status(400).json({ message: error.message });
     }
 };
-
 
 export const getMenus = async (req, res) => {
     try {
@@ -169,7 +165,6 @@ export const deleteMenu = async (req, res) => {
     if (req.user.role !== 'admin') {
         return res.status(403).json({ message: "Acceso denegado: solo administradores" });
     }
-
     try {
         const menu = await Menu.findByIdAndDelete(req.params.id);
         if (!menu) return res.status(404).json({ message: "Menu not found" });

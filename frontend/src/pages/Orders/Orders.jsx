@@ -1,91 +1,129 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../../context/AuthContext";
+import { createPayment } from "../../services/PaymentService";
+import * as MenuService from "../../services/MenuService";
+import { useCart } from "../../context/cartContext.jsx";
 
-function Orders() {
-    const [orders, setOrders] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+const Orders = () => {
+  const [menus, setMenus] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isProcessing, setIsProcessing] = useState(false);
 
-    
-    const { token } = useAuth();
+  const { user, loading: authLoading } = useAuth();
+  const { cartItems, getCartTotal, removeItemFromCart } = useCart();
+  useEffect(() => {
+    const fetchMenus = async () => {
+      try {
+        const responseData = await MenuService.getMenus();
 
-    useEffect(() => {
-        const fetchOrders = async () => {
-            
-            if (!token) {
-                setLoading(false);
-                setError('No estás autenticado para ver los pedidos.');
-                return;
-            }
+        if (Array.isArray(responseData.data)) {
+          setMenus(responseData.data);
+        } else {
+          throw new Error("Formato de datos inválido del servidor.");
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMenus();
+  }, []);
 
-            try {
-                
-                const response = await fetch('http://localhost:3003/api/userOrder', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
+  const handleCheckout = async () => {
+    setIsProcessing(true);
+    try {
+      if (cartItems.length === 0) {
+        throw new Error("El carrito está vacío.");
+      }
+      if (!user) {
+        throw new Error("Debes iniciar sesión para completar la compra.");
+      }
 
-                if (!response.ok) {
-                    throw new Error('Error al obtener los pedidos.');
-                }
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No se encontró el token de autenticación.");
+      }
 
-                const data = await response.json();
-                setOrders(data);
-                
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
+      const paymentResponse = await createPayment(cartItems, token);
+      window.location.href = paymentResponse.init_point;
+    } catch (error) {
+      console.error("Error en el pago:", error.message);
+      alert(`Error en el pago: ${error.message}`);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
-        fetchOrders();
-    }, [token]); 
+  if (loading || authLoading) {
+    return <div className="text-center mt-8">Cargando...</div>;
+  }
+  if (error) {
+    return <div className="text-center mt-8 text-danger">Error: {error}</div>;
+  }
 
-    
-    if (loading) return <div className="text-center my-5"><p>Cargando pedidos...</p></div>;
-    if (error) return <div className="alert alert-danger mx-auto my-5" style={{maxWidth: '600px'}} role="alert">Error: {error}</div>;
-    if (orders.length === 0) return <div className="text-center my-5"><p>No tienes pedidos en tu historial.</p></div>;
-
-    return (
-        <div className="container my-5">
-            <h1 className="text-center mb-4">Mis Pedidos Anteriores</h1>
-            <div className="row g-4 justify-content-center">
-                {orders.map(order => (
-                    <div key={order._id} className="col-12">
-                        <div className="card shadow">
-                            <div className="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                                <h5>Pedido ID: {order._id.substring(0, 8)}...</h5>
-                                <span className={`badge rounded-pill ${order.status === 'pending' ? 'bg-warning text-dark' : 'bg-success'}`}>
-                                    {order.status}
-                                </span>
-                            </div>
-                            <div className="card-body">
-                                <ul className="list-group list-group-flush">
-                                    {order.items.map((item, index) => (
-                                        <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                                            <span>{item.menu.title} ({item.quantity}x)</span>
-                                            <span className="fw-bold">${item.menu.price * item.quantity}</span>
-                                        </li>
-                                    ))}
-                                    <li className="list-group-item d-flex justify-content-between align-items-center fw-bold">
-                                        <span>Total del Pedido:</span>
-                                        <span className="fs-5">${order.total}</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div className="card-footer text-muted">
-                                Realizado el: {new Date(order.createdAt).toLocaleDateString()}
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
+  return (
+    <div
+      className="container py-4"
+      style={{
+        backgroundImage:
+          "url('../../../public/fast-food-seamless-background-illustration-simple-restaurant-menu-background-vector.jpg')",
+        backgroundSize: "cover",
+      }}
+    >
+      {/* Contenedor del carrito centrado arriba en el medio */}
+      <div className="d-flex justify-content-center p-5 mb-5">
+        <div
+          className="card shadow"
+          style={{ maxWidth: "400px", width: "100%" }}
+        >
+          <div className="card-body">
+            <h2 className="card-title text-center">Tu Carrito</h2>
+            {cartItems.length === 0 ? (
+              <p className="text-center">El carrito está vacío.</p>
+            ) : (
+              <div>
+                <ul className="list-group list-group-flush">
+                  {cartItems.map((item) => (
+                    <li
+                      key={item._id}
+                      className="list-group-item d-flex justify-content-between align-items-center"
+                    >
+                      <span>
+                        {item.title} ({item.quantity})
+                      </span>
+                      <div className="d-flex align-items-center">
+                        <span className="fw-bold me-2">
+                          ${item.price * item.quantity}
+                        </span>
+                        <button
+                          onClick={() => removeItemFromCart(item._id)}
+                          className="btn btn-sm btn-link text-danger"
+                        >
+                          Eliminar
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-4 fw-bold text-end">
+                  Total: ${getCartTotal()}
+                </div>
+                <button
+                  onClick={handleCheckout}
+                  disabled={isProcessing}
+                  className="btn btn-warning fw-bold w-100 mt-3"
+                >
+                  {isProcessing ? "Procesando Pago..." : "Ir a Pagar"}
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-    );
-}
-
-
+      </div>
+    </div>
+  );
+};
 
 export default Orders;

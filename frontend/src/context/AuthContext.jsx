@@ -15,6 +15,8 @@ const register = async (userData) =>{
     return await authService.register(userData)
 }
 
+
+
 const login = async (credentials) => {
   const { token, user } = await authService.login(credentials);
   localStorage.setItem("token", token);
@@ -25,7 +27,7 @@ const logout = async () => {
     localStorage.removeItem("token");
     setUser(null);
     setProfileImage(null);
-    await fetch("http://localhost:3003/api/v1/logout", {
+    await fetch("http://localhost:4000/api/v1/logout", {
         method: "POST",
         headers: {
             Authorization: `Bearer ${getToken()}`
@@ -47,7 +49,7 @@ const getProfile = async () => {
 
 
     if(data.profileImage){
-        setProfileImage(`http://localhost:3003${data.profileImage}`)
+        setProfileImage(`http://localhost:4000${data.profileImage}`)
     }
 };
 

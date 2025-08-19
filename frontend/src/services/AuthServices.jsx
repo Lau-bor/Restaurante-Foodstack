@@ -7,12 +7,14 @@ export const register = async (userData) => {
     return res.data
 };
 
+// En src/services/AuthServices.js
+
 export const login = async (data) => {
     const res = await fetch(`${API}/login`, {
         method:"POST",
         headers: {"Content-Type" : "application/json"},
         body: JSON.stringify(data),
-    })
+    });
 
     if(!res.ok) throw new Error("Login Fallido :(");
 
