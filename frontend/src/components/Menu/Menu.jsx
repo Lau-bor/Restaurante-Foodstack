@@ -25,7 +25,7 @@ function Menu() {
         <div key={menu._id}>
           <MenuCard
             menu={[menu]}
-            img={menu.files && menu.files.length > 0 ? `http://localhost:3003${menu.files[0].path}` : ""}
+            img={menu.files && menu.files.length > 0 ? `http://localhost:4000${menu.files[0].path}` : ""}
             title={menu.title}
           />
           <hr

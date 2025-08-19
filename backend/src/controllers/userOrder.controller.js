@@ -86,3 +86,24 @@ export const getUserOrders = async (req, res) => {
         res.status(500).json({ message: 'Internal server error while fetching orders.' });
     }
 };
+
+// Cambiar estado de una orden
+export const updateOrderStatus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+
+        const order = await UserOrder.findById(id);
+        if (!order) {
+            return res.status(404).json({ message: 'Orden no encontrada.' });
+        }
+
+        order.status = status;
+        await order.save();
+
+        res.status(200).json({ message: 'Estado actualizado correctamente.', order });
+    } catch (err) {
+        console.error('Error al actualizar el estado:', err);
+        res.status(500).json({ message: 'Error interno al actualizar el estado.' });
+    }
+};

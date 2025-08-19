@@ -93,7 +93,8 @@ useEffect(() => {
             logout,
             profileImage,
             getProfile,
-            loading
+            loading,
+            token: getToken() 
         }}
         >
             {children}

@@ -5,3 +5,4 @@ export {default as Home} from './Home/Home';
 export {default as NotFoundPage} from './NotFoundPage/NotFoundPage';
 export {default as Orders} from './Orders/Orders';
 export {default as Admin} from './Admin/Admin';
+export {default as VerifyEmail} from './VerifiyEmail/VerifyEmail'

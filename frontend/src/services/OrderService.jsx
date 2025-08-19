@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3003/api/v1";
+const API_URL = "http://localhost:4000/api/v1";
 
 export const getOrders = async (token) => {
     const res = await fetch(`${API_URL}/userorder`, {

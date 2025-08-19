@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import * as menuService from "../../services/MenuService";
 import * as userService from "../../services/UserService";
+import AdminOrders from "../../components/AdminOrders/AdminOrders";
 
 function Admin() {
   const [menus, setMenus] = useState([]);
@@ -123,7 +124,7 @@ function Admin() {
                     {menu.files.map(file => (
                       <img
                         key={file._id}
-                        src={file.url.startsWith("http") ? file.url : `http://localhost:3003${file.url}`}
+                        src={file.url.startsWith("http") ? file.url : `http://localhost:4000${file.url}`}
                         alt={menu.title}
                         style={{ maxWidth: "100px", maxHeight: "100px", marginRight: "8px", marginBottom: "8px" }}
                       />
@@ -138,6 +139,9 @@ function Admin() {
             ))}
           </div>
         </div>
+
+
+        <AdminOrders/>
 
         <div>
   <h2 className="text-center mb-5 fw-semibold fs-2">Usuarios</h2>
@@ -234,7 +238,7 @@ function Admin() {
                         {existingFiles.map(file => (
                           <div key={file._id} className="relative">
                             <img
-                              src={file.url.startsWith("http") ? file.url : `http://localhost:3003${file.url}`}
+                              src={file.url.startsWith("http") ? file.url : `http://localhost:4000${file.url}`}
                               alt="menu"
                               style={{ maxWidth: "100px", maxHeight: "100px" }}
                             />

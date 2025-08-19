@@ -7,6 +7,7 @@ import {
   NotFoundPage,
   Orders,
   Admin,
+  VerifyEmail,
 } from "./pages";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Footer, NavBar } from "./components";
@@ -45,6 +46,7 @@ function AppContent() {
         <Route path="/register" element={<Register />} />
         <Route path="/about" element={<About />} />
         <Route path="*" element={<NotFoundPage />} />
+        <Route path="/VerifyEmail" element={<VerifyEmail />} />
 
         {/* Rutas para los usuarios comunes */}
         <Route element={<ProtectedRoute allowedRoles={['user', 'admin']} />}>
