@@ -122,49 +122,32 @@ export const updateMenu = async (req, res) => {
       return res.status(404).json({ message: "Menú no encontrado" });
     }
 
-    
+   
     if (req.body.filesToDelete && req.body.filesToDelete.length > 0) {
-      const idsToDelete = Array.isArray(req.body.filesToDelete) 
-        ? req.body.filesToDelete 
-        : [req.body.filesToDelete]; 
+      const idsToDelete = Array.isArray(req.body.filesToDelete) ? req.body.filesToDelete : [req.body.filesToDelete];
 
-      
       existingMenu.files = existingMenu.files.filter(file => {
         if (idsToDelete.includes(file._id.toString())) {
-          
           const filePath = path.join('public', file.path);
           if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-          return false; 
+          return false;
         }
-        return true; 
+        return true;
       });
     }
 
     
-    let newFiles = [];
     if (req.files && req.files.length > 0) {
-      newFiles = req.files.map(file => ({
+      const newFiles = req.files.map(file => ({
         name: file.originalname,
         path: `/uploads/menu/${file.filename}`,
         size: file.size,
         mimetype: file.mimetype
       }));
+      existingMenu.files = [...existingMenu.files, ...newFiles];
     }
 
-    
-    const shouldReplaceImages = req.body.replaceImages === 'true';
-    if (shouldReplaceImages) {
-      
-      existingMenu.files.forEach(file => {
-        const filePath = path.join('public', file.path);
-        if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-      });
-      existingMenu.files = newFiles; 
-    } else {
-      existingMenu.files = [...existingMenu.files, ...newFiles]; 
-    }
-
-    
+   
     existingMenu.title = req.body.title || existingMenu.title;
     existingMenu.description = req.body.description || existingMenu.description;
     existingMenu.price = req.body.price || existingMenu.price;
@@ -178,6 +161,7 @@ export const updateMenu = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
 
 
 
