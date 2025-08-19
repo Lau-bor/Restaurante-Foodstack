@@ -1,82 +1,158 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { createPayment } from '../../services/PaymentService';
+import * as MenuService from '../../services/MenuService';
 
-function Orders() {
-    const [orders, setOrders] = useState([]);
+// Un hook simple para manejar el estado del carrito
+const useCart = () => {
+    const [cartItems, setCartItems] = useState([]);
+
+    const addItemToCart = (itemToAdd) => {
+        setCartItems(prevItems => {
+            const existingItem = prevItems.find(item => item._id === itemToAdd._id);
+            if (existingItem) {
+                return prevItems.map(item =>
+                    item._id === itemToAdd._id ? { ...item, quantity: item.quantity + 1 } : item
+                );
+            } else {
+                return [...prevItems, { ...itemToAdd, quantity: 1, unit_price: itemToAdd.price }];
+            }
+        });
+    };
+
+    const removeItemFromCart = (itemId) => {
+        setCartItems(prevItems => prevItems.filter(item => item._id !== itemId));
+    };
+
+    const getCartTotal = () => {
+        return cartItems.reduce((total, item) => total + item.unit_price * item.quantity, 0);
+    };
+
+    return { cartItems, addItemToCart, removeItemFromCart, getCartTotal };
+};
+
+const Orders = () => {
+    const [menus, setMenus] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isProcessing, setIsProcessing] = useState(false);
 
-    
-    const { token } = useAuth();
+    const { user, loading: authLoading } = useAuth();
+    const { cartItems, addItemToCart, getCartTotal, removeItemFromCart } = useCart();
 
     useEffect(() => {
-        const fetchOrders = async () => {
-            
-            if (!token) {
-                setLoading(false);
-                setError('No estás autenticado para ver los pedidos.');
-                return;
-            }
-
+        const fetchMenus = async () => {
             try {
-                
-                const response = await fetch('http://localhost:4000/api/userOrder', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
+                const responseData = await MenuService.getMenus();
 
-                if (!response.ok) {
-                    throw new Error('Error al obtener los pedidos.');
+                if (Array.isArray(responseData.data)) {
+                    setMenus(responseData.data);
+                } else {
+                    throw new Error("Formato de datos inválido del servidor.");
                 }
-
-                const data = await response.json();
-                setOrders(data);
-                
             } catch (err) {
                 setError(err.message);
             } finally {
                 setLoading(false);
             }
         };
+        fetchMenus();
+    }, []);
 
-        fetchOrders();
-    }, [token]); 
+    const handleCheckout = async () => {
+        setIsProcessing(true);
+        try {
+            if (cartItems.length === 0) {
+                throw new Error("El carrito está vacío.");
+            }
+            if (!user) {
+                throw new Error("Debes iniciar sesión para completar la compra.");
+            }
 
-    
-    if (loading) return <div className="text-center my-5"><p>Cargando pedidos...</p></div>;
-    if (error) return <div className="alert alert-danger mx-auto my-5" style={{maxWidth: '600px'}} role="alert">Error: {error}</div>;
-    if (orders.length === 0) return <div className="text-center my-5"><p>No tienes pedidos en tu historial.</p></div>;
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error("No se encontró el token de autenticación.");
+            }
+
+            const paymentResponse = await createPayment(cartItems, token);
+            window.location.href = paymentResponse.init_point;
+
+        } catch (error) {
+            console.error("Error en el pago:", error.message);
+            alert(`Error en el pago: ${error.message}`);
+        } finally {
+            setIsProcessing(false);
+        }
+    };
+
+    if (loading || authLoading) {
+        return <div className="text-center mt-8">Cargando...</div>;
+    }
+    if (error) {
+        return <div className="text-center mt-8 text-danger">Error: {error}</div>;
+    }
 
     return (
-        <div className="container my-5">
-            <h1 className="text-center mb-4">Mis Pedidos Anteriores</h1>
-            <div className="row g-4 justify-content-center">
-                {orders.map(order => (
-                    <div key={order._id} className="col-12">
-                        <div className="card shadow">
-                            <div className="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                                <h5>Pedido ID: {order._id.substring(0, 8)}...</h5>
-                                <span className={`badge rounded-pill ${order.status === 'pending' ? 'bg-warning text-dark' : 'bg-success'}`}>
-                                    {order.status}
-                                </span>
-                            </div>
-                            <div className="card-body">
+        <div className="container py-4">
+            {/* Contenedor del carrito centrado arriba en el medio */}
+            <div className="d-flex justify-content-center mb-5">
+                <div className="card shadow" style={{ maxWidth: '400px', width: '100%' }}>
+                    <div className="card-body">
+                        <h2 className="card-title text-center">Tu Carrito</h2>
+                        {cartItems.length === 0 ? (
+                            <p className="text-center">El carrito está vacío.</p>
+                        ) : (
+                            <div>
                                 <ul className="list-group list-group-flush">
-                                    {order.items.map((item, index) => (
-                                        <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                                            <span>{item.menu.title} ({item.quantity}x)</span>
-                                            <span className="fw-bold">${item.menu.price * item.quantity}</span>
+                                    {cartItems.map(item => (
+                                        <li key={item._id} className="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>{item.title} ({item.quantity})</span>
+                                            <div className="d-flex align-items-center">
+                                                <span className="fw-bold me-2">${item.unit_price * item.quantity}</span>
+                                                <button
+                                                    onClick={() => removeItemFromCart(item._id)}
+                                                    className="btn btn-sm btn-link text-danger"
+                                                >
+                                                    Eliminar
+                                                </button>
+                                            </div>
                                         </li>
                                     ))}
-                                    <li className="list-group-item d-flex justify-content-between align-items-center fw-bold">
-                                        <span>Total del Pedido:</span>
-                                        <span className="fs-5">${order.total}</span>
-                                    </li>
                                 </ul>
+                                <div className="mt-4 fw-bold text-end">
+                                    Total: ${getCartTotal()}
+                                </div>
+                                <button
+                                    onClick={handleCheckout}
+                                    disabled={isProcessing}
+                                    className="btn btn-warning fw-bold w-100 mt-3"
+                                >
+                                    {isProcessing ? "Procesando Pago..." : "Ir a Pagar"}
+                                </button>
                             </div>
-                            <div className="card-footer text-muted">
-                                Realizado el: {new Date(order.createdAt).toLocaleDateString()}
+                        )}
+                    </div>
+                </div>
+            </div>
+            {/* Fin del contenedor del carrito */}
+            
+            <h1 className="text-center fw-bold mb-4">Nuestro Menú</h1>
+            <div className="row g-4">
+                {menus.map((item) => (
+                    <div key={item._id} className="col-12 col-md-6 col-lg-4">
+                        <div className="card h-100 shadow-sm">
+                            <div className="card-body d-flex flex-column">
+                                <h2 className="card-title">{item.title}</h2>
+                                <p className="card-text text-muted">{item.description}</p>
+                                <p className="card-text fs-4 fw-bolder text-success">${item.price}</p>
+                                <div className="mt-auto">
+                                    <button
+                                        onClick={() => addItemToCart(item)}
+                                        className="btn btn-primary w-100"
+                                    >
+                                        Añadir al Carrito
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -84,8 +160,6 @@ function Orders() {
             </div>
         </div>
     );
-}
-
-
+};
 
 export default Orders;

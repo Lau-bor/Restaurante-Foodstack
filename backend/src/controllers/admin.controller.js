@@ -9,24 +9,12 @@ export const getUsers = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
-export const inactivateUser = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const user = await User.findByIdAndUpdate(
-      id,
-      { isActive: false },
-      { new: true }
-    );
-
-=======
 export const toggleUserStatus = async (req, res) => {
   try {
     const { id } = req.params;
 
     
     const user = await User.findById(id);
->>>>>>> origin/adminpage
     if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
 
     
