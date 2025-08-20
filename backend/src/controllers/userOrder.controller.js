@@ -65,10 +65,27 @@ export const createUserOrder = async (req, res) => {
 
 export const getUserOrders = async (req, res) => {
   try {
-    const orders = await UserOrder.find({ user: req.user.id }).populate({
-      path: "items.menu",
-      select: "title price description",
-    });
+    let orders;
+
+    if (req.user.role === "admin") {
+      
+      orders = await UserOrder.find()
+        .populate({
+          path: "items.menu",
+          select: "title price description",
+        })
+        .populate({
+          path: "user",
+          select: "email role",
+        });
+    } else {
+      
+      orders = await UserOrder.find({ user: req.user.id }).populate({
+        path: "items.menu",
+        select: "title price description",
+      });
+    }
+
     res.status(200).json(orders);
   } catch (err) {
     console.error("Error fetching user orders:", err);
@@ -77,6 +94,7 @@ export const getUserOrders = async (req, res) => {
       .json({ message: "Internal server error while fetching orders." });
   }
 };
+
 
 
 export const updateOrderStatus = async (req, res) => {
