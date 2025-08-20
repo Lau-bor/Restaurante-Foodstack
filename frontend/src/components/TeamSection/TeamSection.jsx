@@ -2,11 +2,11 @@ import { useState } from 'react';
 import './TeamSection.css'; 
 
 const teamMembers = [
-    { id: 1, name: 'Lautaro', position: 'Scrum Master', photo: '/public/lautaro.jpg' },
-    { id: 2, name: 'Ivan', position: 'Developer', photo: '/public/ivan.jpg' },
-    { id: 3, name: 'Tomas', position: 'Developer', photo: '/public/tomy.jpg' },
-    { id: 4, name: 'Rocio', position: 'Developer', photo: '/public/rocio.jpg' },
-    { id: 5, name: 'Matias', position: 'Developer', photo: '/public/mati.jpg' },
+    { id: 1, name: 'Lautaro', position: 'Scrum Master', photo: '/lautaro.jpg' },
+    { id: 2, name: 'Ivan', position: 'Developer', photo: '/ivan.jpg' },
+    { id: 3, name: 'Tomas', position: 'Developer', photo: '/tomy.jpg' },
+    { id: 4, name: 'Rocio', position: 'Developer', photo: '/rocio.jpg' },
+    { id: 5, name: 'Matias', position: 'Developer', photo: '/mati.jpg' },
 ];
 
 function TeamSection() {
