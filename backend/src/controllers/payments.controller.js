@@ -1,6 +1,5 @@
-import mercadopago from "mercadopago";
-import UserOrder from "../models/userOrder.model.js";
-import User from "../models/user.model.js";
+import mercadopago from 'mercadopago';
+import userOrder from '../models/userOrder.model.js';
 
 
 mercadopago.configure({
@@ -47,9 +46,6 @@ export const createPayment = async (req, res) => {
     const orderId = savedOrder._id.toString();
 
     
-    const BASE_URL = process.env.API_URL || "http://localhost:4000";
-
-    
     const preferenceBody = {
       items: items.map((item) => ({
         title: item.title,
@@ -83,3 +79,31 @@ export const createPayment = async (req, res) => {
       .json({ message: "Error interno del servidor al procesar el pago." });
   }
 };
+
+export const handlePaymentNotification = async (req, res) => {
+  try {
+    const { type, data } = req.body;
+
+    if (type === 'payment') {
+      const paymentId = data.id;
+      const payment = await mercadopago.payment.findById(paymentId);
+      const status = payment.body.status;
+      const orderId = payment.body.external_reference;
+
+      const order = await userOrder.findById(orderId);
+      if (order) {
+        order.status = status;
+        await order.save();
+        console.log(`Orden ${orderId} actualizada a estado: ${order.status}`);
+      } else {
+        console.log(`No se encontró la orden con ID: ${orderId}`);
+      }
+    }
+
+    return res.status(200).send('Webhook recibido y procesado correctamente.');
+  } catch (err) {
+    console.error('Error al procesar la notificación del webhook:', err);
+    return res.status(500).send('Error interno del servidor.');
+  }
+};
+          
