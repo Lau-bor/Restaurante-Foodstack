@@ -23,7 +23,7 @@ function NavBar() {
         <nav>
           <div className="logo-container">
             <a href="/">
-              <img src="../../../public/logo-sinfondo.png" alt="Logo" />
+              <img src="logo-sinfondo.png" alt="Logo" />
             </a>
           </div>
 
