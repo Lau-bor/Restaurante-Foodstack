@@ -91,7 +91,7 @@ cd foodstack
 cd backend
 npm install
 npm run dev   # arranca con nodemon
-👉 Por defecto corre en http://localhost:5000
+👉 Por defecto corre en http://localhost:4000
 
 3️⃣ Frontend
 cd frontend
