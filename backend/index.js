@@ -10,7 +10,7 @@ connectToMongoDB()
 const server = async () => {
   try {
     app.listen(PORT, () => {
-      console.log("Server is running on port: http://localhost:" + PORT); //iniciar el servidor en el puerto 4000
+      console.log("Server is running on port: http://localhost:" + PORT);
     });
   } catch (error) {
     console.log("Error al iniciar el servidor: ", error);

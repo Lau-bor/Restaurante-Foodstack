@@ -1,5 +1,3 @@
-
-
 import multer from "multer";
 import path from 'path';
 
@@ -9,7 +7,7 @@ const storageProfileImage = multer.diskStorage({
         callback(null, 'public/uploads/profile')
     },
     filename: function(req, file, callback){
-        callback(null, `${Date.now()}_icon_${path.extname(file.originalname)}`) //tenemos que armar un nombre único para cada archivo
+        callback(null, `${Date.now()}_icon_${path.extname(file.originalname)}`) 
     }
 })
 

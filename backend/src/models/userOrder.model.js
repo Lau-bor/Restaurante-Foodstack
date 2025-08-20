@@ -1,4 +1,4 @@
-// ✅ En tu archivo src/models/userOrder.model.js
+
 import mongoose from 'mongoose';
 
 const orderItemSchema = new mongoose.Schema({
