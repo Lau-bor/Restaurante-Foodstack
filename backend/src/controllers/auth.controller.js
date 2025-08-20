@@ -173,29 +173,31 @@ export const verifyToken = async (req, res) => {
 
 export const verifyEmail = async (req, res) => {
     try {
-        
-    const { token } = req.query;
+        console.log("Token recibido:", req.query.token);
 
-    const user = await User.findOne({verificationToken:token})
+        const { token } = req.query;
 
-    if(!user) {
-        return res.status(400).json({message: "token invalido o expirado"})
-    }
+        const user = await User.findOne({verificationToken:token});
+        console.log("Usuario encontrado:", user);
 
-    user.isVerified = true;
-    user.verificationToken = undefined;
-    await user.save()
+        if(!user) {
+            return res.status(400).json({message: "token invalido o expirado"})
+        }
 
-    return res.status(200).json({
-        success: true,
-        message: "Verificaion de Email exitosa!",
-        user:{
-            id: user._id,
-            username: user.username,
-            email: user.email,
-            isVerified: user.isVerified
-        }  
-    })
+        user.isVerified = true;
+        user.verificationToken = undefined;
+        await user.save()
+
+        return res.status(200).json({
+            success: true,
+            message: "Verificaion de Email exitosa!",
+            user:{
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                isVerified: user.isVerified
+            }  
+        })
 
     } catch (error) {
         console.log(error);
