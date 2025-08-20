@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { createPayment } from "../../services/PaymentService";
 import * as MenuService from "../../services/MenuService";

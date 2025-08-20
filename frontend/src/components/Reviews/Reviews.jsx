@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Card, CardBody, CardFooter, CardTitle, CardText } from 'react-bootstrap';
 import './Reviews.css';
 
