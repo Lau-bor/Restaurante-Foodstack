@@ -1,0 +1,122 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.nav-header {
+  position: relative;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  background: radial-gradient(
+    51.39% 511.66% at 47.68% -217.91%,
+    #852817,
+    rgb(241, 84, 84),
+    rgb(114, 16, 9)
+  );
+}
+
+.container {
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.logo-container img {
+  max-width: 150px;
+  height: auto;
+  border: none;
+}
+
+.nav-link {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1.5rem;
+  transition: transform 0.3s ease-in-out;
+}
+
+.nav-link li {
+  list-style: none;
+  margin: 0;
+}
+
+.nav-link li a {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  text-decoration: none;
+  color: rgb(243, 201, 63);
+  font-size: 1.3rem;
+  padding: 0.7rem 1rem;
+  display: block;
+  border-radius: 4px;
+}
+
+.nav-link li a:hover,
+.nav-link li a.active {
+  transform: rotateY(360deg);
+  transition: 2s;
+}
+
+
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+  z-index: 20; 
+}
+
+.menu-toggle .bar {
+  width: 100%;
+  height: 3px;
+  background-color: rgb(243, 201, 63);
+  transition: all 0.3s ease-in-out;
+}
+
+
+@media (max-width: 768px) {
+  nav {
+    position: relative;
+  }
+  .logo-container {
+    flex-grow: 1; 
+    display: flex;
+    justify-content: center;
+  }
+  .menu-toggle {
+    display: flex;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+  }
+  .nav-link {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: radial-gradient(
+      51.39% 511.66% at 47.68% -217.91%,
+      #852817,
+      rgb(241, 84, 84),
+      rgb(114, 16, 9)
+    );
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+  }
+  .nav-link.open {
+    transform: translateX(0);
+  }
+}

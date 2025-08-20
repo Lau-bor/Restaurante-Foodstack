@@ -3,25 +3,25 @@ import {
   Login,
   Register,
   About,
-  Contact,
   Home,
-  Menu,
   NotFoundPage,
   Orders,
+  Admin,
+  VerifyEmail,
 } from "./pages";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { Footer, NavBar } from "./components";
-import { useAuth } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { CartProvider } from './context/cartContext.jsx'; 
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.jsx';
 
-function App() {
-  const { user, loading } = useAuth();
+
+function AppContent() {
+  const { loading } = useAuth();
   const location = useLocation();
 
-  // Definimos las rutas donde NO queremos mostrar el NavBar
-  const noNavbarPaths = ["/login", "/register"];
-
-  // Lógica para determinar si el NavBar debe ser visible
-  const showNavBar = !noNavbarPaths.includes(location.pathname);
+  const visiblePaths = ["/", "/menu", "/about", "/contact", "/orders", "/admin"];
+  const showHeaderFooter = visiblePaths.includes(location.pathname);
 
   if (loading) {
     return (
@@ -33,23 +33,39 @@ function App() {
 
   return (
     <>
-      {/* Condicional para mostrar el NavBar solo si no estamos en una de las rutas prohibidas */}
-      {showNavBar && <NavBar />}
+      {showHeaderFooter && <NavBar />}
 
       <Routes>
-        <Route path='/' element={user ? <Home /> : <Navigate to="/login"/>}/>
+        
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path='/register' element={<Register/>}/>
-        <Route path="/menu" element={<Menu />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/orders" element={<Orders />} />
         <Route path="*" element={<NotFoundPage />} />
+        <Route path="/VerifyEmail" element={<VerifyEmail />} />
+
+        
+        <Route element={<ProtectedRoute allowedRoles={['user', 'admin']} />}>
+          <Route path="/orders" element={<Orders />} />
+        </Route>
+
+        <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+          <Route path="/admin" element={<Admin />} />
+        </Route>
       </Routes>
 
-      {/* Condicional para mostrar el Footer*/}
-      {showNavBar && <Footer />}
+      {showHeaderFooter && <Footer />}
     </>
   );
 }
+function App() {
+  return (
+    <AuthProvider>
+      <CartProvider>
+        <AppContent />
+      </CartProvider>
+    </AuthProvider>
+  );
+}
+
 export default App;

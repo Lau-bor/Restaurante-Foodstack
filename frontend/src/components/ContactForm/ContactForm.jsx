@@ -5,13 +5,11 @@ import emailjs from "@emailjs/browser";
 import ContactInfo from "../ContactInfo/ContactInfo";
 
 const validationSchema = Yup.object({
-    firstName: Yup.string().required("First Name is required"),
-    lastName: Yup.string().required("Last Name is required"),
-    email: Yup.string().email("Invalid email").required("Email is required"),
-    phone: Yup.string().matches(/^[0-9]+$/, "Phone number must be a number").required("Phone number is required"),
-    date: Yup.date().required("Date is required"),
-    guestNumber: Yup.number().min(1, "Guest number must be at least 1").required("Guest number is required"),
-    comments: Yup.string("Comments here (optional)")
+    nombre: Yup.string().required("El nombre es requerido"),
+    apellido: Yup.string().required("El apellido es requerido"),
+    email: Yup.string().email("Email invalido").required("El email es requerido"),
+    celular: Yup.string().matches(/^[0-9]+$/, "El celular debe contener solo numeros").required("El numero de celular es requerido"),
+    comentario: Yup.string("Deje aqui su comentario (opcional)")
 })
 
 
@@ -23,21 +21,19 @@ function ContactForm() {
         const publicKey = "VOtZ2pP1lPkiDKm73";
 
         emailjs.send(serviceId, templateId, {
-            to_name: "Restaurante React",
-            from_name: values.firstName + " " + values.lastName,
+            to_name: "FoodStack",
+            from_name: values.nombre + " " + values.apellido,
             from_email: values.email,
-            message: values.comments,
-            guestNumber: values.guestNumber,
-            date: values.date,
-            phone: values.phone,
-            subject: "New reservation from website"
+            message: values.comentario,
+            phone: values.celular,
+            subject: "Nueva reseña del restaurante"
         }, publicKey)
         .then(() => {
             Swal.fire({
                 icon: "success",
-                title: "Form submited successfully",
-                text: "Your message has been sent",
-                position: "top-end",
+                title: "Formulario completado correctamente",
+                text: "Tu mensaje ha sido enviado",
+                position: "top-center",
                 showConfirmButton: false,
                 timer: 3000, 
                 timerProgressBar: true,
@@ -48,7 +44,7 @@ function ContactForm() {
             Swal.fire({
                 icon: "error",
                 title: "Error",
-                text: "Something went wrong",
+                text: "Algo ha ocurrido",
                 position: "top-end",
                 showConfirmButton: false,
                 timer: 3000, 
@@ -58,10 +54,10 @@ function ContactForm() {
         }
     )
     }
-
-
   return (
-    <div className="my-5 p-2">
+    
+    <div className="container pb-5 pe-5 p-4 bg-dark text-light">
+      <h2 className='text-center mb-5 text-uppercase fw-bold fs-1'>Reseñas</h2>
       <div className="row">
         <div className="col-lg-6 d-flex align-items-center justify-content-center">
             <ContactInfo />
@@ -70,13 +66,11 @@ function ContactForm() {
         <div className="col-lg-6 d-flex justify-content-center">
         <Formik
             initialValues={{
-              firstName: '',
-              lastName: '',
+              nombre: '',
+              apellido: '',
               email: '',
-              phone: '',
-              date: '',
-              guestNumber: '',
-              comments: '',
+              celular: '',
+              comentario: '',
             }}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
@@ -85,33 +79,33 @@ function ContactForm() {
               <Form className="w-100">
                 <div className="row mb-3 mt-3">
                   <div className="col-md-6">
-                    <label htmlFor="firstName">First Name</label>
+                    <label htmlFor="firstName">Nombre</label>
                     <Field
                       type="text"
-                      id="firstName"
-                      name="firstName"
+                      id="nombre"
+                      name="nombre"
                       className={`form-control ${
-                        errors.firstName && touched.firstName ? 'is-invalid' : ''
+                        errors.nombre && touched.nombre ? 'is-invalid' : ''
                       }`}
                     />
-                    <ErrorMessage component="div" name="firstName" className="invalid-feedback" />
+                    <ErrorMessage component="div" name="nombre" className="invalid-feedback" />
                   </div>
                   <div className="col-md-6">
-                    <label htmlFor="lastName">Last Name</label>
+                    <label htmlFor="apellido">Apellido</label>
                     <Field
                       type="text"
-                      id="lastName"
-                      name="lastName"
+                      id="apellido"
+                      name="apellido"
                       className={`form-control ${
-                        errors.lastName && touched.lastName ? 'is-invalid' : ''
+                        errors.apellido && touched.apellido ? 'is-invalid' : ''
                       }`}
                     />
-                    <ErrorMessage component="div" name="lastName" className="invalid-feedback" />
+                    <ErrorMessage component="div" name="apellido" className="invalid-feedback" />
                   </div>
                 </div>
                 <div className="row mb-3">
                   <div className="col-md-6">
-                    <label htmlFor="email">Email Address</label>
+                    <label htmlFor="email">Email</label>
                     <Field
                       type="email"
                       id="email"
@@ -123,59 +117,29 @@ function ContactForm() {
                     <ErrorMessage component="div" name="email" className="invalid-feedback" />
                   </div>
                   <div className="col-md-6">
-                    <label htmlFor="phone">Phone Number</label>
+                    <label htmlFor="phone">Celular</label>
                     <Field
                       type="tel"
-                      id="phone"
-                      name="phone"
+                      id="celular"
+                      name="celular"
                       className={`form-control ${
-                        errors.phone && touched.phone ? 'is-invalid' : ''
+                        errors.celular && touched.celular ? 'is-invalid' : ''
                       }`}
                     />
-                    <ErrorMessage component="div" name="phone" className="invalid-feedback" />
-                  </div>
-                </div>
-                <div className="row mb-3">
-                  <div className="col-md-6">
-                    <label htmlFor="date">Date</label>
-                    <Field
-                      type="date"
-                      id="date"
-                      name="date"
-                      className={`form-control ${
-                        errors.date && touched.date ? 'is-invalid' : ''
-                      }`}
-                    />
-                    <ErrorMessage component="div" name="date" className="invalid-feedback" />
-                  </div>
-                  <div className="col-md-6">
-                    <label htmlFor="guestNumber">Number of Guests</label>
-                    <Field
-                      type="number"
-                      id="guestNumber"
-                      name="guestNumber"
-                      className={`form-control ${
-                        errors.guestNumber && touched.guestNumber ? 'is-invalid' : ''
-                      }`}
-                    />
-                    <ErrorMessage
-                      component="div"
-                      name="guestNumber"
-                      className="invalid-feedback"
-                    />
+                    <ErrorMessage component="div" name="celular" className="invalid-feedback" />
                   </div>
                 </div>
                 <div className="mb-4">
-                  <label htmlFor="comments">Comments</label>
+                  <label htmlFor="comentario">Comentarios</label>
                   <Field
                     as="textarea"
-                    id="comments"
-                    name="comments"
+                    id="comentario"
+                    name="comentario"
                     className={`form-control ${
-                      errors.comments && touched.comments ? 'is-invalid' : ''
+                      errors.comentario && touched.comentario ? 'is-invalid' : ''
                     }`}
                   />
-                  <ErrorMessage component="div" name="comments" className="invalid-feedback" />
+                  <ErrorMessage component="div" name="comentario" className="invalid-feedback" />
                 </div>
                 <button type="submit" className="btn btn-danger btn-lg">
                   Enviar

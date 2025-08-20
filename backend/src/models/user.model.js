@@ -18,38 +18,21 @@ const userSchema = new mongoose.Schema({
         required: true,
     },
     role: {
-    type: String,
-    enum: ['user', 'admin'],
-    default: 'user',
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user',
     },
     isActive: {
-    type: Boolean,
-    default: true,
-    },
-    profileImage: {
-        type: String,
-        default:"https://img.freepik.com/vector-premium/arte-vectorial-icono-interfaz-perfil_1015832-3774.jpg?semt=ais_hybrid&w=740",
+        type: Boolean,
+        default: true,
     },
     verificationToken: {
         type: String,
         default: null,
     },
-    passwordResetToken: {
-        type: String,
-        default: null,
-    },
-    passwordResetExpires: {
-        type: Date,
-        default: null,
-    },
-    role: {
-    type: String,
-    enum: ['user', 'admin'],
-    default: 'user',
-}
 }, {
     timestamps: true,
     versionKey: false,
-})
+});
 
-export default mongoose.model("User", userSchema)
+export default mongoose.model("User", userSchema);

@@ -14,7 +14,7 @@ export const register = async (req, res) => {
     const userFound = await User.findOne({ email }); 
 
     if (userFound)
-      return res.status(400).json({ message: "User already exist" }); 
+      return res.status(400).json({ message: "Usuario ya existe" }); 
 
     const passwordHash = await bcrypt.hash(password, 12); 
 
@@ -33,12 +33,12 @@ export const register = async (req, res) => {
 
     
 
-    const verificationLink = `${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}`;
+    const verificationLink = `${process.env.FRONTEND_URL}/VerifyEmail?token=${verificationToken}`;
 
     await transport.sendMail({
       from: process.env.MAIL_FROM,
       to: savedUser.email,
-      subject: "Verifica tu email - ROLLING TODO-APP",
+      subject: "Verifica tu email - Foodstack",
       template: "verifyEmail",
       context: {
         username: savedUser.username,
@@ -79,55 +79,44 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body; 
+    const { email, password } = req.body;
 
-    const userFound = await User.findOne({ email }); 
+    const userFound = await User.findOne({ email });
+    if (!userFound) return res.status(400).json({ message: "Usuario no encontrado" });
 
-    if (!userFound) return res.status(400).json({ message: "user not found" }); 
+    if (!userFound.isActive) 
+      return res.status(403).json({ message: "Usuario inactivo. Contacta al administrador." });
 
-    
-    const isMatch = await bcrypt.compare(password, userFound.password); 
+    const isMatch = await bcrypt.compare(password, userFound.password);
+    if (!isMatch) return res.status(400).json({ message: "Contraseña incorrecta" });
 
-    if (!isMatch)
-      return res.status(400).json({ message: "Invalid credentials" }); 
-
-    
     const token = await createAccessToken({
-    id: userFound._id,
-    username: userFound.username,
-    email: userFound.email,
-    role: userFound.role
-  });
-
-    
-
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      id: userFound._id,
+      role: userFound.role,
     });
 
-    
-
-    res.status(200).json({
-      id: userFound._id,
-      username: userFound.username,
-      email: userFound.email,
-      isVerified: userFound.isVerified,
+    res.json({
       token,
+      user: {
+        id: userFound._id,
+        email: userFound.email,
+        username: userFound.username,
+        role: userFound.role,
+        profileImage: userFound.profileImage || null,
+      },
     });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Error en login", error: error.message });
   }
 };
+
 
 export const logout = async (req, res) => {
   try {
     
     res.cookie("token", "", { expires: new Date(0) }); 
 
-    res.status(200).json({ message: "Logout success!" });
+    res.status(200).json({ message: "Cierre de sesion exitoso!" });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: error.message });
@@ -138,19 +127,17 @@ export const profile = async (req, res) => {
   try {
     const userFound = await User.findById(req.user.id);
 
-    if (!userFound) return res.status(404).json({ message: "user not found" });
+    if (!userFound) return res.status(400).json({ message: "Usuario no encontrado" });
 
-    return res.status(200).json({
-      id: userFound.id,
-      username: userFound.username,
+    res.json({
+      id: userFound._id,
       email: userFound.email,
-      profileImage: userFound.profileImage,
-      createdAt: userFound.createdAt,
-      updatedAt: userFound.updatedAt,
+      username: userFound.username,
+      role: userFound.role,
+      profileImage: userFound.profileImage ? `/uploads/${userFound.profileImage}` : null,
     });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Error en perfil", error: error.message });
   }
 };
 
@@ -192,7 +179,7 @@ export const verifyEmail = async (req, res) => {
     const user = await User.findOne({verificationToken:token})
 
     if(!user) {
-        return res.status(400).json({message: "Invalid or expired token"})
+        return res.status(400).json({message: "token invalido o expirado"})
     }
 
     user.isVerified = true;
@@ -201,7 +188,7 @@ export const verifyEmail = async (req, res) => {
 
     return res.status(200).json({
         success: true,
-        message: "Verify email success!",
+        message: "Verificaion de Email exitosa!",
         user:{
             id: user._id,
             username: user.username,

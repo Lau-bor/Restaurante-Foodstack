@@ -1,36 +1,64 @@
-import { Container, Nav, Navbar } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useAuth } from "../../context/AuthContext"; 
+import { useNavigate } from "react-router-dom"; 
+import "./NavBar.css";
 
-const NavBar = () => {
+function NavBar() {
+  const [isOpen, setIsOpen] = useState(false);
+  const { logout } = useAuth(); 
+  const navigate = useNavigate(); 
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
+  };
+
   return (
-    <Navbar expand="md" className="fixed-top shadow" style={{ backgroundColor: '#CFCFCF' }}>
-      <Container>
-        <Navbar.Brand as={Link} to="/" className="text-danger fw-bold">
-          Restaurante Foodstack
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto justify-content-end w-100">
-            <Nav.Link as={Link} to="/" className="active">
-              Inicio
-            </Nav.Link>
-            <Nav.Link as={Link} to="/menu" className="active">
-              Menú
-            </Nav.Link>
-            <Nav.Link as={Link} to="/about" className="active">
-              Nosotros
-            </Nav.Link>
-            <Nav.Link as={Link} to="/contact" className="active">
-              Contacto
-            </Nav.Link>
-            <Nav.Link as={Link} to="/orders" className="active">
-              Pedidos
-            </Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+    <header className="nav-header">
+      <div className="container">
+        <nav>
+          <div className="logo-container">
+            <a href="/">
+              <img src="../../../public/logo-sinfondo.png" alt="Logo" />
+            </a>
+          </div>
+
+          <div className="menu-toggle" onClick={toggleMenu}>
+            <div className="bar"></div>
+            <div className="bar"></div>
+            <div className="bar"></div>
+          </div>
+
+          <ul className={`nav-link ${isOpen ? "open" : ""}`}>
+            <li>
+              <a href="/">Home</a>
+            </li>
+            <li>
+              <a href="/about">About</a>
+            </li>
+            <li>
+              <a href="/orders">Orders</a>
+            </li>
+            <li>
+              <a href="/admin">Admin</a>
+            </li>
+            <li>
+              <button
+                onClick={handleLogout}
+                className="btn btn-warning "
+              >
+                Cerrar sesión
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
   );
-};
+}
 
 export default NavBar;

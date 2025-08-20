@@ -1,19 +1,20 @@
-import { AboutSection, HeaderHome, MenuSection, ImageGallery, ContactInfo } from '../../components'
+import { AboutSection, MenuSection, Menu } from '../../components'
+import './Home.css'; 
 
 function Home() {
-  return (
-    <div className='home-page'>
-      <HeaderHome/>
+return (
+<>
+<div className="hero-image">
+<img src="../../../public/FoodStack-495051.jpg" alt="Imagen de Foodstack" className='responsive-img'/>
+</div>
 
-      <AboutSection/>
+  <AboutSection/>
 
-      <MenuSection/>
+  <MenuSection/>
 
-      <ImageGallery/>
-
-      <ContactInfo/>
-    </div>
-  )
+  <Menu/>
+</>
+)
 }
 
 export default Home
