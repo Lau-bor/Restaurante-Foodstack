@@ -1,4 +1,4 @@
-const API_URL = "https://restaurante-foodstack.onrender.com/api/v1/menus";
+const API_URL = `${import.meta.env.VITE_API_URL}/api/v1/menus`;
 
 const getToken = () => localStorage.getItem("token");
 

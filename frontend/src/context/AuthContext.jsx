@@ -27,7 +27,7 @@ const logout = async () => {
     localStorage.removeItem("token");
     setUser(null);
     setProfileImage(null);
-    await fetch("https://restaurante-foodstack.onrender.com/api/v1/logout", {
+    await fetch(`${import.meta.env.VITE_API_URL}/api/v1/logout`, {
         method: "POST",
         headers: {
             Authorization: `Bearer ${getToken()}`

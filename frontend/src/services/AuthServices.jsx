@@ -1,4 +1,4 @@
-const API = "https://restaurante-foodstack.onrender.com/api/v1";
+const API = `${import.meta.env.VITE_API_URL}/api/v1`;
 export const getToken = () => localStorage.getItem("token");
 import axios from "axios";
 

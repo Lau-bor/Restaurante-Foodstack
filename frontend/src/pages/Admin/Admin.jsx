@@ -124,7 +124,7 @@ function Admin() {
                     {menu.files.map(file => (
                       <img
                         key={file._id}
-                        src={file.url.startsWith("http") ? file.url : `https://restaurante-foodstack.onrender.com${file.url}`}
+                        src={file.url.startsWith("http") ? file.url : `${import.meta.env.VITE_API_URL}${file.url}`}
                         alt={menu.title}
                         style={{ maxWidth: "100px", maxHeight: "100px", marginRight: "8px", marginBottom: "8px" }}
                       />
@@ -238,7 +238,7 @@ function Admin() {
                         {existingFiles.map(file => (
                           <div key={file._id} className="relative">
                             <img
-                              src={file.url.startsWith("http") ? file.url : `https://restaurante-foodstack.onrender.com${file.url}`}
+                              src={file.url.startsWith("http") ? file.url : `${import.meta.env.VITE_API_URL}${file.url}`}
                               alt="menu"
                               style={{ maxWidth: "100px", maxHeight: "100px" }}
                             />
