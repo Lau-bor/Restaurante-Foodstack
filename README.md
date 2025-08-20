@@ -64,6 +64,7 @@ frontend/
 bash
 git clone https://github.com/tu-usuario/foodstack.git
 cd foodstack
+
 2️⃣ Backend
 cd backend
 npm install
