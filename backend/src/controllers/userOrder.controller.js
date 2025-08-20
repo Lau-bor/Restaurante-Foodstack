@@ -68,7 +68,6 @@ export const getUserOrders = async (req, res) => {
     let orders;
 
     if (req.user.role === "admin") {
-      
       orders = await UserOrder.find()
         .populate({
           path: "items.menu",
@@ -78,8 +77,11 @@ export const getUserOrders = async (req, res) => {
           path: "user",
           select: "email role",
         });
-    } else {
+
       
+      orders = orders.filter(order => order.user !== null);
+
+    } else {
       orders = await UserOrder.find({ user: req.user.id }).populate({
         path: "items.menu",
         select: "title price description",
@@ -94,6 +96,7 @@ export const getUserOrders = async (req, res) => {
       .json({ message: "Internal server error while fetching orders." });
   }
 };
+
 
 
 
