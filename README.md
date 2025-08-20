@@ -31,29 +31,51 @@ FoodStack es una aplicación web para la gestión de pedidos de un restaurante. 
 ## 📂 Estructura del proyecto  
 
 backend/
+
 ├── public/uploads/ # Archivos subidos (menu, perfil, etc.)
+
 ├── src/
+
 │ ├── controllers/ # Lógica de negocio
+
 │ ├── helpers/ # Funciones auxiliares
+
 │ ├── middlewares/ # Middlewares de Express
+
 │ ├── models/ # Modelos de MongoDB
+
 │ ├── routes/ # Endpoints de la API
+
 │ ├── validators/ # Validaciones con Zod
+
 │ └── views/emails/ # Templates para correos
+
 ├── app.js # Configuración principal de Express
+
 ├── db.js # Conexión a la base de datos
+
 └── index.js # Entry point del backend
 
 frontend/
+
 ├── public/ # Recursos estáticos
+
 ├── src/
+
 │ ├── components/ # Componentes reutilizables (Navbar, Footer, etc.)
+
 │ ├── pages/ # Páginas (Home, Login, Register, Orders...)
+
 │ ├── context/ # Context API (estado global)
+
 │ ├── services/ # Llamadas a la API
+
 │ ├── App.jsx # Configuración principal
+
 │ ├── main.jsx # Entry point
+
 │ └── index.css # Estilos globales
+
 └── vite.config.js
 
 ---
@@ -80,27 +102,41 @@ npm run dev
 🔑 Variables de entorno
 
 Crear un archivo .env en el backend con las siguientes variables:
-PORT=5000
+
+PORT=4000
+
 MONGO_URI=tu_conexion_mongodb
+
 JWT_SECRET=clave_super_secreta
+
 EMAIL_USER=tu_correo
+
 EMAIL_PASS=tu_password
+
 MERCADOPAGO_ACCESS_TOKEN=tu_token
 
 📌 Funcionalidades principales
 
 ✅ Registro y login con JWT
+
 ✅ Gestión de usuarios y perfiles
+
 ✅ Catálogo de menú con imágenes
+
 ✅ Carrito de compras
-✅ Órdenes y panel de administración
+
 ✅ Notificaciones por correo (registro, confirmación de pedido)
+
 ✅ Integración con MercadoPago
 
 🤝 Contribución
 
 Haz un fork del proyecto
+
 Crea una nueva rama (git checkout -b feature/nueva-funcionalidad)
+
 Haz commit de tus cambios (git commit -m 'Agrega nueva funcionalidad')
+
 Haz push a la rama (git push origin feature/nueva-funcionalidad)
+
 Crea un Pull Request
