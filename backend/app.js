@@ -15,10 +15,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || "https://restaurante-foodstack.vercel.app/",
+  origin: [
+    "https://restaurante-foodstack-69hxph5o9-lautaros-projects-e920168a.vercel.app",
+    "http://localhost:5173"
+  ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 };
 
 app.use(cors(corsOptions));
