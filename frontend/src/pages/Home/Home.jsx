@@ -5,7 +5,7 @@ function Home() {
 return (
 <>
 <div className="hero-image">
-<img src="../../../public/FoodStack-495051.jpg" alt="Imagen de Foodstack" className='responsive-img'/>
+<img src="/FoodStack-495051.jpg" alt="Imagen de Foodstack" className='responsive-img'/>
 </div>
 
   <AboutSection/>
