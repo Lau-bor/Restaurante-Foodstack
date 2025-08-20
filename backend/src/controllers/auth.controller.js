@@ -33,7 +33,7 @@ export const register = async (req, res) => {
 
     
 
-    const verificationLink = `${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}`;
+    const verificationLink = `${process.env.FRONTEND_URL}/VerifyEmail?token=${verificationToken}`;
 
     await transport.sendMail({
       from: process.env.MAIL_FROM,

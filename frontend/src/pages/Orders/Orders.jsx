@@ -69,10 +69,13 @@ const Orders = () => {
       style={{
         backgroundImage:
           "url('../../../public/fast-food-seamless-background-illustration-simple-restaurant-menu-background-vector.jpg')",
-        backgroundSize: "cover",
+        backgroundSize: "cover", height: "100vh", backgroundPosition: "center"
       }}
     >
+<<<<<<< HEAD
     
+=======
+>>>>>>> 51ae3fb6de25fb3579ee45eca2f876fa83a001ee
       <div className="d-flex justify-content-center p-5 mb-5">
         <div
           className="card shadow"
