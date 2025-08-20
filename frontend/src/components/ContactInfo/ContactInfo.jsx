@@ -3,7 +3,7 @@ function ContactInfo() {
     return (
         <div className='py-5 shadow  '
         style={{
-        backgroundImage: 'url(../../../public/pexels-eva-bronzini-7598077.jpg)',
+        backgroundImage: 'url(/pexels-eva-bronzini-7598077.jpg)',
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
