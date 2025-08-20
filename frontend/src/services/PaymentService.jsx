@@ -1,5 +1,5 @@
 
-const API_URL = "http://localhost:4000/api/v1";
+const API_URL = "https://restaurante-foodstack.onrender.com/api/v1";
 
 export const createPayment = async (cartItems, token) => {
     const res = await fetch(`${API_URL}/checkout`, {

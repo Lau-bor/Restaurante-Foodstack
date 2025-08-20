@@ -17,7 +17,7 @@ const AdminOrdersPage = () => {
             }
 
             try {
-                const response = await axios.get('http://localhost:4000/api/v1/userOrder', {
+                const response = await axios.get('https://restaurante-foodstack.onrender.com/api/v1/userOrder', {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -37,7 +37,7 @@ const AdminOrdersPage = () => {
     const updateOrderStatus = async (orderId) => {
         try {
             await axios.put(
-                `http://localhost:4000/api/v1/userOrder/${orderId}/status`,
+                `https://restaurante-foodstack.onrender.com/api/v1/userOrder/${orderId}/status`,
                 { status: "realizado" },
                 { headers: { Authorization: `Bearer ${token}` } }
             );

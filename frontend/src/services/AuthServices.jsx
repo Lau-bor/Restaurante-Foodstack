@@ -1,4 +1,4 @@
-const API = "http://localhost:4000/api/v1";
+const API = "https://restaurante-foodstack.onrender.com/api/v1";
 export const getToken = () => localStorage.getItem("token");
 import axios from "axios";
 

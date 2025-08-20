@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:4000/api/v1/menus";
+const API_URL = "https://restaurante-foodstack.onrender.com/api/v1/menus";
 
 const getToken = () => localStorage.getItem("token");
 

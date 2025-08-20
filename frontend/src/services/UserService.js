@@ -1,6 +1,6 @@
 import { getToken } from "./AuthServices";
 
-const API_URL = "http://localhost:4000/api/v1/admin/users";
+const API_URL = "https://restaurante-foodstack.onrender.com/v1/admin/users";
 
 export const getUsers = async () => {
   const res = await fetch(API_URL, {

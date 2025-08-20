@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:4000/api/v1",
+  baseURL: "https://restaurante-foodstack.onrender.com/api/v1",
 });
 
 api.interceptors.request.use(config => {
