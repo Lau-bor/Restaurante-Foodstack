@@ -62,11 +62,11 @@ export const createPayment = async (req, res) => {
       },
       external_reference: orderId,
       back_urls: {
-        success: `${BASE_URL}/api/v1/payments/success`,
-        failure: `${BASE_URL}/api/v1/payments/failure`,
-        pending: `${BASE_URL}/api/v1/payments/pending`,
+        success: `$${import.meta.env.VITE_API_URL}/api/v1/payments/success`,
+        failure: `${import.meta.env.VITE_API_URL}/api/v1/payments/failure`,
+        pending: `${import.meta.env.VITE_API_URL}/api/v1/payments/pending`,
       },
-      notification_url: `${BASE_URL}/api/v1/payments/notifications`,
+      notification_url: `${import.meta.env.VITE_API_URL}/api/v1/payments/notifications`,
       metadata: {
         userId,
         orderId,
