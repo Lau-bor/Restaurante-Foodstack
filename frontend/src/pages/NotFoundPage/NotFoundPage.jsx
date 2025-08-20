@@ -21,7 +21,7 @@ function NotFoundPage() {
           <Col>
             <h1 className="display-1 fw-bold text-danger">ERROR 404</h1>
             <h2 className="mb-3 text-light">Ups! pagina no encontrada</h2>
-            <p className="text-light">La pagina que esta buscando no existe o fué removida</p>
+            <p className="text-light">La pagina que esta buscando no existe o fue removida</p>
             <Button onClick={() => navigate("/")} variant="warning" size="lg">
               Probemos otro pedido
             </Button>
