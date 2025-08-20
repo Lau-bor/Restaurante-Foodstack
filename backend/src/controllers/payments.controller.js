@@ -55,11 +55,11 @@ export const createPayment = async (req, res) => {
       },
       external_reference: orderId.toString(),
       back_urls: {
-        success: 'TU_URL_DE_NGROK_AQUI/api/v1/payments/success',
-        failure: 'TU_URL_DE_NGROK_AQUI/api/v1/payments/failure',
-        pending: 'TU_URL_DE_NGROK_AQUI/api/v1/payments/pending'
+        success: `${import.meta.env.VITE_API_URL}/api/v1/payments/success`,
+        failure: `${import.meta.env.VITE_API_URL}/api/v1/payments/failure`,
+        pending: `${import.meta.env.VITE_API_URL}/api/v1/payments/pending`
       },
-      notification_url: 'TU_URL_DE_NGROK_AQUI/api/v1/payments/notifications',
+      notification_url: `${import.meta.env.VITE_API_URL}/api/v1/payments/notifications`,
       metadata: {
         userId: userId,
         orderId: orderId
