@@ -11,15 +11,11 @@ import {
 } from "./pages";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Footer, NavBar } from "./components";
-
-// ✅ Importa los proveedores de contexto
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider } from './context/cartContext.jsx'; 
-
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.jsx';
 
-// ✅ Envuelve el componente App con los proveedores de contexto
-// Esto asegura que useAuth y useCart funcionen en toda la aplicación
+
 function AppContent() {
   const { loading } = useAuth();
   const location = useLocation();
@@ -40,7 +36,7 @@ function AppContent() {
       {showHeaderFooter && <NavBar />}
 
       <Routes>
-        {/* Rutas públicas */}
+        
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -48,12 +44,11 @@ function AppContent() {
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/VerifyEmail" element={<VerifyEmail />} />
 
-        {/* Rutas para los usuarios comunes */}
+        
         <Route element={<ProtectedRoute allowedRoles={['user', 'admin']} />}>
           <Route path="/orders" element={<Orders />} />
         </Route>
 
-        {/* Rutas para los admin */}
         <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
           <Route path="/admin" element={<Admin />} />
         </Route>
@@ -63,8 +58,6 @@ function AppContent() {
     </>
   );
 }
-
-// ✅ Este es el componente principal que exportas y envuelve a AppContent
 function App() {
   return (
     <AuthProvider>

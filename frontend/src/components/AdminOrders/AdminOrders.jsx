@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext'; // Asumiendo que tienes un contexto de autenticación
-import axios from 'axios'; // Recomendado para peticiones HTTP
+import { useAuth } from '../../context/AuthContext'; 
+import axios from 'axios'; 
 
 const AdminOrdersPage = () => {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const { token } = useAuth(); // Obtén el token de tu contexto
+    const { token } = useAuth(); 
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -41,7 +41,7 @@ const AdminOrdersPage = () => {
                 { status: "realizado" },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
-            // Actualiza el estado localmente
+            
             setOrders(orders =>
                 orders.map(order =>
                     order._id === orderId ? { ...order, status: "realizado" } : order

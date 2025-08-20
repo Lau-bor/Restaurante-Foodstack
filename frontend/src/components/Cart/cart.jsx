@@ -30,7 +30,7 @@ const Cart = () => {
             <div className="mt-4 font-bold text-xl text-right">
                 Total: ${getCartTotal()}
             </div>
-            {/* Aquí puedes añadir un botón para el checkout */}
+            
         </div>
     );
 };

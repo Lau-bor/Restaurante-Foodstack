@@ -4,7 +4,6 @@ import { useCart } from "../../context/cartContext.jsx";
 function MenuCard({menu, img, title, bg, text}) {
   const { addItemToCart } = useCart();
 
-  // Supón que menu es un array con un solo menú
   const item = menu[0];
 
   return (
@@ -14,7 +13,7 @@ function MenuCard({menu, img, title, bg, text}) {
           </div>
           <div className='row flex-column-reverse flex-lg-row '>
               <div className='col-lg-6 d-flex justify-content-center flex-wrap'>
-                  {/* Mostrar todas las imágenes */}
+                  
                   {menu[0].files && menu[0].files.map((file, idx) => (
                     <img
                       key={idx}

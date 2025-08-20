@@ -1,4 +1,3 @@
-// src/controllers/payments.controller.js
 import mercadopago from 'mercadopago';
 import userOrder from '../models/userOrder.model.js';
 import user from '../models/user.model.js';
@@ -21,7 +20,7 @@ export const createPayment = async (req, res) => {
       return res.status(404).json({ message: "Usuario no encontrado." });
     }
 
-    // 👇 Calculamos total con "price"
+    
     const total = items.reduce((sum, item) => {
       const price = Number(item.price);
       const quantity = Number(item.quantity);
@@ -33,11 +32,11 @@ export const createPayment = async (req, res) => {
       return sum + price * quantity;
     }, 0);
 
-    // 👇 Guardamos orden en Mongo
+    
     const newOrder = new userOrder({
       user: userId,
       items: items.map(item => ({
-        menu: item._id, // 👈 el ID del menú
+        menu: item._id, 
         quantity: Number(item.quantity)
       })),
       total,
@@ -47,7 +46,7 @@ export const createPayment = async (req, res) => {
     const savedOrder = await newOrder.save();
     const orderId = savedOrder._id;
 
-    // 👇 Preferencia de Mercado Pago (usamos "unit_price" solo acá)
+    
     const preferenceBody = {
       items: items.map(item => ({
         title: item.title,

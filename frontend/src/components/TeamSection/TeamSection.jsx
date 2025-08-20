@@ -12,7 +12,7 @@ const teamMembers = [
 function TeamSection() {
     const [hoveredCard, setHoveredCard] = useState(null);
 
-    // Dividimos el array en dos grupos
+    
     const topRowMembers = teamMembers.slice(0, 3);
     const bottomRowMembers = teamMembers.slice(3, 5);
 

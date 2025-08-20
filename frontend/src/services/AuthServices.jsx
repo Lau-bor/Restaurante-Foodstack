@@ -7,7 +7,7 @@ export const register = async (userData) => {
     return res.data
 };
 
-// En src/services/AuthServices.js
+
 
 export const login = async (data) => {
     const res = await fetch(`${API}/login`, {

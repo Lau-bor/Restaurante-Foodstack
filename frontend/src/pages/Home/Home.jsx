@@ -1,5 +1,5 @@
 import { AboutSection, MenuSection, Menu } from '../../components'
-import './Home.css'; // Importa el archivo de estilos
+import './Home.css'; 
 
 function Home() {
 return (

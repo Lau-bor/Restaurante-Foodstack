@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import Menu from '../models/menu.model.js';
 
-// Helper function to safely delete files
+
 const unlinkFiles = (files) => {
     if (files && files.length > 0) {
         files.forEach(file => {
@@ -14,7 +14,7 @@ const unlinkFiles = (files) => {
     }
 };
 
-// CREATE
+
 export const createMenu = async (req, res) => {
     try {
         if (req.fileValidationError) {
@@ -24,7 +24,7 @@ export const createMenu = async (req, res) => {
 
         const { title, description, deliveryTime, price } = req.body;
         
-        // This handles cases where 'files' might be empty or missing
+        
         const savedFiles = req.files?.map(file => ({
             name: file.originalname,
             path: `/uploads/menu/${file.filename}`,
@@ -45,7 +45,7 @@ export const createMenu = async (req, res) => {
         return res.status(201).json(savedMenu);
 
     } catch (error) {
-        unlinkFiles(req.files); // Delete files on any error
+        unlinkFiles(req.files); 
         console.log(error);
         return res.status(400).json({ message: error.message });
     }
@@ -167,7 +167,7 @@ export const deleteMenu = async (req, res) => {
     }
     try {
         const menu = await Menu.findByIdAndDelete(req.params.id);
-        if (!menu) return res.status(404).json({ message: "Menu not found" });
+        if (!menu) return res.status(404).json({ message: "Menu no encontrado" });
 
         
         if (menu.files?.length > 0) {
@@ -177,7 +177,7 @@ export const deleteMenu = async (req, res) => {
             });
         }
 
-        return res.status(200).json({ message: "Menu deleted!" });
+        return res.status(200).json({ message: "Menu eliminado!" });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: error.message });

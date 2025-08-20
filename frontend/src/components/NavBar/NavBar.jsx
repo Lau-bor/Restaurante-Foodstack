@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { useAuth } from "../../context/AuthContext"; // Importa useAuth
-import { useNavigate } from "react-router-dom"; // Importa useNavigate
+import { useAuth } from "../../context/AuthContext"; 
+import { useNavigate } from "react-router-dom"; 
 import "./NavBar.css";
 
 function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
-  const { logout } = useAuth(); // Obtén logout del contexto
-  const navigate = useNavigate(); // Obtén navigate
+  const { logout } = useAuth(); 
+  const navigate = useNavigate(); 
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);

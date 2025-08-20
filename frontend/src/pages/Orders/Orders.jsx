@@ -72,7 +72,7 @@ const Orders = () => {
         backgroundSize: "cover",
       }}
     >
-      {/* Contenedor del carrito centrado arriba en el medio */}
+    
       <div className="d-flex justify-content-center p-5 mb-5">
         <div
           className="card shadow"
