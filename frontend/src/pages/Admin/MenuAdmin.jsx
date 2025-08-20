@@ -1,200 +1,91 @@
-import { useState, useEffect } from "react";
-import * as menuService from "../../services/MenuService";
+import { useEffect, useState } from "react";
+import * as orderService from "../../services/OrderService";
 
-function MenuAdmin() {
-  const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({ title: "", description: "", price: "", files: [] });
-  const [menus, setMenus] = useState([]);
-  const [editingMenu, setEditingMenu] = useState(null);
-  const [existingFiles, setExistingFiles] = useState([]);
-  const [filesToDelete, setFilesToDelete] = useState([]);
-  const [replaceAllImages, setReplaceAllImages] = useState(false);
+function OrdersAdmin({ token }) {
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const loadMenus = async () => {
-    const data = await menuService.getMenus();
-    setMenus(data.data || data);
+  const loadOrders = async () => {
+    try {
+      setLoading(true);
+      const data = await orderService.getOrders(token);
+      setOrders(data);
+    } catch (err) {
+      console.error("Error cargando órdenes:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateStatus = async (id, status) => {
+    try {
+      await orderService.updateOrderStatus(id, status, token);
+      loadOrders();
+    } catch (err) {
+      console.error("Error al actualizar orden:", err);
+    }
   };
 
   useEffect(() => {
-    loadMenus();
+    loadOrders();
   }, []);
 
-  const openModal = (menu = null) => {
-    if(menu){
-      setEditingMenu(menu);
-      setFormData({
-        title: menu.title,
-        description: menu.description,
-        price: menu.price,
-        files: []
-      });
-      setExistingFiles(menu.files || []);
-      setFilesToDelete([]);
-      setReplaceAllImages(false);
-    } else {
-      setEditingMenu(null);
-      setFormData({ title: "", description: "", price: "", files: [] });
-      setExistingFiles([]);
-      setFilesToDelete([]);
-      setReplaceAllImages(false);
-    }
-    setShowModal(true);
-  };
+  if (loading) return <p>Cargando órdenes...</p>;
 
-  
-const handleRemoveExistingFile = (fileId) => {
-  setFilesToDelete(prev => [...prev, fileId]);
-  setExistingFiles(prev => prev.filter(f => f._id !== fileId));
-};
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  const data = new FormData();
-
-  Object.keys(formData).forEach(key => {
-    if(key === "files"){
-      Array.from(formData.files).forEach(file => data.append("files", file));
-    } else {
-      data.append(key, formData[key]);
-    }
-  });
- 
-  if(filesToDelete.length > 0){
-    filesToDelete.forEach(id => data.append("filesToDelete", id));
-  }
-  
-  data.append("replaceImages", replaceAllImages ? "true" : "false");
-
-  try {
-    if(editingMenu){
-      await menuService.updateMenu(editingMenu._id, data);
-    } else {
-      await menuService.createMenu(data);
-    }
-    setShowModal(false);
-    loadMenus();
-  } catch (error) {
-    console.error("Error al guardar menú:", error);
-  }
-};
   return (
     <div className="container my-5">
-      <h1 className="text-2xl font-bold mb-4">Administración de Menús</h1>
-      <button 
-        className="btn btn-primary mb-4"
-        onClick={() => openModal()}
-      >
-        Crear Menú
-      </button>
-
-      <div className="menus-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {menus.map(menu => (
-          <div key={menu._id} className="card p-3 shadow-md border rounded">
-            <h2 className="font-bold">{menu.title}</h2>
-            <p>{menu.description}</p>
-            <p>Precio: ${menu.price}</p>
-            {menu.files && menu.files.length > 0 && (
-              <div className="mb-2 flex flex-wrap">
-                {menu.files.map(file => (
-                  <img 
-                    key={file._id} 
-                    src={file.url.startsWith("http") ? file.url : `${import.meta.env.VITE_API_URL}${file.url}`} 
-                    alt={menu.title} 
-                    style={{ maxWidth: "100px", maxHeight: "100px", marginRight: "8px", marginBottom: "8px" }}
-                  />
+      <h1 className="text-2xl font-bold mb-4">Gestión de Órdenes</h1>
+      <table className="table table-striped">
+        <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Email</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {orders.map(order => (
+            <tr key={order._id}>
+              <td>{order.user ? order.user.role : "Usuario eliminado"}</td>
+              <td>{order.user ? order.user.email : "N/A"}</td>
+              <td>
+                {order.items.map(item => (
+                  <div key={item._id}>
+                    {item.menu ? item.menu.title : "Menú eliminado"} x {item.quantity}
+                  </div>
                 ))}
-              </div>
-            )}
-            <button className="btn btn-warning btn-sm" onClick={() => openModal(menu)}>Editar</button>
-          </div>
-        ))}
-      </div>
-
-      {showModal && (
-        <div className="modal d-block" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
-          <div className="modal-dialog">
-            <div className="modal-content p-4">
-              <div className="modal-header">
-                <h5 className="modal-title">{editingMenu ? "Editar Menú" : "Crear Menú"}</h5>
-                <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
-              </div>
-              <form onSubmit={handleSubmit} className="modal-body flex flex-col gap-3">
-                <input 
-                  type="text" 
-                  placeholder="Título" 
-                  className="form-control" 
-                  value={formData.title} 
-                  onChange={e => setFormData({...formData, title: e.target.value})} 
-                  required
-                />
-                <textarea 
-                  placeholder="Descripción" 
-                  className="form-control" 
-                  value={formData.description} 
-                  onChange={e => setFormData({...formData, description: e.target.value})} 
-                  required
-                />
-                <input 
-                  type="number" 
-                  placeholder="Precio" 
-                  className="form-control" 
-                  value={formData.price} 
-                  onChange={e => setFormData({...formData, price: e.target.value})} 
-                  required
-                />
-                <input 
-                  type="file" 
-                  multiple 
-                  accept="image/*" 
-                  className="form-control" 
-                  onChange={e => setFormData({...formData, files: e.target.files})} 
-                />          
-  {existingFiles.length > 0 && (
-  <div className="mb-2">
-    <label>Imágenes actuales:</label>
-    <div className="flex flex-wrap">
-      {existingFiles.map(file => (
-        <div key={file._id} className="relative mr-2 mb-2">
-          <img 
-            src={file.url.startsWith("http") ? file.url : `${import.meta.env.VITE_API_URL}${file.url}`} 
-            alt="menu" 
-            style={{ maxWidth: "300px", maxHeight: "300px" }} 
-          />
-          <button 
-            type="button" 
-            onClick={() => handleRemoveExistingFile(file._id)} 
-            className="btn btn-sm btn-danger absolute top-0 right-0"
-          >
-            X
-          </button>
-        </div>
-      ))}
-    </div>
-  </div>
-)}
-
-                <div className="form-check mb-2">
-                  <input 
-                    type="checkbox" 
-                    className="form-check-input" 
-                    checked={replaceAllImages} 
-                    onChange={e => setReplaceAllImages(e.target.checked)}
-                    id="replaceAllImages"
-                  />
-                  <label htmlFor="replaceAllImages" className="form-check-label">
-                    Reemplazar todas las imágenes
-                  </label>
-                </div>
-
-                <button type="submit" className="btn btn-success mt-3">Guardar menú</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      )}
+              </td>
+              <td>${order.total}</td>
+              <td>{order.status}</td>
+              <td>
+                {order.status === "pending" && (
+                  <button
+                    className="btn btn-success btn-sm"
+                    onClick={() => updateStatus(order._id, "approved")}
+                  >
+                    Aprobar
+                  </button>
+                )}
+                {order.status === "approved" && (
+                  <button
+                    className="btn btn-warning btn-sm"
+                    onClick={() => updateStatus(order._id, "delivered")}
+                  >
+                    Marcar como Entregado
+                  </button>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
 
-export default MenuAdmin;
+export default OrdersAdmin;
+
 

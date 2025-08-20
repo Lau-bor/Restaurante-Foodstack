@@ -16,3 +16,20 @@ export const getOrders = async (token) => {
     const data = await res.json();
     return data;
 };
+
+export const updateOrderStatus = async (id, status, token) => {
+  const res = await fetch(`${API_URL}/userorder/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+    body: JSON.stringify({ status })
+  });
+
+  if (!res.ok) {
+    throw new Error("No se pudo actualizar el estado de la orden");
+  }
+
+  return res.json();
+};
