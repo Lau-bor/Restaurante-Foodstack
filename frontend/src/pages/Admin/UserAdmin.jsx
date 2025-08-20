@@ -9,13 +9,21 @@ function UserAdmin() {
   }, []);
 
   const loadUsers = async () => {
-    const data = await userService.getUsers();
-    setUsers(data);
+    try {
+      const data = await userService.getUsers();
+      setUsers(data);
+    } catch (error) {
+      console.error("Error al cargar usuarios:", error);
+    }
   };
 
   const toggleActive = async (id, current) => {
-    await userService.setActive(id, !current);
-    loadUsers();
+    try {
+      await userService.toggleUser(id);
+      loadUsers();
+    } catch (error) {
+      console.error("Error al cambiar estado de usuario:", error);
+    }
   };
 
   return (
@@ -35,13 +43,13 @@ function UserAdmin() {
             <tr key={u._id}>
               <td>{u.email}</td>
               <td>{u.role}</td>
-              <td>{u.active ? "Activo" : "Inhabilitado"}</td>
+              <td>{u.isActive ? "Activo" : "Inhabilitado"}</td>
               <td>
-                <button 
-                  className={`btn btn-sm ${u.active ? "btn-danger" : "btn-success"}`}
-                  onClick={() => toggleActive(u._id, u.active)}
+                <button
+                  className={`btn btn-sm ${u.isActive ? "btn-danger" : "btn-success"}`}
+                  onClick={() => toggleActive(u._id, u.isActive)}
                 >
-                  {u.active ? "Inhabilitar" : "Activar"}
+                  {u.isActive ? "Inhabilitar" : "Activar"}
                 </button>
               </td>
             </tr>
