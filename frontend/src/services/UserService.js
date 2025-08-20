@@ -1,6 +1,6 @@
 import { getToken } from "./AuthServices";
 
-const API_URL = `${import.meta.env.VITE_API_URL}/v1/admin/users`;
+const API_URL = `${import.meta.env.VITE_API_URL}/api/v1/admin/users`;
 
 export const getUsers = async () => {
   const res = await fetch(API_URL, {
