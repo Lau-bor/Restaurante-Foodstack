@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    role: { // Campo 'role' definido una sola vez
+    role: {
         type: String,
         enum: ['user', 'admin'],
         default: 'user',
@@ -26,20 +26,8 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: true,
     },
-    profileImage: {
-        type: String,
-        default: "https://img.freepik.com/vector-premium/arte-vectorial-icono-interfaz-perfil_1015832-3774.jpg?semt=ais_hybrid&w=740",
-    },
     verificationToken: {
         type: String,
-        default: null,
-    },
-    passwordResetToken: {
-        type: String,
-        default: null,
-    },
-    passwordResetExpires: {
-        type: Date,
         default: null,
     },
 }, {

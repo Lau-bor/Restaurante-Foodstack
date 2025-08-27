@@ -22,7 +22,7 @@ function VerifyEmail() {
         return;
       }
       try {
-        const res = await axios.get('http://localhost:4000/api/v1/verify-email?token=${token');
+        const res = await axios.get(`http://localhost:4000/api/v1/verify-email?token=${token}`);
 
         if (isMounted && res.data.success) {
           setStatus('✔️ Email verificado con exito, redirigiendo al login...');

@@ -5,7 +5,7 @@ export const getOrders = async (token) => {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}` // ✅ Envía el token de forma segura
+            "Authorization": `Bearer ${token}`
         },
     });
 
