@@ -1,5 +1,6 @@
 import mercadopago from 'mercadopago';
 import userOrder from '../models/userOrder.model.js';
+import User from '../models/user.model.js';
 
 
 mercadopago.configure({
@@ -69,6 +70,10 @@ export const createPayment = async (req, res) => {
       },
     };
 
+    console.log("MERCADOPAGO_ACCESS_TOKEN:", process.env.MERCADOPAGO_ACCESS_TOKEN);
+    console.log("VITE_API_URL:", process.env.VITE_API_URL);
+    console.log("preferenceBody:", preferenceBody);
+
     const mpResponse = await mercadopago.preferences.create(preferenceBody);
 
     return res.status(200).json({ init_point: mpResponse.body.init_point });
@@ -106,4 +111,3 @@ export const handlePaymentNotification = async (req, res) => {
     return res.status(500).send('Error interno del servidor.');
   }
 };
-          
