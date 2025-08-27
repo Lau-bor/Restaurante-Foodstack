@@ -20,10 +20,6 @@ export const createPayment = async (req, res) => {
       return res.status(404).json({ message: "Usuario no encontrado." });
     }
 
-<<<<<<< HEAD
-    
-=======
->>>>>>> 51ae3fb6de25fb3579ee45eca2f876fa83a001ee
     const total = items.reduce((sum, item) => {
       const price = Number(item.price);
       const quantity = Number(item.quantity);
@@ -35,18 +31,10 @@ export const createPayment = async (req, res) => {
       return sum + price * quantity;
     }, 0);
 
-<<<<<<< HEAD
-    
-    const newOrder = new userOrder({
-      user: userId,
-      items: items.map(item => ({
-        menu: item._id, 
-=======
     const newOrder = new userOrder({
       user: userId,
       items: items.map(item => ({
         menu: item._id,
->>>>>>> 51ae3fb6de25fb3579ee45eca2f876fa83a001ee
         quantity: Number(item.quantity)
       })),
       total,
@@ -56,14 +44,10 @@ export const createPayment = async (req, res) => {
     const savedOrder = await newOrder.save();
     const orderId = savedOrder._id;
 
-<<<<<<< HEAD
-    
-=======
->>>>>>> 51ae3fb6de25fb3579ee45eca2f876fa83a001ee
     const preferenceBody = {
       items: items.map(item => ({
         title: item.title,
-        price: Number(item.price),
+        unit_price: Number(item.price),    
         quantity: Number(item.quantity)
       })),
       payer: {
@@ -118,4 +102,3 @@ export const handlePaymentNotification = async (req, res) => {
     return res.status(500).send('Error interno del servidor.');
   }
 };
-          
