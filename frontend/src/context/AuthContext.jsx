@@ -17,11 +17,13 @@ const register = async (userData) =>{
 };
 
 const login = async (credentials) => {
-    const { token, user } = await authService.login(credentials);
-    localStorage.setItem("token", token);
-    setCurrentUser(user);
-    setRole(user.role); 
-    localStorage.setItem("user", JSON.stringify(user));
+    try {
+        const { token, user } = await authService.login(credentials);
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
+    } catch (error) {
+        console.error("Error al iniciar sesión:", error);
+    }
 };
 
 const logout = async () => {
@@ -59,24 +61,30 @@ useEffect(() => {
     const init = async () => {
         try {
             const token = getToken();
-            if(!token){
+            if (!token) {
                 setLoading(false);
                 return;
             }
+
             const valid = await authService.verifyToken();
-            if(valid){
-                await getProfile();
+            console.log("token valido: ", valid);
+
+            if (valid) {
+                const userFromStorage = JSON.parse(localStorage.getItem('user'));
+                setCurrentUser(userFromStorage);
+                setRole(userFromStorage.role);
             } else {
                 logout();
             }
         } catch (error) {
-            console.error("error al verificar token:", error);
+            console.log("error al verificar token:", error);
             logout();
         } finally {
             setLoading(false);
         }
     };
     init();
+
 }, []);
 
 return (
