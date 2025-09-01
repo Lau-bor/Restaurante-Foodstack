@@ -50,7 +50,7 @@ function MenuCard({menu, img, title, bg, text}) {
                                           console.error("Error al agregar al carrito:", error);
                                         }
                                       }}
-                                      className="btn btn-primary w-100"
+                                      className="btn btn-danger w-50"
                                     >
                                       Añadir al Carrito
                                     </button>
