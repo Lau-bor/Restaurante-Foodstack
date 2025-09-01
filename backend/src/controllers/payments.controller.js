@@ -1,5 +1,6 @@
 import mercadopago from 'mercadopago';
 import userOrder from '../models/userOrder.model.js';
+import User from '../models/user.model.js';
 
 
 mercadopago.configure({
@@ -58,16 +59,20 @@ export const createPayment = async (req, res) => {
       },
       external_reference: orderId,
       back_urls: {
-        success: `$${import.meta.env.VITE_API_URL}/api/v1/payments/success`,
-        failure: `${import.meta.env.VITE_API_URL}/api/v1/payments/failure`,
-        pending: `${import.meta.env.VITE_API_URL}/api/v1/payments/pending`,
+        success: `${process.env.VITE_API_URL}/api/v1/payments/success`,
+        failure: `${process.env.VITE_API_URL}/api/v1/payments/failure`,
+        pending: `${process.env.VITE_API_URL}/api/v1/payments/pending`,
       },
-      notification_url: `${import.meta.env.VITE_API_URL}/api/v1/payments/notifications`,
+      notification_url: `${process.env.VITE_API_URL}/api/v1/payments/notifications`,
       metadata: {
         userId,
         orderId,
       },
     };
+
+    console.log("MERCADOPAGO_ACCESS_TOKEN:", process.env.MERCADOPAGO_ACCESS_TOKEN);
+    console.log("VITE_API_URL:", process.env.VITE_API_URL);
+    console.log("preferenceBody:", preferenceBody);
 
     const mpResponse = await mercadopago.preferences.create(preferenceBody);
 
@@ -106,4 +111,3 @@ export const handlePaymentNotification = async (req, res) => {
     return res.status(500).send('Error interno del servidor.');
   }
 };
-          
