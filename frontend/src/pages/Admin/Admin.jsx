@@ -14,6 +14,7 @@ function Admin() {
   const [searchUser, setSearchUser] = useState("");
   const [existingFiles, setExistingFiles] = useState([]);
   const [filesToDelete, setFilesToDelete] = useState([]);
+  const [replaceAllImages, setReplaceAllImages] = useState(false);
 
   const loadMenus = async () => {
     const data = await menuService.getMenus();
@@ -31,7 +32,7 @@ function Admin() {
   }, []);
 
   const openModal = (menu = null) => {
-    if (menu) {
+    if(menu){
       setEditingMenu(menu);
       setFormData({
         title: menu.title,
@@ -41,11 +42,13 @@ function Admin() {
       });
       setExistingFiles(menu.files || []);
       setFilesToDelete([]);
+      setReplaceAllImages(false);
     } else {
       setEditingMenu(null);
       setFormData({ title: "", description: "", price: "", files: [] });
       setExistingFiles([]);
       setFilesToDelete([]);
+      setReplaceAllImages(false);
     }
     setShowModal(true);
   };
@@ -56,54 +59,58 @@ function Admin() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const data = new FormData();
+  e.preventDefault();
+  const data = new FormData();
 
-    Object.keys(formData).forEach(key => {
-      if (key === "files") {
-        Array.from(formData.files).forEach(file => data.append("files", file));
-      } else {
-        data.append(key, formData[key]);
-      }
-    });
-
-    filesToDelete.forEach(id => data.append("filesToDelete", id));
-
-    try {
-      if (editingMenu) {
-        await menuService.updateMenu(editingMenu._id, data);
-      } else {
-        await menuService.createMenu(data);
-      }
-
-      setShowModal(false);
-      loadMenus();
-      setEditingMenu(null);
-      setExistingFiles([]);
-      setFilesToDelete([]);
-      setFormData({ title: "", description: "", price: "", files: [] });
-    } catch (error) {
-      console.error("Error al guardar menú:", error);
+  
+  Object.keys(formData).forEach(key => {
+    if(key === "files"){
+      Array.from(formData.files).forEach(file => data.append("files", file));
+    } else {
+      data.append(key, formData[key]);
     }
-  };
+  });
+
+ 
+  filesToDelete.forEach(id => data.append("filesToDelete", id));
+
+  try {
+    if(editingMenu){
+      await menuService.updateMenu(editingMenu._id, data);
+    } else {
+      await menuService.createMenu(data);
+    }
+
+    
+    setShowModal(false);
+    loadMenus();
+    setEditingMenu(null);
+    setExistingFiles([]);
+    setFilesToDelete([]);
+    setFormData({ title: "", description: "", price: "", files: [] });
+  } catch (error) {
+    console.error("Error al guardar menú:", error);
+  }
+};
+
 
   const handleDeleteMenu = async (id) => {
-    if (window.confirm("¿Seguro que quieres eliminar este menú?")) {
+    if(window.confirm("¿Seguro que quieres eliminar este menú?")){
       await menuService.deleteMenu(id);
       loadMenus();
     }
   };
 
-  const filteredUsers = users.filter(u =>
-    u.username.toLowerCase().includes(searchUser.toLowerCase()) ||
-    u.email.toLowerCase().includes(searchUser.toLowerCase())
-  );
+
+  const filteredUsers = users.filter(u => 
+  u.username.toLowerCase().includes(searchUser.toLowerCase()) ||
+  u.email.toLowerCase().includes(searchUser.toLowerCase())
+);
 
   return (
     <>
-      <Navbar />
       <div className="container my-5">
-        <h1 className="text-3xl font-bold mb-4">Panel de Administración</h1>
+        <h1 className="text-center mb-5 text-uppercase fw-bold fs-1">Panel de Administración</h1>
 
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-2">Menús</h2>
@@ -135,52 +142,56 @@ function Admin() {
           </div>
         </div>
 
+
+        <AdminOrders/>
+
         <div>
-          <h2 className="text-xl font-semibold mb-2">Usuarios</h2>
-          <input
-            type="text"
-            placeholder="Buscar usuario..."
-            value={searchUser}
-            onChange={e => setSearchUser(e.target.value)}
-            className="form-control mb-3"
-          />
-          <div className="overflow-x-auto">
-            <table className="table table-striped w-full">
-              <thead>
-                <tr>
-                  <th>Usuario</th>
-                  <th>Email</th>
-                  <th>Activo</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredUsers.map(u => (
-                  <tr key={u._id}>
-                    <td>{u.username}</td>
-                    <td>{u.email}</td>
-                    <td>{u.isActive ? "Sí" : "No"}</td>
-                    <td>
-                      <button
-                        className="btn btn-sm btn-secondary"
-                        onClick={async () => {
-                          try {
-                            await userService.toggleUser(u._id, u.isActive);
-                            loadUsers();
-                          } catch (error) {
-                            console.error("Error al cambiar estado de usuario", error);
-                          }
-                        }}
-                      >
-                        {u.isActive ? "Inactivar" : "Activar"}
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+  <h2 className="text-center mb-5 fw-semibold fs-2">Usuarios</h2>
+  <input 
+    type="text"
+    placeholder="Buscar usuario..."
+    value={searchUser}
+    onChange={e => setSearchUser(e.target.value)}
+    className="form-control mb-3"
+  />
+  <div className="overflow-x-auto">
+    <table className="table table-striped w-full">
+      <thead>
+        <tr>
+          <th>Usuario</th>
+          <th>Email</th>
+          <th>Activo</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {filteredUsers.map(u => (
+          <tr key={u._id}>
+            <td>{u.username}</td>
+            <td>{u.email}</td>
+            <td>{u.isActive ? "Sí" : "No"}</td>
+            <td>
+              <button
+                className="btn btn-sm btn-secondary"
+                onClick={async () => {
+                  try {
+                    await userService.toggleUser(u._id, u.isActive);
+                    loadUsers();
+                  } catch (error) {
+                    console.error("Error al cambiar estado de usuario", error);
+                  }
+                }}
+              >
+                {u.isActive ? "Inactivar" : "Activar"}
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
 
         {showModal && (
           <div className="modal d-block" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
@@ -191,35 +202,35 @@ function Admin() {
                   <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
                 </div>
                 <form onSubmit={handleSubmit} className="modal-body flex flex-col gap-3">
-                  <input
-                    type="text"
-                    placeholder="Título"
-                    className="form-control"
-                    value={formData.title}
-                    onChange={e => setFormData({ ...formData, title: e.target.value })}
+                  <input 
+                    type="text" 
+                    placeholder="Título" 
+                    className="form-control" 
+                    value={formData.title} 
+                    onChange={e => setFormData({...formData, title: e.target.value})} 
                     required
                   />
-                  <textarea
-                    placeholder="Descripción"
-                    className="form-control"
-                    value={formData.description}
-                    onChange={e => setFormData({ ...formData, description: e.target.value })}
+                  <textarea 
+                    placeholder="Descripción" 
+                    className="form-control" 
+                    value={formData.description} 
+                    onChange={e => setFormData({...formData, description: e.target.value})} 
                     required
                   />
-                  <input
-                    type="number"
-                    placeholder="Precio"
-                    className="form-control"
-                    value={formData.price}
-                    onChange={e => setFormData({ ...formData, price: e.target.value })}
+                  <input 
+                    type="number" 
+                    placeholder="Precio" 
+                    className="form-control" 
+                    value={formData.price} 
+                    onChange={e => setFormData({...formData, price: e.target.value})} 
                     required
                   />
-                  <input
-                    type="file"
-                    multiple
-                    accept="image/*"
-                    className="form-control"
-                    onChange={e => setFormData({ ...formData, files: e.target.files })}
+                  <input 
+                    type="file" 
+                    multiple 
+                    accept="image/*" 
+                    className="form-control" 
+                    onChange={e => setFormData({...formData, files: e.target.files})} 
                   />
 
                   {existingFiles.length > 0 && (
@@ -229,7 +240,7 @@ function Admin() {
                         {existingFiles.map(file => (
                           <div key={file._id} className="relative">
                             <img
-                              src={`${API_URL}${file.path}`} 
+                              src={`${API_URL}${file.path}`}
                               alt="menu"
                               style={{ maxWidth: "100px", maxHeight: "100px" }}
                             />
@@ -253,8 +264,8 @@ function Admin() {
             </div>
           </div>
         )}
+
       </div>
-      <Footer />
     </>
   );
 }
