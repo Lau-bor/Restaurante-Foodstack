@@ -3,52 +3,26 @@ import path from 'path';
 import Menu from '../models/menu.model.js';
 
 
-const unlinkFiles = (files) => {
-    if (files && files.length > 0) {
-        files.forEach(file => {
-            const filePath = path.join('public', 'uploads', 'menu', file.filename);
-            if (fs.existsSync(filePath)) {
-                fs.unlinkSync(filePath);
-            }
-        });
-    }
-};
-
-
 export const createMenu = async (req, res) => {
-    try {
-        if (req.fileValidationError) {
-            unlinkFiles(req.files);
-            return res.status(400).json({ message: req.fileValidationError });
-        }
+  try {
+    const { title, description, price } = req.body;
+    const files = [];
 
-        const { title, description, deliveryTime, price } = req.body;
-        
-        
-        const savedFiles = req.files?.map(file => ({
-            name: file.originalname,
-            path: `/uploads/menu/${file.filename}`,
-            size: file.size,
-            mimetype: file.mimetype
-        })) || [];
-
-        const newMenu = new Menu({
-            title,
-            description,
-            price,
-            deliveryTime: deliveryTime || new Date(),
-            user: req.user.id,
-            files: savedFiles
+    if (req.files) {
+      for (const file of req.files) {
+        files.push({
+          data: file.buffer.toString("base64"),
+          contentType: file.mimetype,
         });
-
-        const savedMenu = await newMenu.save();
-        return res.status(201).json(savedMenu);
-
-    } catch (error) {
-        unlinkFiles(req.files); 
-        console.log(error);
-        return res.status(400).json({ message: error.message });
+      }
     }
+
+    const menu = new Menu({ title, description, price, files });
+    await menu.save();
+    res.json(menu);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 export const getMenus = async (req, res) => {
@@ -121,29 +95,19 @@ export const updateMenu = async (req, res) => {
    
     if (req.body.filesToDelete && req.body.filesToDelete.length > 0) {
       const idsToDelete = Array.isArray(req.body.filesToDelete) ? req.body.filesToDelete : [req.body.filesToDelete];
-
-      existingMenu.files = existingMenu.files.filter(file => {
-        if (idsToDelete.includes(file._id.toString())) {
-          const filePath = path.join('public', file.path);
-          if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-          return false;
-        }
-        return true;
-      });
+      existingMenu.files = existingMenu.files.filter(file => !idsToDelete.includes(file._id.toString()));
     }
 
-    
+   
     if (req.files && req.files.length > 0) {
       const newFiles = req.files.map(file => ({
-        name: file.originalname,
-        path: `/uploads/menu/${file.filename}`,
-        size: file.size,
-        mimetype: file.mimetype
+        data: file.buffer.toString("base64"),
+        contentType: file.mimetype,
       }));
       existingMenu.files = [...existingMenu.files, ...newFiles];
     }
 
-   
+    
     existingMenu.title = req.body.title || existingMenu.title;
     existingMenu.description = req.body.description || existingMenu.description;
     existingMenu.price = req.body.price || existingMenu.price;
@@ -157,7 +121,6 @@ export const updateMenu = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-
 
 
 
