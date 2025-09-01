@@ -64,7 +64,7 @@ function NavBar() {
               </li>
             ) : (
                 <li>
-                  <NavLink to="/login" className="btn btn-warning">Iniciar Sesión</NavLink>
+                  <NavLink to="/login" className="btn text-black btn-warning">Iniciar Sesión</NavLink>
                 </li>
             )}
           </ul>
