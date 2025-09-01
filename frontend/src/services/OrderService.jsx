@@ -1,7 +1,7 @@
 const API_URL = `${import.meta.env.VITE_API_URL}/api/v1`;
 
 export const getOrders = async (token) => {
-    const res = await fetch(`${API_URL}/userorder`, {
+    const res = await fetch(`${API_URL}/userOrder`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -18,7 +18,7 @@ export const getOrders = async (token) => {
 };
 
 export const updateOrderStatus = async (id, status, token) => {
-  const res = await fetch(`${API_URL}/userorder/${id}`, {
+  const res = await fetch(`${API_URL}/userOrder/${id}/status`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
