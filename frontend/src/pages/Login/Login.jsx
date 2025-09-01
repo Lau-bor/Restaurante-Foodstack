@@ -1,15 +1,21 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react';
 import {useNavigate, Link} from "react-router-dom";
 import {toast} from "react-hot-toast";
 import { useAuth } from '../../context/AuthContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Login() {
-  const {login} = useAuth();
+  const {login, currentUser} = useAuth();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({email: "", password:""});
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/");
+    }
+  }, [currentUser, navigate]);
 
   const handleChange = (e) => {
     setForm({...form, [e.target.name]: e.target.value});
@@ -21,7 +27,6 @@ function Login() {
 
     try {
       await login(form);
-      navigate("/");
     } catch (err) {
       const message = err.response?.data?.message;
       if(message === "Usuario inactivo. Contacta al administrador."){
