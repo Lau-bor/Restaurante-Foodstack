@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { useAuth } from "../../context/AuthContext"; 
-import { useNavigate } from "react-router-dom"; 
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate, NavLink } from "react-router-dom";
 import "./NavBar.css";
 
 function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
-  const { logout } = useAuth(); 
-  const navigate = useNavigate(); 
+  const { currentUser, role, logout } = useAuth();
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -22,9 +22,9 @@ function NavBar() {
       <div className="container">
         <nav>
           <div className="logo-container">
-            <a href="/">
+            <NavLink to="/">
               <img src="logo-sinfondo.png" alt="Logo" />
-            </a>
+            </NavLink>
           </div>
 
           <div className="menu-toggle" onClick={toggleMenu}>
@@ -35,25 +35,39 @@ function NavBar() {
 
           <ul className={`nav-link ${isOpen ? "open" : ""}`}>
             <li>
-              <a href="/">Home</a>
+              <NavLink to="/">Home</NavLink>
             </li>
             <li>
-              <a href="/about">About</a>
+              <NavLink to="/about">About</NavLink>
             </li>
-            <li>
-              <a href="/orders">Orders</a>
-            </li>
-            <li>
-              <a href="/admin">Admin</a>
-            </li>
-            <li>
-              <button
-                onClick={handleLogout}
-                className="btn btn-warning "
-              >
-                Cerrar sesión
-              </button>
-            </li>
+
+            {currentUser && (
+              <li>
+                <NavLink to="/orders">Orders</NavLink>
+              </li>
+            )}
+
+            {currentUser && role === "admin" && (
+              <li>
+                <NavLink to="/admin">Admin</NavLink>
+              </li>
+            )}
+
+            {currentUser ? (
+              <li>
+                <button
+                  onClick={handleLogout}
+                  className="btn btn-warning"
+                >
+                  Cerrar sesión
+                </button>
+              </li>
+            ) : (
+                <li>
+                  {/* Aquí puedes agregar un enlace de Iniciar Sesión si quieres */}
+                  <NavLink to="/login">Iniciar Sesión</NavLink>
+                </li>
+            )}
           </ul>
         </nav>
       </div>
