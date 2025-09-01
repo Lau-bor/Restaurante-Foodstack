@@ -64,8 +64,7 @@ function NavBar() {
               </li>
             ) : (
                 <li>
-                  {/* Aquí puedes agregar un enlace de Iniciar Sesión si quieres */}
-                  <NavLink to="/login">Iniciar Sesión</NavLink>
+                  <NavLink to="/login" className="btn btn-warning">Iniciar Sesión</NavLink>
                 </li>
             )}
           </ul>
