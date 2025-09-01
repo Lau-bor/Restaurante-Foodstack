@@ -14,7 +14,7 @@ function NavBar() {
 
   const handleLogout = async () => {
     await logout();
-    navigate("/login");
+    navigate("/");
   };
 
   return (
@@ -64,8 +64,7 @@ function NavBar() {
               </li>
             ) : (
                 <li>
-                  {/* Aquí puedes agregar un enlace de Iniciar Sesión si quieres */}
-                  <NavLink to="/login">Iniciar Sesión</NavLink>
+                  <NavLink to="/login" className="btn text-black btn-warning">Iniciar Sesión</NavLink>
                 </li>
             )}
           </ul>
