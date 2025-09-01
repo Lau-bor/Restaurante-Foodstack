@@ -42,16 +42,13 @@ export const AuthProvider = ({ children }) => {
 
   const getProfile = async () => {
     const token = getToken();
-
     if (!token) {
       console.log("No hay token en getProfile!");
       return;
     }
-
     const data = await authService.profile();
     setCurrentUser(data);
     setRole(data.role);
-
     if (data.profileImage) {
       setProfileImage(`http://localhost:4000${data.profileImage}`);
     }
@@ -65,10 +62,7 @@ export const AuthProvider = ({ children }) => {
           setLoading(false);
           return;
         }
-
         const valid = await authService.verifyToken();
-        console.log("token valido: ", valid);
-
         if (valid) {
           await getProfile();
         } else {
@@ -81,9 +75,8 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
       }
     };
-    if (!currentUser) {
-      init();
-    }
+
+    init();
   }, [currentUser]);
 
   return (
@@ -100,7 +93,7 @@ export const AuthProvider = ({ children }) => {
         token: getToken(),
       }}
     >
-      {children}
+            {children}   {" "}
     </AuthContext.Provider>
   );
 };
