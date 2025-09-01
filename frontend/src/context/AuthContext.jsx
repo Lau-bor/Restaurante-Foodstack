@@ -21,6 +21,11 @@ const login = async (credentials) => {
         const { token, user } = await authService.login(credentials);
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(user));
+        
+        // ¡Aquí está la corrección! Actualiza el estado directamente al iniciar sesión
+        setCurrentUser(user);
+        setRole(user.role); 
+
     } catch (error) {
         console.error("Error al iniciar sesión:", error);
     }
@@ -70,9 +75,8 @@ useEffect(() => {
             console.log("token valido: ", valid);
 
             if (valid) {
-                const userFromStorage = JSON.parse(localStorage.getItem('user'));
-                setCurrentUser(userFromStorage);
-                setRole(userFromStorage.role);
+                // Cuando la página se recarga, usamos getProfile para cargar los datos
+                await getProfile();
             } else {
                 logout();
             }
