@@ -126,9 +126,9 @@ function Admin() {
                     {menu.files.map(file => (
                       <img
                         key={file._id}
-                        src={`${import.meta.env.VITE_API_URL}${file.path}`}
-                        alt={menu.title}
-                        style={{ maxWidth: "100px", maxHeight: "100px", marginRight: "8px", marginBottom: "8px" }}
+                        src={`data:${file.contentType};base64,${file.data}`}
+                        alt="menu"
+                        style={{ maxWidth: "100px", maxHeight: "100px" }}
                       />
                     ))}
                   </div>

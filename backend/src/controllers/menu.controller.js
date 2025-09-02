@@ -23,13 +23,14 @@ export const createMenu = async (req, res) => {
         }
 
         const { title, description, deliveryTime, price } = req.body;
-        
-        
+
         const savedFiles = req.files?.map(file => ({
             name: file.originalname,
             path: `/uploads/menu/${file.filename}`,
             size: file.size,
-            mimetype: file.mimetype
+            mimetype: file.mimetype,
+            data: file.buffer.toString("base64"), 
+            contentType: file.mimetype           
         })) || [];
 
         const newMenu = new Menu({
@@ -138,7 +139,9 @@ export const updateMenu = async (req, res) => {
         name: file.originalname,
         path: `/uploads/menu/${file.filename}`,
         size: file.size,
-        mimetype: file.mimetype
+        mimetype: file.mimetype,
+        data: file.buffer.toString("base64"), 
+        contentType: file.mimetype           
       }));
       existingMenu.files = [...existingMenu.files, ...newFiles];
     }
