@@ -128,7 +128,7 @@ function Admin() {
                         key={file._id}
                         src={`data:${file.contentType};base64,${file.data}`}
                         alt="menu"
-                        style={{ maxWidth: "100px", maxHeight: "100px" }}
+                        style={{ maxWidth: "100px", maxHeight: "100px", marginRight: "8px", marginBottom: "8px", }}
                       />
                     ))}
                   </div>
@@ -240,7 +240,7 @@ function Admin() {
                         {existingFiles.map(file => (
                           <div key={file._id} className="relative">
                             <img
-                              src={`${API_URL}${file.path}`}
+                              src={`data:${file.contentType};base64,${file.data}`}
                               alt="menu"
                               style={{ maxWidth: "100px", maxHeight: "100px" }}
                             />
