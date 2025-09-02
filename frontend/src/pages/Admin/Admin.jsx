@@ -126,7 +126,7 @@ function Admin() {
                     {menu.files.map(file => (
                       <img
                         key={file._id}
-                        src={`${API_URL}${file.path}`} 
+                        src={`${import.meta.env.VITE_API_URL}${file.path}`}
                         alt={menu.title}
                         style={{ maxWidth: "100px", maxHeight: "100px", marginRight: "8px", marginBottom: "8px" }}
                       />
@@ -143,7 +143,7 @@ function Admin() {
         </div>
 
 
-        <AdminOrders/>
+        <AdminOrders token={localStorage.getItem("token")} />
 
         <div>
   <h2 className="text-center mb-5 fw-semibold fs-2">Usuarios</h2>
