@@ -7,54 +7,45 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+const uploadToCloudinary = async (filePath) => {
+  const result = await cloudinary.uploader.upload(filePath, { folder: "menus" });
+  fs.unlinkSync(filePath); 
+  return { url: result.secure_url, public_id: result.public_id };
+};
+
 export const createMenu = async (req, res) => {
-  if (req.user.role !== "admin") {
-    return res.status(403).json({ message: "Acceso denegado: solo administradores" });
-  }
-
-  if (req.fileValidationError) {
-    return res.status(400).json({ message: req.fileValidationError });
-  }
-
   try {
-    let files = [];
+    const { title, description, price, deliveryTime } = req.body;
+    const files = [];
 
-    
     if (req.files && req.files.length > 0) {
       for (const file of req.files) {
-        const uploadResult = await new Promise((resolve, reject) => {
-          const stream = cloudinary.uploader.upload_stream(
-            { folder: "menus" },
-            (error, result) => {
-              if (error) reject(error);
-              else resolve(result);
-            }
-          );
-          stream.end(file.buffer);
-        });
-
+        const uploadResult = await uploadToCloudinary(file.path);
         files.push({
-          public_id: uploadResult.public_id,
-          url: uploadResult.secure_url,
+          name: file.originalname,
+          size: file.size,
+          mimetype: file.mimetype,
+          contentType: file.mimetype,
+          ...uploadResult
         });
       }
     }
 
-    
     const newMenu = new Menu({
-      title: req.body.title,
-      description: req.body.description,
-      price: req.body.price,
-      deliveryTime: req.body.deliveryTime,
-      files,
+      title,
+      description,
+      price,
+      deliveryTime: deliveryTime || new Date(),
+      user: req.user.id, 
+      files
     });
 
     const savedMenu = await newMenu.save();
-    return res.status(201).json(savedMenu);
+    res.status(201).json(savedMenu);
 
   } catch (error) {
-    console.error("Error en createMenu:", error);
-    return res.status(500).json({ message: error.message });
+    console.error("Error creando menú:", error);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -99,75 +90,52 @@ export const getMenuById = async (req, res) => {
 };
 
 export const updateMenu = async (req, res) => {
-  if (req.user.role !== 'admin') {
-    return res.status(403).json({ message: "Acceso denegado: solo administradores" });
-  }
-
-  if (req.fileValidationError) {
-    return res.status(400).json({ message: req.fileValidationError });
-  }
-
   try {
-    const existingMenu = await Menu.findById(req.params.id);
-    if (!existingMenu) {
-      return res.status(404).json({ message: "Menú no encontrado" });
-    }
+    const menu = await Menu.findById(req.params.id);
+    if (!menu) return res.status(404).json({ message: "Menú no encontrado" });
 
-   
+    
     if (req.body.filesToDelete && req.body.filesToDelete.length > 0) {
       const idsToDelete = Array.isArray(req.body.filesToDelete)
         ? req.body.filesToDelete
         : [req.body.filesToDelete];
 
-     
-      for (const fileId of idsToDelete) {
-        const fileToDelete = existingMenu.files.find(f => f._id.toString() === fileId);
-        if (fileToDelete) {
-          await cloudinary.uploader.destroy(fileToDelete.public_id);
+      for (const id of idsToDelete) {
+        const file = menu.files.find(f => f.public_id === id);
+        if (file) {
+          await cloudinary.uploader.destroy(file.public_id);
         }
       }
 
-      
-      existingMenu.files = existingMenu.files.filter(
-        file => !idsToDelete.includes(file._id.toString())
-      );
+      menu.files = menu.files.filter(f => !idsToDelete.includes(f.public_id));
     }
 
     
     if (req.files && req.files.length > 0) {
-      const newFiles = [];
       for (const file of req.files) {
-        const uploadResult = await new Promise((resolve, reject) => {
-          const stream = cloudinary.uploader.upload_stream(
-            { folder: "menus" },
-            (error, result) => {
-              if (error) reject(error);
-              else resolve(result);
-            }
-          );
-          stream.end(file.buffer);
-        });
-
-        newFiles.push({
-          public_id: uploadResult.public_id,
-          url: uploadResult.secure_url
+        const uploadResult = await uploadToCloudinary(file.path);
+        menu.files.push({
+          name: file.originalname,
+          size: file.size,
+          mimetype: file.mimetype,
+          contentType: file.mimetype,
+          ...uploadResult
         });
       }
-      existingMenu.files = [...existingMenu.files, ...newFiles];
     }
 
-    
-    existingMenu.title = req.body.title || existingMenu.title;
-    existingMenu.description = req.body.description || existingMenu.description;
-    existingMenu.price = req.body.price || existingMenu.price;
-    existingMenu.deliveryTime = req.body.deliveryTime || existingMenu.deliveryTime;
+   
+    menu.title = req.body.title || menu.title;
+    menu.description = req.body.description || menu.description;
+    menu.price = req.body.price || menu.price;
+    menu.deliveryTime = req.body.deliveryTime || menu.deliveryTime;
 
-    const updatedMenu = await existingMenu.save();
-    return res.status(200).json(updatedMenu);
+    const updatedMenu = await menu.save();
+    res.status(200).json(updatedMenu);
 
   } catch (error) {
-    console.error("Error en updateMenu:", error);
-    return res.status(500).json({ message: error.message });
+    console.error("Error actualizando menú:", error);
+    res.status(500).json({ message: error.message });
   }
 };
 
