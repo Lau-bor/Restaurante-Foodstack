@@ -1,13 +1,11 @@
 import Menu from "../models/menu.model.js";
 import { v2 as cloudinary } from "cloudinary";
 
-
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-
 
 export const createMenu = async (req, res) => {
   try {
@@ -17,9 +15,17 @@ export const createMenu = async (req, res) => {
     if (req.files && req.files.length > 0) {
       savedFiles = await Promise.all(
         req.files.map(async (file) => {
-          const uploadResult = await cloudinary.uploader.upload(file.path, {
-            folder: "menus",
+          const uploadResult = await new Promise((resolve, reject) => {
+            const stream = cloudinary.uploader.upload_stream(
+              { folder: "menus" },
+              (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+              }
+            );
+            stream.end(file.buffer);
           });
+
           return {
             url: uploadResult.secure_url,
             public_id: uploadResult.public_id,
@@ -45,7 +51,6 @@ export const createMenu = async (req, res) => {
   }
 };
 
-
 export const getMenus = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -53,7 +58,8 @@ export const getMenus = async (req, res) => {
     const skip = (page - 1) * limit;
 
     const filter = {};
-    if (req.query.title) filter.title = { $regex: req.query.title, $options: "i" };
+    if (req.query.title)
+      filter.title = { $regex: req.query.title, $options: "i" };
     if (req.query.category) filter.category = req.query.category;
 
     const totalMenus = await Menu.countDocuments(filter);
@@ -75,7 +81,6 @@ export const getMenus = async (req, res) => {
   }
 };
 
-
 export const getMenuById = async (req, res) => {
   try {
     const menu = await Menu.findById(req.params.id);
@@ -86,13 +91,11 @@ export const getMenuById = async (req, res) => {
   }
 };
 
-
 export const updateMenu = async (req, res) => {
   try {
     const menu = await Menu.findById(req.params.id);
     if (!menu) return res.status(404).json({ message: "Menú no encontrado" });
 
-    
     if (req.body.filesToDelete && req.body.filesToDelete.length > 0) {
       const idsToDelete = Array.isArray(req.body.filesToDelete)
         ? req.body.filesToDelete
@@ -110,13 +113,20 @@ export const updateMenu = async (req, res) => {
       );
     }
 
-    
     if (req.files && req.files.length > 0) {
       const newFiles = await Promise.all(
         req.files.map(async (file) => {
-          const uploadResult = await cloudinary.uploader.upload(file.path, {
-            folder: "menus",
+          const uploadResult = await new Promise((resolve, reject) => {
+            const stream = cloudinary.uploader.upload_stream(
+              { folder: "menus" },
+              (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+              }
+            );
+            stream.end(file.buffer);
           });
+
           return {
             url: uploadResult.secure_url,
             public_id: uploadResult.public_id,
@@ -126,7 +136,6 @@ export const updateMenu = async (req, res) => {
       menu.files = [...menu.files, ...newFiles];
     }
 
-    
     menu.title = req.body.title || menu.title;
     menu.description = req.body.description || menu.description;
     menu.price = req.body.price || menu.price;
@@ -140,13 +149,11 @@ export const updateMenu = async (req, res) => {
   }
 };
 
-
 export const deleteMenu = async (req, res) => {
   try {
     const menu = await Menu.findByIdAndDelete(req.params.id);
     if (!menu) return res.status(404).json({ message: "Menú no encontrado" });
 
-    
     if (menu.files && menu.files.length > 0) {
       for (const file of menu.files) {
         await cloudinary.uploader.destroy(file.public_id);
