@@ -25,9 +25,8 @@ export const createMenu = async (formData) => {
 };
 
 export const updateMenu = async (id, formData, filesToDelete = [], replaceImages = false) => {
-  
   if (filesToDelete.length > 0) {
-    filesToDelete.forEach(id => formData.append("filesToDelete", id));
+    filesToDelete.forEach(publicId => formData.append("filesToDelete", publicId));
   }
   formData.append("replaceImages", replaceImages ? "true" : "false");
 

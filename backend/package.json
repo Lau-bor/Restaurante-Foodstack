@@ -18,6 +18,7 @@
   "dependencies": {
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
+    "cloudinary": "^2.7.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
@@ -26,7 +27,7 @@
     "mercadopago": "^1.5.17",
     "mongoose": "^8.15.1",
     "morgan": "^1.10.0",
-    "multer": "^2.0.1",
+    "multer": "^2.0.2",
     "nodemailer": "^7.0.3",
     "nodemailer-express-handlebars": "^7.0.0",
     "zod": "^3.25.34"
