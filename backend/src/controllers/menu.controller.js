@@ -2,7 +2,6 @@ import Menu from "../models/menu.model.js";
 import { v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
 
-
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -10,8 +9,10 @@ cloudinary.config({
 });
 
 const uploadToCloudinary = async (filePath) => {
-  const result = await cloudinary.uploader.upload(filePath, { folder: "menus" });
-  fs.unlinkSync(filePath); 
+  const result = await cloudinary.uploader.upload(filePath, {
+    folder: "menus",
+  });
+  fs.unlinkSync(filePath);
   return { url: result.secure_url, public_id: result.public_id };
 };
 
@@ -28,14 +29,14 @@ export const createMenu = async (req, res) => {
     if (req.files && req.files.length > 0) {
       for (const file of req.files) {
         const uploadResult = await new Promise((resolve, reject) => {
-          const stream = cloudinary.uploader.upload_stream(
+          const uploadStream = cloudinary.uploader.upload_stream(
             { folder: "menus" },
             (error, result) => {
               if (error) reject(error);
               else resolve(result);
             }
           );
-          streamifier.createReadStream(file.buffer).pipe(stream);
+          streamifier.createReadStream(file.buffer).pipe(uploadStream);
         });
 
         files.push({
@@ -44,7 +45,7 @@ export const createMenu = async (req, res) => {
           mimetype: file.mimetype,
           contentType: file.mimetype,
           url: uploadResult.secure_url,
-          public_id: uploadResult.public_id
+          public_id: uploadResult.public_id,
         });
       }
     }
@@ -55,7 +56,7 @@ export const createMenu = async (req, res) => {
       price,
       deliveryTime: deliveryTime || new Date(),
       user: req.user?.id,
-      files
+      files,
     });
 
     const savedMenu = await newMenu.save();
@@ -111,32 +112,33 @@ export const updateMenu = async (req, res) => {
     const menu = await Menu.findById(req.params.id);
     if (!menu) return res.status(404).json({ message: "Menú no encontrado" });
 
-    if (req.fileValidationError) return res.status(400).json({ message: req.fileValidationError });
+    if (req.fileValidationError)
+      return res.status(400).json({ message: req.fileValidationError });
 
-    
     if (req.body.filesToDelete && req.body.filesToDelete.length > 0) {
-      const idsToDelete = Array.isArray(req.body.filesToDelete) ? req.body.filesToDelete : [req.body.filesToDelete];
+      const idsToDelete = Array.isArray(req.body.filesToDelete)
+        ? req.body.filesToDelete
+        : [req.body.filesToDelete];
       for (const id of idsToDelete) {
-        const fileToDelete = menu.files.find(f => f.public_id === id);
+        const fileToDelete = menu.files.find((f) => f.public_id === id);
         if (fileToDelete) {
           await cloudinary.uploader.destroy(fileToDelete.public_id);
         }
       }
-      menu.files = menu.files.filter(f => !idsToDelete.includes(f.public_id));
+      menu.files = menu.files.filter((f) => !idsToDelete.includes(f.public_id));
     }
 
-    
     if (req.files && req.files.length > 0) {
       for (const file of req.files) {
         const uploadResult = await new Promise((resolve, reject) => {
-          const stream = cloudinary.uploader.upload_stream(
+          const uploadStream = cloudinary.uploader.upload_stream(
             { folder: "menus" },
             (error, result) => {
               if (error) reject(error);
               else resolve(result);
             }
           );
-          streamifier.createReadStream(file.buffer).pipe(stream);
+          streamifier.createReadStream(file.buffer).pipe(uploadStream);
         });
 
         menu.files.push({
@@ -145,12 +147,11 @@ export const updateMenu = async (req, res) => {
           mimetype: file.mimetype,
           contentType: file.mimetype,
           url: uploadResult.secure_url,
-          public_id: uploadResult.public_id
+          public_id: uploadResult.public_id,
         });
       }
     }
 
-    
     menu.title = req.body.title || menu.title;
     menu.description = req.body.description || menu.description;
     menu.price = req.body.price || menu.price;
@@ -158,7 +159,6 @@ export const updateMenu = async (req, res) => {
 
     const updatedMenu = await menu.save();
     res.status(200).json(updatedMenu);
-
   } catch (error) {
     console.error("Error actualizando menú:", error);
     res.status(500).json({ message: error.message });
