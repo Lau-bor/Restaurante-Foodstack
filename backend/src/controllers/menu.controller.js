@@ -1,5 +1,7 @@
 import Menu from "../models/menu.model.js";
 import { v2 as cloudinary } from "cloudinary";
+import streamifier from "streamifier";
+
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
