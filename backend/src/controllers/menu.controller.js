@@ -15,18 +15,34 @@ const uploadToCloudinary = async (filePath) => {
 
 export const createMenu = async (req, res) => {
   try {
+    if (req.fileValidationError) {
+      return res.status(400).json({ message: req.fileValidationError });
+    }
+
     const { title, description, price, deliveryTime } = req.body;
+
     const files = [];
 
     if (req.files && req.files.length > 0) {
       for (const file of req.files) {
-        const uploadResult = await uploadToCloudinary(file.path);
+        const uploadResult = await new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            { folder: "menus" },
+            (error, result) => {
+              if (error) reject(error);
+              else resolve(result);
+            }
+          );
+          streamifier.createReadStream(file.buffer).pipe(stream);
+        });
+
         files.push({
           name: file.originalname,
           size: file.size,
           mimetype: file.mimetype,
           contentType: file.mimetype,
-          ...uploadResult
+          url: uploadResult.secure_url,
+          public_id: uploadResult.public_id
         });
       }
     }
@@ -36,15 +52,14 @@ export const createMenu = async (req, res) => {
       description,
       price,
       deliveryTime: deliveryTime || new Date(),
-      user: req.user.id, 
+      user: req.user?.id,
       files
     });
 
     const savedMenu = await newMenu.save();
     res.status(201).json(savedMenu);
-
   } catch (error) {
-    console.error("Error creando menú:", error);
+    console.error(error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -94,37 +109,46 @@ export const updateMenu = async (req, res) => {
     const menu = await Menu.findById(req.params.id);
     if (!menu) return res.status(404).json({ message: "Menú no encontrado" });
 
+    if (req.fileValidationError) return res.status(400).json({ message: req.fileValidationError });
+
     
     if (req.body.filesToDelete && req.body.filesToDelete.length > 0) {
-      const idsToDelete = Array.isArray(req.body.filesToDelete)
-        ? req.body.filesToDelete
-        : [req.body.filesToDelete];
-
+      const idsToDelete = Array.isArray(req.body.filesToDelete) ? req.body.filesToDelete : [req.body.filesToDelete];
       for (const id of idsToDelete) {
-        const file = menu.files.find(f => f.public_id === id);
-        if (file) {
-          await cloudinary.uploader.destroy(file.public_id);
+        const fileToDelete = menu.files.find(f => f.public_id === id);
+        if (fileToDelete) {
+          await cloudinary.uploader.destroy(fileToDelete.public_id);
         }
       }
-
       menu.files = menu.files.filter(f => !idsToDelete.includes(f.public_id));
     }
 
     
     if (req.files && req.files.length > 0) {
       for (const file of req.files) {
-        const uploadResult = await uploadToCloudinary(file.path);
+        const uploadResult = await new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            { folder: "menus" },
+            (error, result) => {
+              if (error) reject(error);
+              else resolve(result);
+            }
+          );
+          streamifier.createReadStream(file.buffer).pipe(stream);
+        });
+
         menu.files.push({
           name: file.originalname,
           size: file.size,
           mimetype: file.mimetype,
           contentType: file.mimetype,
-          ...uploadResult
+          url: uploadResult.secure_url,
+          public_id: uploadResult.public_id
         });
       }
     }
 
-   
+    
     menu.title = req.body.title || menu.title;
     menu.description = req.body.description || menu.description;
     menu.price = req.body.price || menu.price;
