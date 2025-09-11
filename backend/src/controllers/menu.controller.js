@@ -128,44 +128,60 @@ export const updateMenu = async (req, res) => {
       menu.files = menu.files.filter((f) => !idsToDelete.includes(f.public_id));
     }
 
-    if (req.files && req.files.length > 0) {
-  for (const file of req.files) {
-    const uploadResult = await new Promise((resolve, reject) => {
-      const uploadStream = cloudinary.uploader.upload_stream(
-        { folder: "menus" },
-        (error, result) => {
-          if (error) reject(error);
-          else resolve(result);
-        }
-      );
-      streamifier.createReadStream(file.buffer).pipe(uploadStream);
-    });
-
-    if (uploadResult && uploadResult.public_id && uploadResult.secure_url) {
-      menu.files.push({
-        name: file.originalname,
-        size: file.size,
-        mimetype: file.mimetype,
-        contentType: file.mimetype,
-        url: uploadResult.secure_url,
-        public_id: uploadResult.public_id,
-      });
-    } else {
-      console.error("⚠️ Error: uploadResult no devolvió public_id o secure_url", uploadResult);
+    
+    let existingFiles = [];
+    if (req.body.existingFiles) {
+      if (Array.isArray(req.body.existingFiles)) {
+        existingFiles = req.body.existingFiles.map((f) => JSON.parse(f));
+      } else {
+        existingFiles = [JSON.parse(req.body.existingFiles)];
+      }
     }
-  }
-}
 
+    if (req.files && req.files.length > 0) {
+      for (const file of req.files) {
+        const uploadResult = await new Promise((resolve, reject) => {
+          const uploadStream = cloudinary.uploader.upload_stream(
+            { folder: "menus" },
+            (error, result) => {
+              if (error) reject(error);
+              else resolve(result);
+            }
+          );
+          streamifier.createReadStream(file.buffer).pipe(uploadStream);
+        });
+
+        if (uploadResult && uploadResult.public_id && uploadResult.secure_url) {
+          menu.files.push({
+            name: file.originalname,
+            size: file.size,
+            mimetype: file.mimetype,
+            contentType: file.mimetype,
+            url: uploadResult.secure_url,
+            public_id: uploadResult.public_id,
+          });
+        } else {
+          console.error(
+            "⚠️ Error: uploadResult no devolvió public_id o secure_url",
+            uploadResult
+          );
+        }
+      }
+    }
 
     menu.title = req.body.title || menu.title;
     menu.description = req.body.description || menu.description;
     menu.price = req.body.price || menu.price;
     menu.deliveryTime = req.body.deliveryTime || menu.deliveryTime;
 
-    
     menu.files = menu.files.filter(
-      (f) => f && f.public_id && f.url
+      (f) => f && typeof f === "object" && f.public_id && f.url
     );
+
+    
+    menu.files = [...existingFiles, ...menu.files];
+
+    console.log("Archivos antes de guardar:", menu.files);
 
     const updatedMenu = await menu.save();
     res.status(200).json(updatedMenu);

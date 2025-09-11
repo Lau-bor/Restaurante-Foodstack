@@ -59,10 +59,9 @@ function Admin() {
   };
 
   const handleRemoveExistingFile = (publicId) => {
-  setFilesToDelete([...filesToDelete, publicId]);
-  setExistingFiles(existingFiles.filter(f => f.public_id !== publicId));
-};
-
+    setFilesToDelete([...filesToDelete, publicId]);
+    setExistingFiles(existingFiles.filter((f) => f.public_id !== publicId));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -70,15 +69,28 @@ function Admin() {
 
     Object.keys(formData).forEach((key) => {
       if (key === "files") {
-        Array.from(formData.files).forEach((file) =>
-          data.append("files", file)
-        );
+        Array.from(formData.files).forEach((file) => data.append("files", file));
       } else {
         data.append(key, formData[key]);
       }
     });
 
     filesToDelete.forEach((id) => data.append("filesToDelete", id));
+
+    
+    if (editingMenu) {
+      existingFiles.forEach((file) => {
+        
+        data.append("existingFiles[]", JSON.stringify({
+          public_id: file.public_id,
+          url: file.url,
+          name: file.name,
+          size: file.size,
+          mimetype: file.mimetype,
+          contentType: file.contentType,
+        }));
+      });
+    }
 
     try {
       if (editingMenu) {
