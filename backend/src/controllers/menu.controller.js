@@ -129,33 +129,43 @@ export const updateMenu = async (req, res) => {
     }
 
     if (req.files && req.files.length > 0) {
-      for (const file of req.files) {
-        const uploadResult = await new Promise((resolve, reject) => {
-          const uploadStream = cloudinary.uploader.upload_stream(
-            { folder: "menus" },
-            (error, result) => {
-              if (error) reject(error);
-              else resolve(result);
-            }
-          );
-          streamifier.createReadStream(file.buffer).pipe(uploadStream);
-        });
+  for (const file of req.files) {
+    const uploadResult = await new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        { folder: "menus" },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        }
+      );
+      streamifier.createReadStream(file.buffer).pipe(uploadStream);
+    });
 
-        menu.files.push({
-          name: file.originalname,
-          size: file.size,
-          mimetype: file.mimetype,
-          contentType: file.mimetype,
-          url: uploadResult.secure_url,
-          public_id: uploadResult.public_id,
-        });
-      }
+    if (uploadResult && uploadResult.public_id && uploadResult.secure_url) {
+      menu.files.push({
+        name: file.originalname,
+        size: file.size,
+        mimetype: file.mimetype,
+        contentType: file.mimetype,
+        url: uploadResult.secure_url,
+        public_id: uploadResult.public_id,
+      });
+    } else {
+      console.error("⚠️ Error: uploadResult no devolvió public_id o secure_url", uploadResult);
     }
+  }
+}
+
 
     menu.title = req.body.title || menu.title;
     menu.description = req.body.description || menu.description;
     menu.price = req.body.price || menu.price;
     menu.deliveryTime = req.body.deliveryTime || menu.deliveryTime;
+
+    
+    menu.files = menu.files.filter(
+      (f) => f && f.public_id && f.url
+    );
 
     const updatedMenu = await menu.save();
     res.status(200).json(updatedMenu);
