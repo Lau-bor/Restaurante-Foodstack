@@ -20,7 +20,7 @@ function MenuCard({menu, img, title, bg, text}) {
                       key={idx}
                       className='img-fluid responsive-img m-2 rounded'
                       style={{ width: "45%", maxWidth: "400px", maxHeight: "300px" }}
-                      src={`${import.meta.env.VITE_API_URL}${file.path}`}
+                      src={`${file.url}?v=${menu[0].updatedAt || Date.now()}`}
                       alt={`menu-img-${idx}`}
                     />
                   ))}
