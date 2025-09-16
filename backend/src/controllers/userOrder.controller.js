@@ -1,6 +1,5 @@
 import UserOrder from "../models/userOrder.model.js";
 import Menu from "../models/menu.model.js";
-import { createPayment } from "./payments.controller.js";
 
 export const createUserOrder = async (req, res) => {
   const { items } = req.body;
@@ -8,7 +7,6 @@ export const createUserOrder = async (req, res) => {
   try {
     let total = 0;
     const orderItems = [];
-    const paymentItems = [];
 
     for (const item of items) {
       const menu = await Menu.findById(item.menuId);
@@ -24,13 +22,6 @@ export const createUserOrder = async (req, res) => {
         quantity: item.quantity,
       });
 
-      paymentItems.push({
-        title: menu.title,
-        quantity: item.quantity,
-        unit_price: Number(menu.price),
-        currency_id: "ARS",
-      });
-
       total += menu.price * item.quantity;
     }
 
@@ -42,20 +33,13 @@ export const createUserOrder = async (req, res) => {
     });
 
     const savedUserOrder = await newUserOrder.save();
-    const orderId = savedUserOrder._id.toString();
-
-    const paymentResult = await createPayment(req, res);
-
-    if (paymentResult && paymentResult.init_point) {
-    }
 
     return res.status(201).json({
-      message: "Order created and payment started",
+      message: "Order created successfully",
       order: savedUserOrder,
-      payment: paymentResult,
     });
   } catch (err) {
-    console.error("Error creating order or generating payment:", err);
+    console.error("Error creating order:", err);
     return res.status(500).json({
       message: "Internal server error while processing the order.",
       details: err.message,
