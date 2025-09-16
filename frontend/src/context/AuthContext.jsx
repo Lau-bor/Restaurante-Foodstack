@@ -24,60 +24,71 @@ export const AuthProvider = ({ children }) => {
       setRole(user.role);
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
+      throw error;
     }
   };
-  const logout = async () => {
+
+  const logout = () => {
+    const token = getToken();
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setCurrentUser(null);
     setRole(null);
     setProfileImage(null);
-    await fetch(`${import.meta.env.VITE_API_URL}/api/v1/logout`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${getToken()}`,
-      },
-    });
+
+    if (token) {
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/logout`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).catch(err => console.error("API logout call failed:", err));
+    }
   };
 
   const getProfile = async () => {
-    const token = getToken();
-    if (!token) {
-      console.log("No hay token en getProfile!");
-      return;
-    }
-    const data = await authService.profile();
-    setCurrentUser(data);
-    setRole(data.role);
-    if (data.profileImage) {
-      setProfileImage(`http://localhost:4000${data.profileImage}`);
+    try {
+      const data = await authService.profile();
+      setCurrentUser(data);
+      setRole(data.role);
+      if (data.profileImage) {
+        setProfileImage(`http://localhost:4000${data.profileImage}`);
+      }
+    } catch (error) {
+       console.error("Failed to get profile, logging out.", error);
+       logout();
     }
   };
 
   useEffect(() => {
-    const init = async () => {
+    const initAuth = async () => {
       try {
         const token = getToken();
+
         if (!token) {
           setLoading(false);
           return;
         }
-        const valid = await authService.verifyToken();
-        if (valid) {
-          await getProfile();
-        } else {
-          logout();
+
+        const localUser = localStorage.getItem("user");
+        if(localUser) {
+            const user = JSON.parse(localUser);
+            setCurrentUser(user);
+            setRole(user.role);
         }
+
+        await getProfile();
+
       } catch (error) {
-        console.log("error al verificar token:", error);
+        console.log("Token inválido o expirado durante la inicialización:", error);
         logout();
       } finally {
         setLoading(false);
       }
     };
 
-    init();
-  }, [currentUser]);
+    initAuth();
+  }, []);
 
   return (
     <AuthContext.Provider
