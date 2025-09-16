@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { createPayment } from "../../services/PaymentService";
+
 import * as MenuService from "../../services/MenuService";
 import { useCart } from "../../context/cartContext.jsx";
+import { createUserOrder } from "../../services/OrderService";
 
 const Orders = () => {
   const [menus, setMenus] = useState([]);
@@ -46,11 +47,15 @@ const Orders = () => {
         throw new Error("No se encontró el token de autenticación.");
       }
 
-      const paymentResponse = await createPayment(cartItems, token);
-      window.location.href = paymentResponse.init_point;
+      const orderResponse = await createUserOrder(cartItems, token);
+      alert(orderResponse.message);
+     
+      cartItems.forEach((item) => removeItemFromCart(item._id));
+      
+     
     } catch (error) {
-      console.error("Error en el pago:", error.message);
-      alert(`Error en el pago: ${error.message}`);
+      console.error("Error en el pedido:", error.message);
+      alert(`Error en el pedido: ${error.message}`);
     } finally {
       setIsProcessing(false);
     }
@@ -116,7 +121,7 @@ const Orders = () => {
                   disabled={isProcessing}
                   className="btn btn-warning fw-bold w-100 mt-3"
                 >
-                  {isProcessing ? "Procesando Pago..." : "Ir a Pagar"}
+                  {isProcessing ? "Procesando Pedido..." : "Confirmar Pedido"}
                 </button>
               </div>
             )}
