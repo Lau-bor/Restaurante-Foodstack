@@ -1,5 +1,29 @@
 const API_URL = `${import.meta.env.VITE_API_URL}/api/v1`;
 
+export const createUserOrder = async (orderData, token) => {
+  try {
+    const response = await fetch(`${API_URL}/userOrder`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify(orderData),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "No se pudo crear la orden.");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error creating user order:", error);
+    throw error;
+  }
+};
+
 export const getOrders = async (token) => {
     const res = await fetch(`${API_URL}/userOrder`, {
         method: "GET",
