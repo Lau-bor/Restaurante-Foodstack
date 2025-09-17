@@ -41,9 +41,6 @@ const handleCheckout = async () => {
     if (authLoading) {
       throw new Error("Por favor, espera a que se cargue la sesión.");
     }
-    if (!user) {
-      throw new Error("Debes iniciar sesión para completar la compra.");
-    }
 
     const token = localStorage.getItem("token");
     if (!token) {
