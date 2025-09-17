@@ -31,34 +31,41 @@ const Orders = () => {
     fetchMenus();
   }, []);
 
-const handleCheckout = async () => {
-  setIsProcessing(true);
-  try {
-    if (cartItems.length === 0) {
-      throw new Error("El carrito está vacío.");
+  const handleCheckout = async () => {
+    setIsProcessing(true);
+    try {
+      if (cartItems.length === 0) {
+        throw new Error("El carrito está vacío.");
+      }
+
+      if (authLoading) {
+        throw new Error("Por favor, espera a que se cargue la sesión.");
+      }
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No se encontró el token de autenticación. Cierra y vuelve a iniciar sesión.");
+      }
+
+      
+      const items = cartItems.map(item => ({
+        menuId: item._id,     
+        quantity: item.quantity
+      }));
+
+      
+      const orderResponse = await createUserOrder({ items }, token);
+      alert(orderResponse.message);
+
+      cartItems.forEach((item) => removeItemFromCart(item._id));
+
+    } catch (error) {
+      console.error("Error en el pedido:", error.message);
+      alert(`Error en el pedido: ${error.message}`);
+    } finally {
+      setIsProcessing(false);
     }
-
-    if (authLoading) {
-      throw new Error("Por favor, espera a que se cargue la sesión.");
-    }
-
-    const token = localStorage.getItem("token");
-    if (!token) {
-      throw new Error("No se encontró el token de autenticación. Cierra y vuelve a iniciar sesión.");
-    }
-
-    const orderResponse = await createUserOrder(cartItems, token);
-    alert(orderResponse.message);
-
-    cartItems.forEach((item) => removeItemFromCart(item._id));
-
-  } catch (error) {
-    console.error("Error en el pedido:", error.message);
-    alert(`Error en el pedido: ${error.message}`);
-  } finally {
-    setIsProcessing(false);
-  }
-};
+  };
 
   if (loading || authLoading) {
     return <div className="text-center mt-8">Cargando...</div>;
