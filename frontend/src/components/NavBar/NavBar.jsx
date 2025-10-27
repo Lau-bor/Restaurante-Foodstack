@@ -35,21 +35,21 @@ function NavBar() {
 
           <ul className={`nav-link ${isOpen ? "open" : ""}`}>
             <li>
-              <NavLink to="/">Home</NavLink>
+              <NavLink to="/">Inicio</NavLink>
             </li>
             <li>
-              <NavLink to="/about">About</NavLink>
+              <NavLink to="/about">Acerca de</NavLink>
             </li>
 
             {currentUser && (
               <li>
-                <NavLink to="/orders">Orders</NavLink>
+                <NavLink to="/orders">Órdenes</NavLink>
               </li>
             )}
 
             {currentUser && role === "admin" && (
               <li>
-                <NavLink to="/admin">Admin</NavLink>
+                <NavLink to="/admin">Administrador</NavLink>
               </li>
             )}
 
