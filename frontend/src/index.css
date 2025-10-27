@@ -1,29 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
 
-html, body {
-  height: 100%;
-  margin: 0;
-}
-
-
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
 body {
   font-family: "Anton", sans-serif;
 }
 
 
-main {
-  flex: 1;
-}
-
 img{
   
   border-style: solid;
   border-width: 3px;
+}
+
+
+.app-content, main {
+  padding-bottom: 120px;
 }
 
