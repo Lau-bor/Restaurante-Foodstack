@@ -19,6 +19,11 @@ function UserAdmin() {
 
   const toggleActive = async (id, current) => {
     try {
+      const userToToggle = users.find(u => u._id === id);
+      if (userToToggle.role === 'admin') {
+        console.error("No se puede modificar un usuario admin");
+        return;
+      }
       await userService.toggleUser(id);
       loadUsers();
     } catch (error) {
@@ -45,12 +50,16 @@ function UserAdmin() {
               <td>{u.role}</td>
               <td>{u.isActive ? "Activo" : "Inhabilitado"}</td>
               <td>
-                <button
-                  className={`btn btn-sm ${u.isActive ? "btn-danger" : "btn-success"}`}
-                  onClick={() => toggleActive(u._id, u.isActive)}
-                >
-                  {u.isActive ? "Inhabilitar" : "Activar"}
-                </button>
+                {u.role !== 'admin' ? (
+                  <button
+                    className={`btn btn-sm ${u.isActive ? "btn-danger" : "btn-success"}`}
+                    onClick={() => toggleActive(u._id, u.isActive)}
+                  >
+                    {u.isActive ? "Inhabilitar" : "Activar"}
+                  </button>
+                ) : (
+                  <span className="text-muted">No modificable</span>
+                )}
               </td>
             </tr>
           ))}
