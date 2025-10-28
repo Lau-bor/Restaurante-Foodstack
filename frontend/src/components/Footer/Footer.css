@@ -1,4 +1,7 @@
 .footer {
+    --footer-height: 100px;
+    height: var(--footer-height);
+
     display: flex;
     position: fixed;
     bottom: 0;
@@ -30,10 +33,10 @@
     font-size: 32px;
     display: inline-block;
     margin: 0 10px;
-    transition: 2.s;
+    transition: 2s;
 
 }
-.icon :hover{
-    transform:rotateY(360deg);
+.icon:hover{
+    transform: rotateY(360deg);
     transition: 2s;
 }
