@@ -38,13 +38,19 @@ export const toggleUserStatus = async (req, res) => {
 export const activateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await User.findByIdAndUpdate(
-      id,
-      { isActive: true },
-      { new: true }
-    );
-
+    
+    const user = await User.findById(id);
     if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
+
+    
+    if (user.role === 'admin') {
+      return res.status(403).json({ 
+        message: "No se pueden modificar usuarios administradores" 
+      });
+    }
+
+    user.isActive = true;
+    await user.save();
 
     res.status(200).json({ message: "Usuario activado", user });
   } catch (error) {
